@@ -1,0 +1,56 @@
+name: Nightly Build
+
+on:
+  schedule:
+    - cron: "0 0 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  nightly-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Webhook
+        env:
+          ACCESS_CLIENT_ID: ${{ secrets.ACCESS_CLIENT_ID }}
+          ACCESS_CLIENT_SECRET: ${{ secrets.ACCESS_CLIENT_SECRET }}
+          ENDPOINT: ${{ secrets.WEBHOOK_ENDPOINT }}
+          USER: ${{ github.event_name == 'schedule' && 'nightly-build' || github.actor }}
+          RUN_ID: ${{ github.run_id }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          ID=$(uuidgen 2>/dev/null || cat /proc/sys/kernel/random/uuid)
+          CREATED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          URL="https://github.com/${REPO}/actions/runs/${RUN_ID}"
+
+          BODY=$(cat <<EOF
+          {
+            "id": "$ID",
+            "status": "queued",
+            "buildDetailsPageUrl": "$URL",
+            "buildDetailId": "$RUN_ID",
+            "metadata": {
+              "appVersion": "",
+              "appBuildVersion": "",
+              "gitCommitHash": "$SHA",
+              "user": "$USER",
+              "userLink": ""
+            },
+            "createdAt": "$CREATED_AT"
+          }
+          EOF
+          )
+
+          curl -sS -X POST "$ENDPOINT" \
+            -H "Content-Type: application/json" \
+            -H "CF-Access-Client-Id: $ACCESS_CLIENT_ID" \
+            -H "CF-Access-Client-Secret: $ACCESS_CLIENT_SECRET" \
+            --data "$BODY"
