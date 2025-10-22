@@ -7,7 +7,8 @@
     "production": {
       "autoIncrement": false,
       "android": {
-        "buildType": "apk"
+        "buildType": "apk",
+        "artifactPath": "android/app/build/outputs/apk/**/*.apk"
       }
     }
   },

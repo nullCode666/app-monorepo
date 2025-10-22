@@ -40,6 +40,9 @@ export default (): ExpoConfig => {
       predictiveBackGestureEnabled: false,
       package: 'one.revault.wallet',
     },
+    plugins: [
+      './app.plugin.js', /** rename apk */
+    ],
     extra: {
       eas: {
         projectId: 'd0138da8-75b8-4819-876e-375018bf9dd7',
