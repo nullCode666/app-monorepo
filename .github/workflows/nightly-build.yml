@@ -16,6 +16,19 @@ jobs:
         with:
           node-version: 20
 
+      - name: Load .env.version
+        uses: c-py/action-dotenv-to-setenv@v2
+        with:
+          env-file: .env.version
+
+      - name: Make APP_BUILD_NUMBER
+        run: |
+          DATE=$(TZ=Asia/Shanghai date +%Y%m%d)
+          SEQ=$(printf '%02d' $(( GITHUB_RUN_NUMBER % 100 )))
+          echo "APP_BUILD_NUMBER=${DATE}${SEQ}" >> $GITHUB_ENV
+
+          echo "APP_VERSION=$APP_VERSION  APP_BUILD_NUMBER=$APP_BUILD_NUMBER"
+
       - name: Webhook
         env:
           ACCESS_CLIENT_ID: ${{ secrets.ACCESS_CLIENT_ID }}
@@ -38,8 +51,8 @@ jobs:
             "buildDetailsPageUrl": "$URL",
             "buildDetailId": "$RUN_ID",
             "metadata": {
-              "appVersion": "",
-              "appBuildVersion": "",
+              "appVersion": "$APP_VERSION",
+              "appBuildVersion": "$APP_BUILD_NUMBER",
               "gitCommitHash": "$SHA",
               "user": "$USER",
               "userLink": ""

@@ -1,7 +1,10 @@
 name: Release Mobile
 
 on:
-  workflow_dispatch:
+  workflow_run:
+    workflows: ["Nightly Build"]
+    types:
+      - completed
 
 permissions:
   contents: read
@@ -14,6 +17,7 @@ jobs:
   release-mobile:
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -26,6 +30,12 @@ jobs:
           expo-version: latest
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Push env to EAS
+        run: |
+          eas secret:create --scope project --type plain --name APP_VERSION    --value "$APP_VERSION"    --non-interactive --force
+          eas secret:create --scope project --type plain --name APP_BUILD_NUMBER --value "$APP_BUILD_NUMBER" --non-interactive --force
+
       - name: Build & Submit
         run: |
           eas workflow:run .eas/workflows/create-production-builds.yml --non-interactive
