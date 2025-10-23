@@ -11,6 +11,9 @@ permissions:
 jobs:
   nightly-build:
     runs-on: ubuntu-latest
+    outputs:
+      APP_VERSION: ${{ steps.out.outputs.APP_VERSION }}
+      APP_BUILD_NUMBER: ${{ steps.out.outputs.APP_BUILD_NUMBER }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -30,7 +33,14 @@ jobs:
 
           echo "APP_VERSION=$APP_VERSION  APP_BUILD_NUMBER=$APP_BUILD_NUMBER"
 
-      - name: Webhook
+      # expose to the next job
+      - name: Set outputs
+        id: out
+        run: |
+          echo "APP_VERSION=${APP_VERSION}" >> $GITHUB_OUTPUT
+          echo "APP_BUILD_NUMBER=${APP_BUILD_NUMBER}" >> $GITHUB_OUTPUT
+
+      - name: Trigger webhook
         env:
           ACCESS_CLIENT_ID: ${{ secrets.ACCESS_CLIENT_ID }}
           ACCESS_CLIENT_SECRET: ${{ secrets.ACCESS_CLIENT_SECRET }}
@@ -68,3 +78,11 @@ jobs:
             -H "CF-Access-Client-Id: $ACCESS_CLIENT_ID" \
             -H "CF-Access-Client-Secret: $ACCESS_CLIENT_SECRET" \
             --data "$BODY"
+
+  release-mobile:
+    needs: nightly-build
+    uses: ./.github/workflows/release-mobile.yml
+    with:
+      APP_VERSION: ${{ needs.nightly-build.outputs.APP_VERSION }}
+      APP_BUILD_NUMBER: ${{ needs.nightly-build.outputs.APP_BUILD_NUMBER }}
+    secrets: inherit
