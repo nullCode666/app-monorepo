@@ -39,8 +39,13 @@ jobs:
 
       - name: Push env to EAS
         run: |
-          eas env:create --scope project --type string --name APP_VERSION      --value "$APP_VERSION"      --non-interactive --force
-          eas env:create --scope project --type string --name APP_BUILD_NUMBER --value "$APP_BUILD_NUMBER" --non-interactive --force
+          eas env:create --scope project --environment production \
+            --type string --visibility plaintext \
+            --name APP_VERSION --value "$APP_VERSION" --non-interactive --force
+
+          eas env:create --scope project --environment production \
+            --type string --visibility plaintext \
+            --name APP_BUILD_NUMBER --value "$APP_BUILD_NUMBER" --non-interactive --force
 
       - name: Build & Submit
         run: |
