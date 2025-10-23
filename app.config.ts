@@ -1,8 +1,8 @@
 import type { ExpoConfig } from '@expo/config';
 import dotenv from 'dotenv';
 
-dotenv.config({ path: '.env.version' });
-dotenv.config({ path: '.env' });
+dotenv.config({ path: '.env.version', quiet: true });
+dotenv.config({ path: '.env', quiet: true });
 
 export default (): ExpoConfig => {
   const APP_VERSION = process.env.APP_VERSION!;

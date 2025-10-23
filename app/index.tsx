@@ -1,5 +1,7 @@
 import { Text, View } from "react-native";
 
+import { APP_BUILD_NUMBER, APP_VERSION } from "./config";
+
 export default function Index() {
   return (
     <View
@@ -10,6 +12,8 @@ export default function Index() {
       }}
     >
       <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Text>APP_VERSION: {APP_VERSION}</Text>
+      <Text>APP_BUILD_NUMBER: {APP_BUILD_NUMBER}</Text>
     </View>
   );
 }
