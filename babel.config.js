@@ -1,6 +1,6 @@
 const dotenv = require('dotenv');
 
-dotenv.config({ path: '.env.version', override: true, quiet: true });
+dotenv.config({ path: '.env.version', quiet: true });
 
 module.exports = function (api) {
   api.cache(true);

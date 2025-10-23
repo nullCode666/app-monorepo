@@ -31,6 +31,9 @@ jobs:
           SEQ=$(printf '%02d' $(( GITHUB_RUN_NUMBER % 100 )))
           echo "APP_BUILD_NUMBER=${DATE}${SEQ}" >> $GITHUB_ENV
 
+          sed -i '/^[[:space:]]*APP_BUILD_NUMBER[[:space:]]*=.*/d' .env.version
+          printf 'APP_BUILD_NUMBER=%s\n' "$APP_BUILD_NUMBER" >> .env.version
+
           echo "APP_VERSION=$APP_VERSION  APP_BUILD_NUMBER=$APP_BUILD_NUMBER"
 
       # expose to the next job
