@@ -9,8 +9,12 @@ permissions:
   contents: read
 
 jobs:
+  precheck:
+    uses: ./.github/workflows/precheck.yml
+
   nightly-build:
     runs-on: ubuntu-latest
+    needs: precheck
     outputs:
       APP_VERSION: ${{ steps.out.outputs.APP_VERSION }}
       APP_BUILD_NUMBER: ${{ steps.out.outputs.APP_BUILD_NUMBER }}
