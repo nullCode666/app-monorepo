@@ -7,10 +7,22 @@ module.exports = function (api) {
   return {
     presets: ['babel-preset-expo'],
     plugins: [
-      'expo-router/babel',
+      [
+        '@tamagui/babel-plugin',
+        {
+          components: ['tamagui'],
+          config: './tamagui.config.ts',
+          logTimings: true,
+          disableExtraction: process.env.NODE_ENV === 'development',
+        },
+      ],
+
       ['babel-plugin-transform-inline-environment-variables', {
         include: ['APP_VERSION', 'APP_BUILD_NUMBER']
       }],
+
+      // NOTE: this is only necessary if you are using reanimated for animations
+      'react-native-reanimated/plugin',
     ],
   };
 };

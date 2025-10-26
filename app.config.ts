@@ -16,7 +16,7 @@ export default (): ExpoConfig => {
     orientation: 'portrait',
     icon: './app/assets/images/icon.png',
     scheme: 'revaultwallet',
-    userInterfaceStyle: 'automatic',
+    userInterfaceStyle: 'dark',
     newArchEnabled: true,
     ios: {
       buildNumber: String(APP_BUILD_NUMBER),
@@ -41,6 +41,9 @@ export default (): ExpoConfig => {
       package: 'one.revault.wallet',
     },
     plugins: [
+      "expo-font",
+      "expo-router",
+      "expo-web-browser",
       './app.plugin.js', /** rename apk */
     ],
     extra: {

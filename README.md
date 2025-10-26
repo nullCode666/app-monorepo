@@ -1,50 +1,87 @@
-# Welcome to your Expo app 👋
+# Revault Wallet
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Expo Router powered mobile wallet with native tabs, Tamagui UI, and EAS-managed releases.
 
-## Get started
+## Tech Stack
 
-1. Install dependencies
+- Expo SDK 54 / React Native 0.81
+- Expo Router with native tab navigation
+- Tamagui design system
+- TypeScript + ESLint (Expo config)
+- Yarn 4 (via Corepack) for package management
 
-   ```bash
-   npm install
-   ```
+## Project Structure
 
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```text
+.
+├── app/
+│   ├── _layout.tsx          # Root stack; registers tab shell and modal routes
+│   ├── index.tsx            # Redirects to the default tab route
+│   ├── (tabs)/              # Native tab navigator entry points
+│   │   ├── _layout.tsx      # NativeTabs configuration
+│   │   ├── wallet.tsx
+│   │   ├── swap.tsx
+│   │   ├── explorer.tsx
+│   │   ├── developer.tsx
+│   │   └── Explore/         # Example nested stack with search header
+│   │       ├── _layout.tsx
+│   │       └── index.tsx
+│   └── settings.tsx         # Modal screen presented above the tab stack
+├── core/                    # Shared configuration and domain logic
+│   └── config.ts
+├── app.config.ts            # Expo app configuration (reads env files)
+├── tamagui.config.ts        # Tamagui theme and component setup
+├── eas.json                 # Local EAS workflows
+└── .github/workflows/       # CI pipelines (precheck, release)
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Environment Configuration
 
-## Learn more
+- Duplicate `.env.example` (if provided) or create `.env` for local secrets.
+- Provide release metadata through `.env.version` for `APP_VERSION` and `APP_BUILD_NUMBER`.
+- `app.config.ts` loads both files via `dotenv` so Expo and the native builds receive the values.
 
-To learn more about developing your project with Expo, look at the following resources:
+## Getting Started
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+corepack enable
+corepack prepare yarn@4.10.3 --activate
+yarn install --immutable --check-cache
+```
 
-## Join the community
+Start the development server:
 
-Join our community of developers creating universal apps.
+```bash
+yarn start            # Expo CLI interactive menu
+yarn dev:ios          # Start and target the iOS simulator
+yarn dev:android      # Start and target the Android emulator
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Quality Gates
+
+- `yarn lint` — ESLint checks
+- `yarn typecheck` — TypeScript project validation
+
+Both commands run in CI and should pass before opening PRs.
+
+## Build & Release
+
+- Configure Expo Application Services (EAS) credentials and an `EXPO_TOKEN` secret in GitHub.
+- For ad-hoc local builds use `eas build --platform ios|android` (requires Expo login).
+- Runtime versioning is driven by `APP_VERSION`/`APP_BUILD_NUMBER` environment variables consumed by both Expo config and native targets.
+
+## Continuous Integration
+
+- **Precheck** (`.github/workflows/precheck.yml`)
+  - Triggers on pushes and pull requests to `main`.
+  - Installs dependencies with Yarn 4, then runs ESLint and TypeScript checks.
+- **Release Mobile** (`.github/workflows/release-mobile.yml`)
+  - Exposed as a reusable workflow (`workflow_call`).
+  - Requires `APP_VERSION` and `APP_BUILD_NUMBER` inputs.
+  - Authenticates with Expo, publishes build metadata to EAS env, and executes `eas workflow:run` using `.eas/workflows/create-production-builds.yml` to create store-ready binaries.
+
+## Contributing
+
+1. Create a feature branch from `main`.
+2. Run `yarn lint` and `yarn typecheck` before committing.
+3. Open a PR; the precheck workflow will gate merges.

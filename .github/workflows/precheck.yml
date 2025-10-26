@@ -29,7 +29,10 @@ jobs:
 
       - name: Install deps
         run: |
-          yarn install --frozen-lockfile
+          corepack enable
+          corepack prepare yarn@4.10.3 --activate
+          yarn -v
+          yarn install --immutable --check-cache
 
       - name: ESLint
         run: yarn lint

@@ -43,3 +43,12 @@ app-example
 /android
 
 .env
+
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+.tamagui/
