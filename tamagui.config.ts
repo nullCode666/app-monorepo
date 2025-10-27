@@ -1,12 +1,51 @@
-import { defaultConfig } from '@tamagui/config/v4'
-import { createTamagui } from 'tamagui'
+import { defaultConfig } from '@tamagui/config/v4';
+import { color as baseColor, themes as baseThemes, tokens as baseTokens } from '@tamagui/themes';
+import { createTamagui, createTokens } from 'tamagui';
 
-export const tamaguiConfig = createTamagui(defaultConfig)
+const light = {
+  primary: '#FF9500'
+};
 
-export default tamaguiConfig
+const dark = {
+  primary: '#FF9F0A'
+};
 
-export type Conf = typeof tamaguiConfig
+const tokens = createTokens({
+  ...baseTokens,
+  color: {
+    ...baseColor,
+    primaryLight: light.primary,
+    primaryDark: dark.primary,
+  },
+});
+
+const themes = {
+  ...baseThemes,
+  light: {
+    ...baseThemes.light,
+    primary: tokens.color.primaryLight,
+  },
+  dark: {
+    ...baseThemes.dark,
+    primary: tokens.color.primaryDark,
+  },
+};
+
+
+export const tamaguiConfig = createTamagui({
+  ...defaultConfig,
+  settings: {
+    ...defaultConfig.settings,
+    onlyAllowShorthands: false,
+  },
+  tokens,
+  themes,
+});
+
+export default tamaguiConfig;
+
+export type Conf = typeof tamaguiConfig;
 
 declare module 'tamagui' {
-    interface TamaguiCustomConfig extends Conf { }
+  interface TamaguiCustomConfig extends Conf { }
 }

@@ -10,12 +10,12 @@ module.exports = function withRenameApk(config) {
 // === rename APK: ${prefix}-{version}-{buildnumber}.apk ===
 android.applicationVariants.all { variant ->
   variant.outputs.all { output ->
-    if (output.outputFileName != null && output.outputFileName.endsWith(".apk")) {
-      def vName = variant.versionName ?: "0.0.0"
+    if (output.outputFileName != null && output.outputFileName.endsWith('.apk')) {
+      def vName = variant.versionName ?: '0.0.0'
       def vCode = variant.versionCode
-      def safeV = vName.replaceAll(/[^0-9A-Za-z._-]/, "-")
+      def safeV = vName.replaceAll(/[^0-9A-Za-z._-]/, '-')
 
-      output.outputFileName = "${prefix}-" + safeV + "-" + vCode + ".apk"
+      output.outputFileName = '${prefix}-' + safeV + '-' + vCode + '.apk'
     }
   }
 }

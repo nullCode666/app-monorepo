@@ -1,5 +1,6 @@
-import type { ExpoConfig } from '@expo/config';
 import dotenv from 'dotenv';
+
+import type { ExpoConfig } from '@expo/config';
 
 dotenv.config({ path: '.env.version', quiet: true });
 dotenv.config({ path: '.env', quiet: true });
@@ -41,9 +42,9 @@ export default (): ExpoConfig => {
       package: 'one.revault.wallet',
     },
     plugins: [
-      "expo-font",
-      "expo-router",
-      "expo-web-browser",
+      'expo-font',
+      'expo-router',
+      'expo-web-browser',
       './app.plugin.js', /** rename apk */
     ],
     extra: {

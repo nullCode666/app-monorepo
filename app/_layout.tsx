@@ -1,16 +1,23 @@
-import { DarkTheme, ThemeProvider } from '@react-navigation/native';
+import 'react-native-gesture-handler';
+import 'react-native-reanimated';
+
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
+import { useColorScheme } from 'react-native';
+import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 import { TamaguiProvider } from 'tamagui';
 
-import { tamaguiConfig } from '../tamagui.config';
+import { tamaguiConfig } from '@/tamagui.config';
 
 export default function RootLayout() {
+  const colorScheme = useColorScheme()!;
 
   return (
-    <SafeAreaProvider>
-      <TamaguiProvider config={tamaguiConfig} defaultTheme={'dark'}>
-        <ThemeProvider value={DarkTheme}>
+    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+      <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme}>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <StatusBar />
           <RootNavigator />
         </ThemeProvider>
       </TamaguiProvider>
@@ -20,11 +27,9 @@ export default function RootLayout() {
 
 function RootNavigator() {
   return (
-    <Stack
-      screenOptions={{ headerShown: true }}
-    >
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="settings" options={{ presentation: "modal" }} />
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name='(tabs)' />
+      <Stack.Screen name='settings' options={{ presentation: 'modal' }} />
     </Stack>
   );
 }
