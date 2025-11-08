@@ -1,0 +1,43 @@
+---
+description: Enforce Tamagui styled + tokens for all UI styling; forbid React Native StyleSheet and inline style objects.
+globs:
+  - "app/**/*.{ts,tsx}"
+  - "core/**/*.{ts,tsx}"
+---
+
+# Styling Standard (Tamagui-first)
+
+## Always do
+- Use `tamagui` **styled()** and theme tokens for all visuals (spacing, color, radius, etc).
+- Prefer props/tokens over raw numbers: `p="$2"`, `bg="$color3"`, `borderRadius="$4"`.
+
+## Never do
+- Do **not** import or call `StyleSheet` from `react-native`.
+- Do **not** pass raw style objects via `style={{ ... }}` in JSX (except very rare runtime cases, which must be annotated and migrated later).
+
+## Rewrite rules for the agent
+- When you see `StyleSheet.create(...)`, **migrate** to a Tamagui `styled()` component or inline token props.
+- When you see `style={{ ... }}`, replace with tokenized props or extract into `styled()` with variants.
+- When adding new components, **start** from `styled(View|Stack|XStack|YStack, { ...tokens })` with variants.
+- Map common patterns:
+  - `backgroundColor: "#..."/rgb(...)` → `bg="$colorX"` (closest token)
+  - `padding/margin: N` → `p="$N"`, `px="$N"`, `py="$N"`
+  - `borderRadius: N` → `borderRadius="$N"`
+  - `width/height` that are fixed → keep numeric; responsive → use variants/props.
+
+## Tamagui snippets
+```ts
+import { styled, Stack } from 'tamagui'
+export const Card = styled(Stack, {
+  bg: '$color3',
+  p: '$4',
+  borderRadius: '$6',
+  shadowColor: '$shadowColor',
+  shadowRadius: '$2',
+  variants: {
+    tone: {
+      muted: { bg: '$color2' },
+      strong: { bg: '$color6' },
+    },
+  },
+} as const)
