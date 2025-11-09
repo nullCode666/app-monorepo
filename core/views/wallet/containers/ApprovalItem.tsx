@@ -1,8 +1,4 @@
-import { useMemo } from 'react';
-import { StyleSheet } from 'react-native';
-import { useTheme } from 'tamagui';
-
-import { Avatar, ListItem, Typography, YStack } from '@/core/components';
+import { Avatar, ListItem, Typography, YStack, useTheme } from '@/core/components';
 
 export type ApprovalToken = {
   symbol: string;
@@ -30,38 +26,6 @@ function ApprovalItem({ item }: ApprovalItemProps) {
   const theme = useTheme();
 
   const mutedColor = theme.color10.val;
-  const warningSurface = 'rgba(255, 214, 10, 0.16)';
-  const warningAccent = '#FFD60A';
-  const cardBackground = theme.backgroundStrong.val;
-
-  const styles = useMemo(
-    () =>
-      StyleSheet.create({
-        card: {
-          borderRadius: 20,
-          backgroundColor: cardBackground,
-          paddingHorizontal: 16,
-          paddingVertical: 20,
-          gap: 14,
-        },
-        riskRow: {
-          borderRadius: 16,
-          backgroundColor: warningSurface,
-          paddingHorizontal: 14,
-          paddingVertical: 12,
-          flexDirection: 'row',
-          alignItems: 'center',
-        },
-        revokeButton: {
-          backgroundColor: warningAccent,
-          borderRadius: 14,
-          paddingHorizontal: 12,
-          height: 28,
-          justifyContent: 'center',
-        },
-      }),
-    [cardBackground],
-  );
 
   const leading = (
     <Avatar.Token

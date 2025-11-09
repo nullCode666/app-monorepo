@@ -13,7 +13,6 @@ import {
 import HistoryActivityItem, { HistoryActivityItemData } from '@/core/views/wallet/containers/HistoryActivityItem';
 import TokenDetailHeader from '@/core/views/wallet/containers/TokenDetailHeader';
 
-
 export default function TokenDetailScreen() {
   const { top, bottom } = useSafeAreaInsets();
   const navigation = useNavigation();

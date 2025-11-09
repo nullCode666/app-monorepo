@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router';
 import { useMemo } from 'react';
-import { useTheme } from 'tamagui';
 
+import { useTheme } from '@/core/components';
 
 export default function ReceiveLayout() {
   const theme = useTheme();
@@ -25,8 +25,8 @@ export default function ReceiveLayout() {
 
   return (
     <Stack screenOptions={screenOptions}>
-      <Stack.Screen name='index' options={{ title: '接收代币' }} />
-      <Stack.Screen name='token' options={{ title: '接收资产' }} />
+      <Stack.Screen name='index' options={{ title: '选择网络地址' }} />
+      <Stack.Screen name='addresses' options={{ title: '接收地址' }} />
     </Stack>
   );
 }

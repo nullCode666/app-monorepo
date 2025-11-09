@@ -21,7 +21,7 @@ type HistoryActivityItemProps = {
   href?: string;
 };
 
-function HistoryActivityItem({ item, href = '/defi-detail' }: HistoryActivityItemProps) {
+function HistoryActivityItem({ item, href = '/detail/defi' }: HistoryActivityItemProps) {
   const rightTopNode = (
     <XStack alignItems='center' justifyContent='flex-end' gap='$2'>
       <Typography.TextSecondary numberOfLines={1}>+0.22222 ETH</Typography.TextSecondary>

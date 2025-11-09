@@ -1,6 +1,6 @@
 import { Link } from 'expo-router';
 import { ComponentType, useCallback, useMemo } from 'react';
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { FlashListProps, Pressable, Tabs, Typography, View, XStack, YStack } from '@/core/components';
@@ -28,24 +28,20 @@ const TabsFlashList = Tabs.FlatList as unknown as ComponentType<
 export default function NFTTabList() {
   const { bottom } = useSafeAreaInsets();
 
-  const styles = useMemo(
-    () =>
-      StyleSheet.create({
-        listContent: {
-          paddingTop: 16,
-          paddingHorizontal: 16,
-          paddingBottom: bottom + 172,
-        },
-        columnWrapper: {
-          gap: 16,
-        },
-      }),
-    [bottom]
+  const contentContainerStyle = useMemo(
+    () => ({
+      paddingTop: 16,
+      paddingHorizontal: 16,
+      paddingBottom: bottom + 172,
+    }),
+    [bottom],
   );
+
+  const columnWrapperStyle = useMemo(() => ({ gap: 16 }), []);
 
   const renderItem = useCallback(
     ({ item }: { item: NFTItem }) => (
-      <Link href='/nft-detail' asChild>
+      <Link href='/detail/nft' asChild>
         <Pressable>
           <YStack width={ITEM_WIDTH} gap='$2' borderRadius='$2' mb='$4'>
             <View
@@ -84,8 +80,8 @@ export default function NFTTabList() {
       keyExtractor={keyExtractor}
       showsVerticalScrollIndicator={false}
       numColumns={3}
-      contentContainerStyle={styles.listContent}
-      columnWrapperStyle={styles.columnWrapper}
+      contentContainerStyle={contentContainerStyle}
+      columnWrapperStyle={columnWrapperStyle}
     />
   );
 }

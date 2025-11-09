@@ -1,24 +1,12 @@
 import { ArrowUpDown, ChevronRight, Wallet } from '@tamagui/lucide-icons';
-import { BlurView } from 'expo-blur';
 import { type ReactNode, useMemo } from 'react';
-import { ImageBackground, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme, View } from 'tamagui';
 
-import { Button, Tabs, Typography, XStack, YStack } from '@/core/components';
-
-type TokenMeta = {
-  symbol: string;
-  name: string;
-  accentColor: string;
-  badge?: {
-    label: string;
-    accentColor: string;
-  };
-};
+import { Button, Tabs, Typography, View, XStack, YStack, useTheme } from '@/core/components';
+import { TRADE_TOKEN_MAP, type TradeTokenMeta } from '@/core/constants/trade';
 
 type CardProps = {
-  token: TokenMeta;
+  token: TradeTokenMeta;
   amount: string;
   amountHint: string;
   walletLabel: string;
@@ -53,27 +41,6 @@ type TradePanelProps = {
   };
 };
 
-const TOKEN_MAP: Record<string, TokenMeta> = {
-  trx: {
-    symbol: 'TRX',
-    name: 'Tron',
-    accentColor: '#FF3B30',
-    badge: { label: 'TRX', accentColor: '#FF3B30' },
-  },
-  usdt: {
-    symbol: 'USDT',
-    name: 'Tether USDT',
-    accentColor: '#26A17B',
-    badge: { label: 'TRX', accentColor: '#FF3B30' },
-  },
-  eth: {
-    symbol: 'ETH',
-    name: 'Ether',
-    accentColor: '#627EEA',
-    badge: { label: 'TRX', accentColor: '#FF3B30' },
-  },
-};
-
 export default function TradeScreen() {
   const { top, bottom } = useSafeAreaInsets();
   const theme = useTheme();
@@ -83,29 +50,13 @@ export default function TradeScreen() {
   const successColor = theme.green10.val;
 
   const styles = useMemo(
-    () =>
-      StyleSheet.create({
-        scrollContent: {
-          flex: 1,
-          paddingBottom: bottom + 32,
-          paddingHorizontal: 16,
-          paddingTop: 16,
-          gap: 20,
-        },
-        lockedBackground: {
-          overflow: 'hidden',
-          marginBottom: 16,
-          flex: 1,
-        },
-        lockedOverlay: {
-          paddingVertical: 36,
-          paddingHorizontal: 24,
-          alignItems: 'center',
-          justifyContent: 'center',
-          flex: 1,
-          gap: 8,
-        },
-      }),
+    () => ({
+      scrollContent: {
+        paddingBottom: bottom + 32,
+        paddingHorizontal: 16,
+        paddingTop: 16,
+      },
+    }),
     [bottom],
   );
 
@@ -131,7 +82,7 @@ export default function TradeScreen() {
         >
           <TradePanel
             from={{
-              token: TOKEN_MAP.trx,
+              token: TRADE_TOKEN_MAP.trx,
               amount: '1',
               amountHint: '≈¥2.10178',
               walletLabel: 'Wallet 2...WrbW',
@@ -139,7 +90,7 @@ export default function TradeScreen() {
               walletActionLabel: '全部',
             }}
             to={{
-              token: TOKEN_MAP.usdt,
+              token: TRADE_TOKEN_MAP.usdt,
               amount: '0.295618',
               amountHint: '≈¥2.10184',
               walletLabel: 'Wallet 2...WrbW',
@@ -184,22 +135,6 @@ export default function TradeScreen() {
             ]}
             colors={colors}
           />
-        </Tabs.ScrollView>
-      </Tabs.Tab>
-      <Tabs.Tab name='pro' label='Pro'>
-        <Tabs.ScrollView
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps='handled'
-        >
-          <ImageBackground
-            source={require('@/core/assets/images/trade-locked.jpg')}
-            style={styles.lockedBackground}
-          >
-            <BlurView intensity={15} tint='dark' style={styles.lockedOverlay}>
-              <Typography.TextHeading>即将解锁 敬请期待</Typography.TextHeading>
-            </BlurView>
-          </ImageBackground>
         </Tabs.ScrollView>
       </Tabs.Tab>
     </Tabs.Container>
@@ -338,7 +273,7 @@ function TradeTokenCard({ card, colors }: { card: CardProps; colors: TradePanelP
   );
 }
 
-function TokenAvatar({ meta }: { meta: TokenMeta }) {
+function TokenAvatar({ meta }: { meta: TradeTokenMeta }) {
   return (
     <View width={52} height={52} borderRadius={16} backgroundColor={meta.accentColor as any} alignItems='center' justifyContent='center'>
       <Typography.Text fontSize={20} fontWeight='700' color='#fff'>

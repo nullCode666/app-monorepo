@@ -41,6 +41,8 @@ module.exports = defineConfig([
           },
         },
       ],
+      'import/no-unresolved': ['error', { ignore: ['react-native-collapsible-tab-view'] }],
+      indent: ['error', 2, { SwitchCase: 1, VariableDeclarator: 1 }],
     },
   },
 ]);

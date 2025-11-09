@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { LineGraph, type GraphPoint } from 'react-native-graph';
-import { useTheme } from 'tamagui';
 
+import { useTheme } from '../useTheme';
 import View from '../View';
 
 export type LineGraphProps = {

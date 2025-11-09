@@ -2,10 +2,8 @@ import { FlashList } from '@shopify/flash-list';
 import { LinearGradient } from '@tamagui/linear-gradient';
 import { Link } from 'expo-router';
 import { MotiView } from 'moti';
-import { Pressable } from 'react-native';
-import { Card, Separator, XStack, useTheme } from 'tamagui';
 
-import { Typography, YStack } from '@/core/components';
+import { Card, Pressable, Typography, XStack, YStack, useTheme } from '@/core/components';
 import { ChevronRight } from '@/core/components/icons';
 import { COMPONENT_LIST } from '@/core/constants/developer';
 
@@ -21,7 +19,6 @@ export default function DevList() {
       contentInsetAdjustmentBehavior='automatic'
       automaticallyAdjustsScrollIndicatorInsets
       keyboardShouldPersistTaps='handled'
-      ItemSeparatorComponent={() => <Separator marginVertical='$2' opacity={0} />}
       numColumns={2}
       scrollEventThrottle={16}
       renderItem={({ item, index }) => (

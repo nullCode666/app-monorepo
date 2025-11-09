@@ -1,7 +1,8 @@
 import { ComponentProps, useCallback, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import { MaterialTabBar, Tabs } from 'react-native-collapsible-tab-view';
-import { useTheme } from 'tamagui';
+
+import { useTheme } from '../useTheme';
 
 export type TabContainerProps = ComponentProps<typeof Tabs.Container> & {
   materialTabBarProps?: ComponentProps<typeof MaterialTabBar>;

@@ -1,6 +1,7 @@
 import { Stack } from 'expo-router';
 import { useMemo } from 'react';
-import { useTheme } from 'tamagui';
+
+import { useTheme } from '@/core/components';
 
 export default function SendLayout() {
   const theme = useTheme();

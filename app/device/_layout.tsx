@@ -1,11 +1,10 @@
 import { Link, router, Stack } from 'expo-router';
 import { useCallback, useMemo } from 'react';
-import { useTheme } from 'tamagui';
 
-import { Pressable, View } from '@/core/components';
+import { Pressable, View, useTheme } from '@/core/components';
 import { Wallet, X } from '@/core/components/icons';
 
-export default function WalletSelectorLayout() {
+export default function DeviceLayout() {
   const theme = useTheme();
   const accentColor = theme.color10.val;
   const titleColor = theme.color.val;
@@ -38,7 +37,7 @@ export default function WalletSelectorLayout() {
 
   const renderSettingsButton = useCallback(
     () => (
-      <Link asChild href='/wallet-selector/manager'>
+      <Link asChild href='/device/manager'>
         <Pressable>
           <View width={36} height={36} justifyContent='center' alignItems='center'>
             <Wallet size={24} />

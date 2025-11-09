@@ -8,7 +8,7 @@ import {
 
 type WalletRow = WalletSelectorWallet;
 
-export default function WalletManagerScreen() {
+export default function DeviceManagerScreen() {
 
   const renderItem = ({ item }: { item: WalletRow }) => (
     <ListItem
@@ -39,7 +39,6 @@ export default function WalletManagerScreen() {
       renderItem={renderItem}
       keyExtractor={item => item.id}
       insetSafearea={false}
-      showsVerticalScrollIndicator={false}
     />
   );
 }

@@ -2,8 +2,8 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useRouteInfo } from 'expo-router/build/hooks';
 import { Icon, Label, NativeTabs, VectorIcon } from 'expo-router/unstable-native-tabs';
 import { useMemo } from 'react';
-import { useTheme } from 'tamagui';
 
+import { useTheme } from '@/core/components';
 import { useLargeTitleHeader, useStickyWalletSelectorHeader } from '@/core/hooks/useTabHeader';
 
 export default () => {

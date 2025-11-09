@@ -22,7 +22,7 @@ type TokenItemProps = {
   href?: string;
 };
 
-function TokenItemComponent({ token, href = '/token-detail' }: TokenItemProps) {
+function TokenItemComponent({ token, href = '/detail/token' }: TokenItemProps) {
   const linkParams = {
     symbol: token.symbol,
     name: token.name ?? token.symbol,

@@ -1,6 +1,7 @@
 
 
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { PortalProvider } from '@tamagui/portal';
 import { ToastProvider } from '@tamagui/toast';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -12,8 +13,9 @@ import {
   ReanimatedLogLevel,
 } from 'react-native-reanimated';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
-import { TamaguiProvider, useTheme } from 'tamagui';
+import { TamaguiProvider } from 'tamagui';
 
+import { useTheme } from '@/core/components';
 import { COMPONENT_LIST } from '@/core/constants/developer';
 import { tamaguiConfig } from '@/tamagui.config';
 
@@ -30,10 +32,12 @@ export default function RootLayout() {
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
         <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme}>
           <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-            <ToastProvider>
-              <StatusBar />
-              <RootNavigator />
-            </ToastProvider>
+            <PortalProvider shouldAddRootHost>
+              <ToastProvider>
+                <StatusBar />
+                <RootNavigator />
+              </ToastProvider>
+            </PortalProvider>
           </ThemeProvider>
         </TamaguiProvider>
       </SafeAreaProvider>
@@ -70,9 +74,9 @@ function RootNavigator() {
   return (
     <Stack screenOptions={screenOptions}>
       <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
-      <Stack.Screen name='token-detail' options={{ title: '' }} />
-      <Stack.Screen name='defi-detail' options={{ title: '' }} />
-      <Stack.Screen name='nft-detail' options={{ title: '' }} />
+      <Stack.Screen name='detail/token' options={{ title: '' }} />
+      <Stack.Screen name='detail/defi' options={{ title: '' }} />
+      <Stack.Screen name='detail/nft' options={{ title: '' }} />
       <Stack.Screen name='history' options={{ title: '链上活动' }} />
       <Stack.Screen name='approval' options={{ title: '授权' }} />
       {COMPONENT_LIST.map(item => (
@@ -82,10 +86,9 @@ function RootNavigator() {
           options={{ title: item.name }}
         />
       ))}
-      <Stack.Screen name='settings' options={{ title: '设置' }} />
 
-      <Stack.Screen name='wallet-selector' options={{ title: '', ...modalScreenOptions, headerShown: false }} />
-      <Stack.Screen name='wallet-addresses' options={{ title: '', ...modalScreenOptions, headerShown: false }} />
+      <Stack.Screen name='settings' options={{ title: '', ...modalScreenOptions, headerShown: false }} />
+      <Stack.Screen name='device' options={{ title: '', ...modalScreenOptions, headerShown: false }} />
       <Stack.Screen name='send' options={{ title: '', ...modalScreenOptions, headerShown: false }} />
       <Stack.Screen name='send-confirm' options={{ title: '确认发送', ...modalScreenOptions }} />
       <Stack.Screen name='receive' options={{ title: '', ...modalScreenOptions, headerShown: false }} />

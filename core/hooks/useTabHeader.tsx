@@ -1,9 +1,8 @@
 import { Settings } from '@tamagui/lucide-icons';
 import { Link, useNavigation } from 'expo-router';
 import { useLayoutEffect } from 'react';
-import { useTheme } from 'tamagui';
 
-import { Avatar, Pressable, Typography, XStack, YStack } from '@/core/components';
+import { Avatar, Pressable, Typography, XStack, YStack, useTheme } from '@/core/components';
 
 type LargeTitleHeaderOptions = {
   title: string;
@@ -34,7 +33,7 @@ export const useLargeTitleHeader = ({ title, enabled = true }: LargeTitleHeaderO
 
 function HeaderLeft() {
   return (
-    <Link href='/wallet-addresses' asChild>
+    <Link href='/device' asChild>
       <Pressable hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
         <XStack width={36} height={36} justifyContent='center' alignItems='center'>
           <Avatar.Token size='small' type='outline' backgroundColor='$green10' />
@@ -46,7 +45,7 @@ function HeaderLeft() {
 
 function HeaderTitle() {
   return (
-    <Link asChild href='/wallet-selector'>
+    <Link asChild href='/device'>
       <XStack px='$1' justifyContent='flex-start' alignItems='center' flex={1} height={44}>
         <YStack maxWidth={200} height='100%' gap='$2' justifyContent='center'>
           <Typography.TextPrimary fontSize={20} lineHeight={20} numberOfLines={1}>

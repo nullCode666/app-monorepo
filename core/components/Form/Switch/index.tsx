@@ -1,5 +1,6 @@
 import { Switch } from 'react-native';
-import { useTheme } from 'tamagui';
+
+import { useTheme } from '../../useTheme';
 
 export type RVSwitchProps = {
   value: boolean;

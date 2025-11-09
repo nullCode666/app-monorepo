@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
-import { ScrollView } from 'react-native';
 
-import { Typography, YStack } from '@/core/components';
+import { ScrollView, Typography, YStack } from '@/core/components';
 
 type DemoPageProps = {
   children: ReactNode;
@@ -18,7 +17,6 @@ export function DemoPage({ children }: DemoPageProps) {
     <ScrollView
       contentContainerStyle={{
         paddingVertical: 16,
-        gap: 24,
       }}
       contentInsetAdjustmentBehavior='automatic'
       showsVerticalScrollIndicator={false}

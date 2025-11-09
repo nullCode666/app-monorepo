@@ -11,7 +11,7 @@ import {
 
 type WalletRow = WalletSelectorWallet;
 
-export default function WalletSelectorHomeScreen() {
+export default function DeviceHomeScreen() {
   const navigation = useNavigation();
 
 

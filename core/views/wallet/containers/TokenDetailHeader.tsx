@@ -54,13 +54,13 @@ export default function WalletHomeHeader({ symbol }: TokenDetailHeaderProps) {
     return { pathname: '/send/token', params: baseParams } as const;
   }, [baseParams, preferredToken?.multiple]);
 
-  const receiveLink = useMemo(() => {
-    if (!baseParams) {
+  const receiveHref = useMemo(() => {
+    if (!symbol) {
       return '/receive';
     }
 
-    return { pathname: '/receive/token', params: baseParams } as const;
-  }, [baseParams]);
+    return { pathname: '/receive/addresses', params: baseParams } as const;
+  }, [baseParams, symbol]);
 
   const actions = useMemo(
     () =>
@@ -70,12 +70,12 @@ export default function WalletHomeHeader({ symbol }: TokenDetailHeaderProps) {
         }
 
         if (item.id === 'receive') {
-          return { ...item, href: receiveLink };
+          return { ...item, href: receiveHref };
         }
 
         return item;
       }),
-    [receiveLink, sendLink]
+    [receiveHref, sendLink]
   );
 
   return (

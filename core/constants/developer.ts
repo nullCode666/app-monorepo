@@ -1,4 +1,5 @@
 export const COMPONENT_LIST = [
+  { name: 'AnimatedSection', colors: ['#FECACA', '#F97316'], emoji: '🧱' },
   { name: 'Avatar', colors: ['#FDE68A', '#22C55E'], emoji: '🪪' },
   { name: 'Button', colors: ['#6366F1', '#F59E0B'], emoji: '🔘' },
   { name: 'FlashList', colors: ['#22D3EE', '#3B82F6'], emoji: '⚡️' },
@@ -7,6 +8,7 @@ export const COMPONENT_LIST = [
   { name: 'LineGraph', colors: ['#38BDF8', '#22D3EE'], emoji: '📈' },
   { name: 'PieChart', colors: ['#6366F1', '#22D3EE'], emoji: '🥧' },
   { name: 'Pressable', colors: ['#34D399', '#F97316'], emoji: '👆' },
+  { name: 'Sheet', colors: ['#FDBA74', '#FBBF24'], emoji: '🪟' },
   { name: 'Skeleton', colors: ['#CBD5F5', '#9CA3AF'], emoji: '🦴' },
   { name: 'Image', colors: ['#60A5FA', '#F87171'], emoji: '🖼️' },
   { name: 'ListItem', colors: ['#818CF8', '#F472B6'], emoji: '🧾' },
