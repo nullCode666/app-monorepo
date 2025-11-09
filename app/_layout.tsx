@@ -15,7 +15,7 @@ import {
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 import { TamaguiProvider } from 'tamagui';
 
-import { useTheme } from '@/core/components';
+import { SheetProvider, useTheme } from '@/core/components';
 import { COMPONENT_LIST } from '@/core/constants/developer';
 import { tamaguiConfig } from '@/tamagui.config';
 
@@ -35,7 +35,9 @@ export default function RootLayout() {
             <PortalProvider shouldAddRootHost>
               <ToastProvider>
                 <StatusBar />
-                <RootNavigator />
+                <SheetProvider>
+                  <RootNavigator />
+                </SheetProvider>
               </ToastProvider>
             </PortalProvider>
           </ThemeProvider>

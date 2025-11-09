@@ -1,8 +1,8 @@
-import { ArrowUpDown, ChevronRight, Wallet } from '@tamagui/lucide-icons';
 import { type ReactNode, useMemo } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button, Tabs, Typography, View, XStack, YStack, useTheme } from '@/core/components';
+import { ArrowUpDown, ChevronRight, Wallet } from '@/core/components/icons';
 import { TRADE_TOKEN_MAP, type TradeTokenMeta } from '@/core/constants/trade';
 
 type CardProps = {

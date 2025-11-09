@@ -33,7 +33,7 @@ export default function DevList() {
                 elevate
                 bordered
                 padding='$2'
-                marginHorizontal='$2'
+                m='$2'
                 backgroundColor='$background'
                 height={120}
                 overflow='hidden'

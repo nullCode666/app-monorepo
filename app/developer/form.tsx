@@ -1,9 +1,8 @@
-import { Check, ChevronDown } from '@tamagui/lucide-icons';
 import { Select } from '@tamagui/select';
 import { useCallback, useMemo, useState } from 'react';
 
-import { Form, Sheet, Typography, XStack, YStack } from '@/core/components';
-import { Adapt } from '@/core/components/Adapt';
+import { Adapt, Form, Sheet, Typography, XStack, YStack } from '@/core/components';
+import { Check, ChevronDown } from '@/core/components/icons';
 import { DemoPage, DemoSection } from '@/core/views/developer/DemoComponents';
 
 const NETWORK_OPTIONS = [

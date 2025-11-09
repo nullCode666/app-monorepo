@@ -1,8 +1,8 @@
-import { Settings } from '@tamagui/lucide-icons';
 import { Link, useNavigation } from 'expo-router';
 import { useLayoutEffect } from 'react';
 
 import { Avatar, Pressable, Typography, XStack, YStack, useTheme } from '@/core/components';
+import { Settings } from '@/core/components/icons';
 
 type LargeTitleHeaderOptions = {
   title: string;

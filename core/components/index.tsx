@@ -12,6 +12,7 @@ import PieChart from './PieChart';
 import Pressable from './Pressable';
 import ScrollViewComponent from './ScrollView';
 import Sheet from './Sheet';
+import { SheetHost, SheetProvider, useSheetController } from './Sheet/controller';
 import Skeleton, { SkeletonProps } from './Skeleton';
 import Tabs from './Tabs';
 import * as Typography from './Typography';
@@ -44,10 +45,13 @@ export {
   ScrollViewComponent as ScrollView,
   ScrollViewProps,
   Sheet,
+  SheetHost,
+  SheetProvider,
   Skeleton,
   SkeletonProps,
   Tabs,
   Typography,
+  useSheetController,
   useTheme,
   View,
   XStack,

@@ -7,3 +7,4 @@ export type {
 
 export { default as Switch } from './Switch';
 export type { RVSwitchProps } from './Switch';
+

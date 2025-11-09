@@ -1,6 +1,4 @@
 import { Sheet as TamaguiSheet, type SheetProps as TamaguiSheetProps } from '@tamagui/sheet';
-import { Dimensions } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { X as CloseIcon } from '../icons';
 import Pressable from '../Pressable';
@@ -9,9 +7,6 @@ import XStack from '../XStack';
 import YStack from '../YStack';
 
 import type { ComponentProps, ReactNode } from 'react';
-
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const SHEET_WIDTH = SCREEN_WIDTH - 16 * 2;
 
 export type SheetProps = {
   open: boolean;
@@ -26,7 +21,7 @@ export type SheetProps = {
   showHandle?: boolean;
   wrapContent?: boolean;
   contentProps?: ComponentProps<typeof YStack>;
-  scrollViewProps?: ComponentProps<typeof TamaguiSheet.ScrollView>;
+  scrollViewProps?: ComponentProps<typeof TamaguiSheet.ScrollView> | null;
   sheetProps?: Omit<TamaguiSheetProps, 'open' | 'onOpenChange' | 'children'>;
   overlayProps?: Parameters<typeof TamaguiSheet.Overlay>[0];
   handleProps?: Parameters<typeof TamaguiSheet.Handle>[0];
@@ -46,7 +41,7 @@ export default function Sheet({
   showHandle = true,
   wrapContent = true,
   contentProps,
-  scrollViewProps,
+  scrollViewProps = null,
   sheetProps,
   overlayProps,
   handleProps,
@@ -55,24 +50,12 @@ export default function Sheet({
   const shouldRenderHeader = Boolean(title || description || showCloseButton);
   const shouldRenderClose = showCloseButton ?? Boolean(title || description);
 
-  const { bottom } = useSafeAreaInsets();
-
   const handleClose = () => {
     onOpenChange(false);
   };
 
   const headerNode = shouldRenderHeader ? (
-    <XStack alignItems='center' justifyContent='space-between' gap='$3' width='100%'>
-      <YStack flex={1} minWidth={0} gap={description ? '$1' : undefined}>
-        {typeof title === 'string' ? (
-          <Typography.TextPrimary fontWeight='600' numberOfLines={1}>
-            {title}
-          </Typography.TextPrimary>
-        ) : title}
-        {typeof description === 'string' ? (
-          <Typography.TextSecondary>{description}</Typography.TextSecondary>
-        ) : description}
-      </YStack>
+    <XStack alignItems='center' gap='$3' width='100%'>
       {shouldRenderClose ? (
         <Pressable
           onPress={handleClose}
@@ -90,6 +73,16 @@ export default function Sheet({
           </XStack>
         </Pressable>
       ) : null}
+      <YStack flex={1} minWidth={0} gap={description ? '$1' : undefined}>
+        {typeof title === 'string' ? (
+          <Typography.TextPrimary fontWeight='600' numberOfLines={1}>
+            {title}
+          </Typography.TextPrimary>
+        ) : title}
+        {typeof description === 'string' ? (
+          <Typography.TextSecondary>{description}</Typography.TextSecondary>
+        ) : description}
+      </YStack>
     </XStack>
   ) : null;
 
@@ -114,7 +107,7 @@ export default function Sheet({
       <TamaguiSheet.Overlay
         enterStyle={{ opacity: 0 }}
         exitStyle={{ opacity: 0 }}
-        backgroundColor='rgba(15, 15, 15, 0.55)'
+        backgroundColor='$background'
         {...overlayProps}
       />
       {showHandle ? (
@@ -123,21 +116,27 @@ export default function Sheet({
       <TamaguiSheet.Frame
         backgroundColor='$backgroundModal'
         borderRadius='$10'
-        borderWidth={2}
         borderColor='$background2'
-        width={SHEET_WIDTH}
         alignSelf='center'
-        marginBottom={bottom + 16}
+        px='$4'
+        py='$4'
+        gap='$4'
+        borderWidth={2}
+        borderBottomWidth={0}
         {...frameProps}
       >
         {headerNode}
-        <TamaguiSheet.ScrollView
-          showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps='handled'
-          {...scrollViewProps}
-        >
-          {wrappedChildren}
-        </TamaguiSheet.ScrollView>
+        {scrollViewProps ? (
+          <TamaguiSheet.ScrollView
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps='handled'
+            {...scrollViewProps}
+          >
+            {wrappedChildren}
+          </TamaguiSheet.ScrollView>
+        ) : (
+          wrappedChildren
+        )}
       </TamaguiSheet.Frame>
     </TamaguiSheet>
   );

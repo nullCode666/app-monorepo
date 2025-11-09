@@ -5,10 +5,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   AnimatedSection,
   Avatar,
+  Button,
   ScrollView,
+  SheetHost,
   Typography,
   XStack,
   YStack,
+  useSheetController,
   useTheme,
 } from '@/core/components';
 import RVSwitch from '@/core/components/Form/Switch';
@@ -63,6 +66,7 @@ const SettingsScreen = () => {
   const theme = useTheme();
   const { bottom } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+  const sheet = useSheetController();
 
   const [biometricsEnabled, setBiometricsEnabled] = useState(true);
   const [autoAddContacts, setAutoAddContacts] = useState(true);
@@ -74,6 +78,26 @@ const SettingsScreen = () => {
   const handleAutoAddContactsChange = useCallback((value: boolean) => {
     setAutoAddContacts(value);
   }, []);
+
+  const handleClearCache = useCallback(() => {
+    sheet.present({
+      title: '清除缓存数据',
+      description: '清除缓存数据将会清空本地待完成的交易',
+      children: (
+        <YStack gap='$4' px='$4' pb='$2' pt='$2'>
+          <Button backgroundColor='$primary' onPress={() => sheet.dismiss()}>
+            清理
+          </Button>
+        </YStack>
+      ),
+      modal: false,
+      hostName: 'settings-screen-sheet',
+      snapPoints: [40],
+      showCloseButton: true,
+      wrapContent: true,
+      scrollViewProps: null,
+    });
+  }, [sheet]);
 
   const backgroundColor = theme.backgroundModal.val;
   const scrollViewProps = useMemo(() => {
@@ -91,7 +115,7 @@ const SettingsScreen = () => {
   }, [backgroundColor, bottom]);
 
   useEffect(() => {
-    navigation.setOptions({
+    const navigationOptions = {
       title: '设置',
       headerTransparent: true,
       headerShadowVisible: false,
@@ -105,95 +129,110 @@ const SettingsScreen = () => {
             <Lock size={24} color='$color' />
           </XStack>
         ) : null,
+    };
+
+    if (!sheet.isOpen) return navigation.setOptions(navigationOptions);
+
+    navigation.setOptions({
+      ...navigationOptions,
+      title: '',
+      headerLeft: () => null,
+      headerRight: () => null,
+      headerSearchBarOptions: undefined,
     });
-  }, [autoAddContacts, biometricsEnabled, navigation]);
+    return () => {
+      navigation.setOptions(navigationOptions);
+    }
+  }, [autoAddContacts, biometricsEnabled, navigation, sheet.isOpen]);
 
   const collapsibleHeight = useMemo(() => (
     (ROW_HEIGHT * 2) + (DIVIDER_HEIGHT * 2)
   ), []);
 
   return (
-    <ScrollView
-      {...scrollViewProps}
-      keyboardShouldPersistTaps='handled'
-      showsVerticalScrollIndicator={false}
-      contentInsetAdjustmentBehavior='automatic'
-      scrollIndicatorInsets={{ top: 12, bottom: 0, left: 0, right: 0 }}
-      scrollEventThrottle={16}
-    >
-      <YStack gap='$6'>
-        <SupportCard />
+    <SheetHost name='settings-screen-sheet'>
+      <ScrollView
+        {...scrollViewProps}
+        keyboardShouldPersistTaps='handled'
+        showsVerticalScrollIndicator={false}
+        contentInsetAdjustmentBehavior='automatic'
+        scrollIndicatorInsets={{ top: 12, bottom: 0, left: 0, right: 0 }}
+        scrollEventThrottle={16}
+      >
+        <YStack gap='$6'>
+          <SupportCard />
 
-        <AnimatedSection.Container description='设置常用联系人，可以有效避免转账时输入错误地址'>
-          {QUICK_ACTIONS.map(action => (
-            <AnimatedSection.Item
-              key={action.id}
-              title={action.label}
-              onPress={action.onPress}
-            />
-          ))}
-        </AnimatedSection.Container>
+          <AnimatedSection.Container description='设置常用联系人，可以有效避免转账时输入错误地址'>
+            {QUICK_ACTIONS.map(action => (
+              <AnimatedSection.Item
+                key={action.id}
+                title={action.label}
+                onPress={action.onPress}
+              />
+            ))}
+          </AnimatedSection.Container>
 
-        <AnimatedSection.Container animate>
-          <AnimatedSection.Item
-            title='启用面容识别'
-            trailing={<RVSwitch value={biometricsEnabled} onValueChange={handleBiometricsChange} />}
-          />
-          <AnimatedSection.Collapsible
-            open={biometricsEnabled}
-            height={collapsibleHeight}
-          >
+          <AnimatedSection.Container animate>
             <AnimatedSection.Item
-              title='每次启动前需面容识别'
-              trailing={<RVSwitch value={autoAddContacts} onValueChange={handleAutoAddContactsChange} />}
+              title='启用面容识别'
+              trailing={<RVSwitch value={biometricsEnabled} onValueChange={handleBiometricsChange} />}
             />
-            <AnimatedSection.Item
-              title='安全与防护'
-              onPress={() => openLink('/settings/security')}
-            />
-          </AnimatedSection.Collapsible>
-        </AnimatedSection.Container>
+            <AnimatedSection.Collapsible
+              open={biometricsEnabled}
+              height={collapsibleHeight}
+            >
+              <AnimatedSection.Item
+                title='每次启动前需面容识别'
+                trailing={<RVSwitch value={autoAddContacts} onValueChange={handleAutoAddContactsChange} />}
+              />
+              <AnimatedSection.Item
+                title='安全与防护'
+                onPress={() => openLink('/settings/security')}
+              />
+            </AnimatedSection.Collapsible>
+          </AnimatedSection.Container>
 
-        <AnimatedSection.Container>
-          {BASIC_ACTIONS.map(action => (
-            <AnimatedSection.Item
-              key={action.id}
-              title={action.label}
-              trailing={action.trailing}
-              onPress={action.onPress}
-            />
-          ))}
-        </AnimatedSection.Container>
+          <AnimatedSection.Container>
+            {BASIC_ACTIONS.map(action => (
+              <AnimatedSection.Item
+                key={action.id}
+                title={action.label}
+                trailing={action.trailing}
+                onPress={action.id === 'clear' ? handleClearCache : action.onPress}
+              />
+            ))}
+          </AnimatedSection.Container>
 
-        <AnimatedSection.Container>
-          {APP_INFO_ACTIONS.map(action => (
-            <AnimatedSection.Item
-              key={action.id}
-              title={action.label}
-              trailing={action.id === 'version'
-                ? (
-                  <Typography.Text fontSize={15}>
-                    {`${APP_VERSION ?? ''}${APP_BUILD_NUMBER ? ` - ${APP_BUILD_NUMBER}` : ''}`}
-                  </Typography.Text>
-                )
-                : action.trailing}
-              onPress={action.onPress}
-            />
-          ))}
-        </AnimatedSection.Container>
+          <AnimatedSection.Container>
+            {APP_INFO_ACTIONS.map(action => (
+              <AnimatedSection.Item
+                key={action.id}
+                title={action.label}
+                trailing={action.id === 'version'
+                  ? (
+                    <Typography.Text fontSize={15}>
+                      {`${APP_VERSION ?? ''}${APP_BUILD_NUMBER ? ` - ${APP_BUILD_NUMBER}` : ''}`}
+                    </Typography.Text>
+                  )
+                  : action.trailing}
+                onPress={action.onPress}
+              />
+            ))}
+          </AnimatedSection.Container>
 
-        <AnimatedSection.Container>
-          {WEB_LINK_ROWS.map(link => (
-            <AnimatedSection.Item
-              key={link.id}
-              title={link.label}
-              trailing={<ArrowUpRight size={18} color='$color10' />}
-              onPress={() => openLink(link.href)}
-            />
-          ))}
-        </AnimatedSection.Container>
-      </YStack>
-    </ScrollView>
+          <AnimatedSection.Container>
+            {WEB_LINK_ROWS.map(link => (
+              <AnimatedSection.Item
+                key={link.id}
+                title={link.label}
+                trailing={<ArrowUpRight size={18} color='$color10' />}
+                onPress={() => openLink(link.href)}
+              />
+            ))}
+          </AnimatedSection.Container>
+        </YStack>
+      </ScrollView>
+    </SheetHost>
   );
 };
 
