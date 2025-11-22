@@ -19,9 +19,10 @@ export type DefiActivityItemData = {
 type DefiActivityItemProps = {
   item: DefiActivityItemData;
   href?: string;
+  isLast?: boolean;
 };
 
-function DefiActivityItem({ item, href = '/detail/defi' }: DefiActivityItemProps) {
+function DefiActivityItem({ item, href = '/detail/defi', isLast }: DefiActivityItemProps) {
   const primaryBadge = item.badges[0];
   const secondaryBadge = item.badges[1];
 
@@ -73,11 +74,8 @@ function DefiActivityItem({ item, href = '/detail/defi' }: DefiActivityItemProps
               </Typography.TextSecondary>
             }
             bodyRightTop={<Typography.TextSecondary>{item.rightTop}</Typography.TextSecondary>}
-            bodyRightBottom={
-              <Typography.TextSecondary>{item.rightBottom}</Typography.TextSecondary>
-            }
-            borderRadius='$6'
-            py='$3'
+            bodyRightBottom={<Typography.TextSecondary>{item.rightBottom}</Typography.TextSecondary>}
+            separator={!isLast}
           />
         )}
       </Pressable>

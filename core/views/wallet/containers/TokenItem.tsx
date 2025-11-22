@@ -1,5 +1,5 @@
 import { Link } from 'expo-router';
-import { memo } from 'react';
+import { memo, type ComponentProps } from 'react';
 
 import { Avatar, ListItem, Pressable, Typography, XStack } from '@/core/components';
 
@@ -22,33 +22,22 @@ type TokenItemProps = {
   href?: string;
   isFirst?: boolean;
   isLast?: boolean;
-};
+} & ComponentProps<typeof ListItem>;
 
-function TokenItemComponent({ token, href = '/detail/token', isFirst, isLast }: TokenItemProps) {
+function TokenItemComponent({ token, href = '/detail/token', isLast, ...rest }: TokenItemProps) {
   const linkParams = {
     symbol: token.symbol,
     name: token.name ?? token.symbol,
   };
 
-  const leading = (
-    <Avatar.Token
-      media={token.image}
-      cornerMedia={token.networkLogo}
-      backgroundColor='$background'
-    />
-  );
+  const leading = <Avatar.Token media={token.image} cornerMedia={token.networkLogo} backgroundColor='$background' />;
 
   const bodyLeftBottom = (
     <XStack gap='$2'>
       <Typography.NumberSecondary numberOfLines={1} color='$color10' fontSize={15}>
         {token.price}
       </Typography.NumberSecondary>
-      <Typography.NumberSecondary
-        numberOfLines={1}
-        percentageChange={token.change}
-        fontSize={15}
-      
-      />
+      <Typography.NumberSecondary numberOfLines={1} percentageChange={token.change} fontSize={15} />
     </XStack>
   );
 
@@ -83,6 +72,8 @@ function TokenItemComponent({ token, href = '/detail/token', isFirst, isLast }: 
           bodyLeftBottom={bodyLeftBottom}
           bodyRightTop={bodyRightTop}
           bodyRightBottom={bodyRightBottom}
+          separator={!isLast}
+          {...rest}
         />
       </Pressable>
     </Link>

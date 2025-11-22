@@ -1,9 +1,4 @@
-import {
-  createElement,
-  isValidElement,
-  type ElementType,
-  type ReactNode
-} from 'react';
+import { createElement, isValidElement, type ElementType, type ReactNode } from 'react';
 
 import { LinkProps, openLink } from '../../utils';
 import BaseImage from '../Image';
@@ -15,7 +10,7 @@ import YStack from '../YStack';
 import type { ColorTokens } from 'tamagui';
 
 export type AvatarIconType = 'default' | 'primary' | 'outline';
-export type AvatarIconSize = 'tiny' | 'small' | 'default';
+export type AvatarIconSize = 'tiny' | 'small' | 'middle' | 'default';
 
 type AvatarContent = string | ElementType | ReactNode;
 
@@ -67,6 +62,16 @@ const SIZE_PRESETS = {
     cornerBorderRadius: 4,
     roundedRadius: 8,
   },
+  middle: {
+    container: 44,
+    icon: 22,
+    label: 14,
+    symbol: 14,
+    cornerContainerSize: 20,
+    cornerSize: 16,
+    cornerBorderRadius: 6,
+    roundedRadius: 10,
+  },
   default: {
     container: 56,
     icon: 28,
@@ -91,9 +96,7 @@ function renderMedia({ content, size, color }: RenderOptions): ReactNode {
   }
 
   if (typeof content === 'string') {
-    return (
-      <BaseImage src={content} />
-    );
+    return <BaseImage src={content} />;
   }
 
   if (isValidElement(content)) {
@@ -183,7 +186,9 @@ export function Token({
         {label}
       </Typography.TextSecondary>
     </YStack>
-  ) : circle;
+  ) : (
+    circle
+  );
 
   if (!link) return content;
 

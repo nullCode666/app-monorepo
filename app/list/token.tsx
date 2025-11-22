@@ -1,11 +1,5 @@
-import { Stack } from 'expo-router';
-import { TokenListView } from '@/core/views/list/TokenListView';
+import { TokenListView } from '@/core/views/wallet/TokenListView';
 
 export default function TokenListScreen() {
-  return (
-    <>
-      <Stack.Screen options={{ title: 'Tokens' }} />
-      <TokenListView />
-    </>
-  );
+  return <TokenListView />;
 }

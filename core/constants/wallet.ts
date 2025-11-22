@@ -50,23 +50,10 @@ const RAW_TOKEN_LIST: TokenItemData[] = [
     symbol: 'TRX',
     name: 'Tron',
     price: '$0.2963',
-    change: 0.35,
+    change: -0.35,
     balance: '7.000002',
     balanceFiat: '$2.07',
-    image:
-      'https://uni.onekey-asset.com/server-service-indexer/tron--0x2b6653dc/tokens/address--1720669765494.png',
-  },
-  {
-    id: 'usdc',
-    symbol: 'USDC',
-    name: 'USD Coin',
-    price: '$0.9998',
-    multiple: true,
-    change: 0.0,
-    balance: '0',
-    balanceFiat: '$0.00',
-    image:
-      'https://uni.onekey-asset.com/server-service-indexer/tron--0x2b6653dc/tokens/address-TEkxiTehnzSmSe2XqrBj4w32RUN966rdz8-1720669173910.png',
+    image: 'https://uni.onekey-asset.com/server-service-indexer/tron--0x2b6653dc/tokens/address--1720669765494.png',
   },
   {
     id: 'usdt',
@@ -79,6 +66,18 @@ const RAW_TOKEN_LIST: TokenItemData[] = [
     balanceFiat: '$2.10',
     image:
       'https://uni.onekey-asset.com/server-service-indexer/tron--0x2b6653dc/tokens/address-TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t-1720668500740.png',
+  },
+  {
+    id: 'usdc',
+    symbol: 'USDC',
+    name: 'USD Coin',
+    price: '$0.9998',
+    multiple: true,
+    change: 0.0,
+    balance: '0',
+    balanceFiat: '$0.00',
+    image:
+      'https://uni.onekey-asset.com/server-service-indexer/tron--0x2b6653dc/tokens/address-TEkxiTehnzSmSe2XqrBj4w32RUN966rdz8-1720669173910.png',
   },
   {
     id: 'strx-tron',
@@ -102,8 +101,7 @@ const RAW_TOKEN_LIST: TokenItemData[] = [
     multiple: false,
     balance: '0.005237245064042411',
     balanceFiat: '$20.43',
-    image:
-      'https://uni.onekey-asset.com/server-service-indexer/evm--1/tokens/address--1751363512633.png',
+    image: 'https://uni.onekey-asset.com/server-service-indexer/evm--1/tokens/address--1751363512633.png',
   },
   {
     id: 'usde',
@@ -307,8 +305,7 @@ const RAW_TOKEN_LIST: TokenItemData[] = [
     multiple: false,
     balance: '0.01185488',
     balanceFiat: '$2.22',
-    image:
-      'https://uni.onekey-asset.com/server-service-indexer/sol--101/tokens/address--1758104080638.png',
+    image: 'https://uni.onekey-asset.com/server-service-indexer/sol--101/tokens/address--1758104080638.png',
   },
   {
     id: 'pst-sol',
@@ -511,8 +508,7 @@ const RAW_TOKEN_LIST: TokenItemData[] = [
     multiple: false,
     balance: '27.59583840360658493',
     balanceFiat: '$5.37',
-    image:
-      'https://uni.onekey-asset.com/server-service-indexer/evm--137/tokens/address--1720669850773.png',
+    image: 'https://uni.onekey-asset.com/server-service-indexer/evm--137/tokens/address--1720669850773.png',
   },
   {
     id: 'usdc-polygon',
@@ -645,8 +641,7 @@ export const RECEIVE_TOKEN_OPTIONS: ReceiveTokenOption[] = [
     network: 'Multichain',
     amount: '0.004821',
     fiatValue: '$16.83',
-    image:
-      'https://uni.onekey-asset.com/server-service-indexer/evm--1/tokens/address--1751363512633.png',
+    image: 'https://uni.onekey-asset.com/server-service-indexer/evm--1/tokens/address--1751363512633.png',
   },
   {
     id: 'btc-xpub',
@@ -664,8 +659,7 @@ export const RECEIVE_TOKEN_OPTIONS: ReceiveTokenOption[] = [
     network: 'Tron',
     amount: '37.1619',
     fiatValue: '$10.41',
-    image:
-      'https://uni.onekey-asset.com/server-service-indexer/tron--0x2b6653dc/tokens/address--1720669765494.png',
+    image: 'https://uni.onekey-asset.com/server-service-indexer/tron--0x2b6653dc/tokens/address--1720669765494.png',
   },
   {
     id: 'rbtc-rootstock',
@@ -712,8 +706,7 @@ export const RECEIVE_TOKEN_OPTIONS: ReceiveTokenOption[] = [
     network: 'Kaspa',
     amount: '129.8687',
     fiatValue: '$5.73',
-    image:
-      'https://uni.onekey-asset.com/server-service-indexer/kaspa--0/tokens/address--1723005440376.png',
+    image: 'https://uni.onekey-asset.com/server-service-indexer/kaspa--0/tokens/address--1723005440376.png',
   },
   {
     id: 'usdt-eth',
@@ -732,8 +725,7 @@ export const RECEIVE_TOKEN_OPTIONS: ReceiveTokenOption[] = [
     network: 'Ripple',
     amount: '2.0659',
     fiatValue: '$4.63',
-    image:
-      'https://uni.onekey-asset.com/server-service-indexer/xrp--0/tokens/address--1720668851198.png',
+    image: 'https://uni.onekey-asset.com/server-service-indexer/xrp--0/tokens/address--1720668851198.png',
   },
   {
     id: 'bch',
@@ -742,8 +734,7 @@ export const RECEIVE_TOKEN_OPTIONS: ReceiveTokenOption[] = [
     network: 'Bitcoin Cash',
     amount: '0.008181',
     fiatValue: '$4.07',
-    image:
-      'https://uni.onekey-asset.com/server-service-indexer/bch--0/tokens/address--1720668152194.png',
+    image: 'https://uni.onekey-asset.com/server-service-indexer/bch--0/tokens/address--1720668152194.png',
   },
 ];
 
@@ -769,8 +760,7 @@ export const ADDRESS_NETWORKS: AddressNetwork[] = [
     label: '以太坊及 EVM 网络',
     network: 'Ethereum Mainnet',
     description: '适用于 EVM 生态的地址，包括以太坊、Arbitrum、Base 等网络。',
-    image:
-      'https://uni.onekey-asset.com/server-service-indexer/evm--1/tokens/address--1751363512633.png',
+    image: 'https://uni.onekey-asset.com/server-service-indexer/evm--1/tokens/address--1751363512633.png',
     addresses: [
       {
         id: 'evm-primary',
@@ -812,8 +802,7 @@ export const ADDRESS_NETWORKS: AddressNetwork[] = [
     label: '波场网络',
     network: 'Tron Mainnet',
     description: '用于接收 TRX、USDT-TRC20 等波场资产。',
-    image:
-      'https://uni.onekey-asset.com/server-service-indexer/tron--0x2b6653dc/tokens/address--1720669765494.png',
+    image: 'https://uni.onekey-asset.com/server-service-indexer/tron--0x2b6653dc/tokens/address--1720669765494.png',
     addresses: [
       {
         id: 'tron-main',
@@ -828,8 +817,7 @@ export const ADDRESS_NETWORKS: AddressNetwork[] = [
     label: '索拉纳网络',
     network: 'Solana Mainnet',
     description: 'Solana 生态资产（如 SOL、USDC-SPL）的统一地址。',
-    image:
-      'https://uni.onekey-asset.com/server-service-indexer/sol--101/tokens/address--1758104080638.png',
+    image: 'https://uni.onekey-asset.com/server-service-indexer/sol--101/tokens/address--1758104080638.png',
     addresses: [
       {
         id: 'sol-main',
@@ -1182,14 +1170,7 @@ export const APPROVALS: ApprovalItemData[] = [
   },
 ];
 
-export type TokenDetailActionId =
-  | 'send'
-  | 'receive'
-  | 'swap'
-  | 'bridge'
-  | 'defi'
-  | 'buy'
-  | 'cashout';
+export type TokenDetailActionId = 'send' | 'receive' | 'swap' | 'bridge' | 'defi' | 'buy' | 'cashout';
 
 export type TokenDetailAction = {
   id: TokenDetailActionId;
@@ -1464,7 +1445,7 @@ export const TOKEN_DETAIL_DISTRIBUTION: Record<string, TokenDistributionDataset>
         amount: '0.0136',
         fiatValue: '¥8,064',
         color: '#FF9F0A',
-        subLabel: 'bc1pw8tt****33puph',
+        subLabel: '17jbY2E7AH5Ge8ShQXSWZGfoxzkHXGxoJE',
       },
       {
         id: 'nested-segwit',
@@ -1473,7 +1454,7 @@ export const TOKEN_DETAIL_DISTRIBUTION: Record<string, TokenDistributionDataset>
         amount: '0.0074',
         fiatValue: '¥4,368',
         color: '#FF9F0A',
-        subLabel: '3Eo9DgJs****RRydyBiD',
+        subLabel: '17jbY2E7AH5Ge8ShQXSWZGfoxzkHXGxoJE',
       },
       {
         id: 'native-segwit',
@@ -1482,7 +1463,7 @@ export const TOKEN_DETAIL_DISTRIBUTION: Record<string, TokenDistributionDataset>
         amount: '0.0045',
         fiatValue: '¥2,688',
         color: '#FF9F0A',
-        subLabel: 'bc1q****d698',
+        subLabel: '17jbY2E7AH5Ge8ShQXSWZGfoxzkHXGxoJE',
       },
       {
         id: 'legacy',
@@ -1491,7 +1472,7 @@ export const TOKEN_DETAIL_DISTRIBUTION: Record<string, TokenDistributionDataset>
         amount: '0.0029',
         fiatValue: '¥1,680',
         color: '#FF9F0A',
-        subLabel: '17jb****xoJE',
+        subLabel: '17jbY2E7AH5Ge8ShQXSWZGfoxzkHXGxoJE',
       },
     ],
   },

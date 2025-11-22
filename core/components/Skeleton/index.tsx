@@ -6,7 +6,6 @@ import type { DimensionValue } from 'react-native';
 
 const AnimatedSkeleton = styled(MotiView, {
   name: 'Skeleton',
-  backgroundColor: '$background3',
 });
 
 export type SkeletonProps = GetProps<typeof AnimatedSkeleton> & {
@@ -39,4 +38,3 @@ export default function Skeleton({
     />
   );
 }
-

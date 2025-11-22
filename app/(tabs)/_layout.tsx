@@ -10,7 +10,7 @@ const TABS_CONFIG: TabItemConfig[] = [
     materialIcon: { default: 'wallet-outline', selected: 'wallet' },
   },
   {
-    name: 'swap',
+    name: 'trade',
     sfSymbol: { default: 'arrow.triangle.2.circlepath', selected: 'arrow.triangle.2.circlepath' },
     materialIcon: { default: 'swap-horizontal', selected: 'swap-horizontal-bold' },
   },
@@ -34,13 +34,13 @@ export default () => {
   const isProfileRoute = normalizedPath.startsWith('/profile');
   const isExploreRoute = normalizedPath.startsWith('/explore');
   const isWalletRoute = normalizedPath.startsWith('/wallet');
-  const isSwapRoute = normalizedPath.startsWith('/swap');
+  const isTradeRoute = normalizedPath.startsWith('/trade');
   const useLargeHeader = isProfileRoute || isExploreRoute;
 
   const largeHeaderTitle = isProfileRoute ? 'Profile' : '';
 
   useLargeTitleHeader({ title: largeHeaderTitle, enabled: useLargeHeader });
-  useStickyWalletSelectorHeader({ enabled: isWalletRoute || isSwapRoute });
+  useStickyWalletSelectorHeader({ enabled: isWalletRoute || isTradeRoute });
 
   return <RVNativeTabs items={TABS_CONFIG} />;
 };

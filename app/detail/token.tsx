@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from 'expo-router';
 
-import { TokenDetailView } from '@/core/views/detail/TokenDetailView';
+import { TokenDetailView } from '@/core/views/wallet/TokenDetailView';
 
 export default function TokenDetailScreen() {
   const { symbol, name } = useLocalSearchParams<{ symbol?: string; name?: string }>();

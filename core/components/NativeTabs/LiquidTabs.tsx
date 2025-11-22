@@ -4,7 +4,6 @@ import { useTheme } from 'tamagui';
 
 import { type RVNativeTabsProps } from './types';
 
-
 export function LiquidTabs({ items }: RVNativeTabsProps) {
   const theme = useTheme();
   const primaryColor = theme.primary.val;
@@ -22,7 +21,6 @@ export function LiquidTabs({ items }: RVNativeTabsProps) {
       },
       indicatorColor: tabItemBackgroundColor,
       rippleColor: tabItemBackgroundColor,
-      
       labelVisibilityMode: 'unlabeled' as const,
     };
   }, [mutedIconColor, primaryColor, tabItemBackgroundColor]);
@@ -31,10 +29,8 @@ export function LiquidTabs({ items }: RVNativeTabsProps) {
     <NativeTabs {...tabsColorConfig}>
       {items.map((item) => (
         <NativeTabs.Trigger key={item.name} name={item.name} role={item.role}>
-          <Label hidden />
-          <Icon
-            sf={{ default: item.sfSymbol.default, selected: item.sfSymbol.selected }}
-          />
+          <Label>{item.name}</Label>
+          <Icon sf={{ default: item.sfSymbol.default, selected: item.sfSymbol.selected }} />
         </NativeTabs.Trigger>
       ))}
     </NativeTabs>

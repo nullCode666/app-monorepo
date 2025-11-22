@@ -17,7 +17,7 @@ const light = {
 
 const dark = {
   background: '#000000', // Pure Black
-  backgroundModal: '#1C1C1E', // Dark Grey for cards/modals
+  backgroundModal: '#121214', // Deeper Dark Grey for modals
   background2: '#1C1C1E', // Dark Grey for cards
   background3: '#2C2C2E', // Tertiary System Fill
   primary: '#FF9F0A',
@@ -47,12 +47,12 @@ const tokens = createTokens({
     green10Dark: dark.green10,
     red10Light: light.red10,
     red10Dark: dark.red10,
-    
+
     textPrimaryLight: light.textPrimary,
     textPrimaryDark: dark.textPrimary,
     textSecondaryLight: light.textSecondary,
     textSecondaryDark: dark.textSecondary,
-    
+
     cardBackgroundLight: light.cardBackground,
     cardBackgroundDark: dark.cardBackground,
   },

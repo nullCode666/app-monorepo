@@ -2,10 +2,7 @@ import { router } from 'expo-router';
 import { useCallback, useEffect, useMemo } from 'react';
 
 import { FlashList, ListItem, PieChart, Pressable, Typography } from '@/core/components';
-import {
-  TOKEN_DETAIL_DISTRIBUTION,
-  type TokenDistributionEntry,
-} from '@/core/constants/wallet';
+import { TOKEN_DETAIL_DISTRIBUTION, type TokenDistributionEntry } from '@/core/constants/wallet';
 
 function findDistribution(key?: string) {
   if (!key) {
@@ -22,7 +19,6 @@ type Props = {
 };
 
 export function SendNetworkListView({ tokenId, tokenSymbol, tokenName }: Props) {
-
   const distribution = useMemo(() => {
     const byId = findDistribution(tokenId);
     if (byId) {
@@ -40,22 +36,25 @@ export function SendNetworkListView({ tokenId, tokenSymbol, tokenName }: Props) 
     }
   }, [segments.length, tokenId, tokenSymbol, tokenName]);
 
-  const handleSelect = useCallback((segment: TokenDistributionEntry) => {
-    if (!tokenId || !tokenSymbol) {
-      return;
-    }
+  const handleSelect = useCallback(
+    (segment: TokenDistributionEntry) => {
+      if (!tokenId || !tokenSymbol) {
+        return;
+      }
 
-    router.push({
-      pathname: '/send/address',
-      params: {
-        tokenId,
-        tokenSymbol,
-        tokenName,
-        networkId: segment.id,
-        networkLabel: segment.label,
-      },
-    });
-  }, [tokenId, tokenSymbol, tokenName]);
+      router.push({
+        pathname: '/send/address',
+        params: {
+          tokenId,
+          tokenSymbol,
+          tokenName,
+          networkId: segment.id,
+          networkLabel: segment.label,
+        },
+      });
+    },
+    [tokenId, tokenSymbol, tokenName],
+  );
 
   const renderSegment = useCallback(
     ({ item }: { item: TokenDistributionEntry }) => {
@@ -65,7 +64,7 @@ export function SendNetworkListView({ tokenId, tokenSymbol, tokenName }: Props) 
         <Pressable onPress={() => handleSelect(item)}>
           {() => (
             <ListItem
-              leading={(
+              leading={
                 <PieChart
                   size={48}
                   thickness={4}
@@ -79,23 +78,21 @@ export function SendNetworkListView({ tokenId, tokenSymbol, tokenName }: Props) 
                     {percentage}%
                   </Typography.NumberSecondary>
                 </PieChart>
-              )}
+              }
               bodyLeftTop={<Typography.Text numberOfLines={1}>{item.label}</Typography.Text>}
-              bodyLeftBottom={item.subLabel ? (
-                <Typography.TextSecondary fontSize={12} lineHeight={12} numberOfLines={1}>
-                  {item.subLabel}
-                </Typography.TextSecondary>
-              ) : undefined}
-              bodyRightTop={(
+              bodyLeftBottom={
+                item.subLabel ? (
+                  <Typography.AddressSecondary short>{item.subLabel}</Typography.AddressSecondary>
+                ) : undefined
+              }
+              bodyRightTop={
                 <Typography.NumberSecondary color='$color12' numberOfLines={1}>
                   {`${item.amount} ${distribution?.symbol ?? ''}`}
                 </Typography.NumberSecondary>
-              )}
-              bodyRightBottom={(
-                <Typography.NumberSecondary numberOfLines={1}>
-                  {item.fiatValue}
-                </Typography.NumberSecondary>
-              )}
+              }
+              bodyRightBottom={
+                <Typography.NumberSecondary numberOfLines={1}>{item.fiatValue}</Typography.NumberSecondary>
+              }
               py='$3'
               px='$4'
               borderRadius='$6'
@@ -104,16 +101,15 @@ export function SendNetworkListView({ tokenId, tokenSymbol, tokenName }: Props) 
         </Pressable>
       );
     },
-    [distribution?.symbol, handleSelect]
+    [distribution?.symbol, handleSelect],
   );
 
   return (
     <FlashList<TokenDistributionEntry>
       data={segments}
       renderItem={renderSegment}
-      keyExtractor={item => item.id}
+      keyExtractor={(item) => item.id}
       insetSafearea={false}
     />
   );
 }
-

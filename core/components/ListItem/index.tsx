@@ -11,29 +11,49 @@ export type ListItemProps = Omit<XStackProps, 'children'> & {
   bodyRightBottom?: ReactNode;
   trailing?: ReactNode;
   rightAccessory?: ReactNode;
+  separator?: boolean;
 };
 
 const ListItemContainer = styled(XStack, {
-  alignItems: 'center',
+  alignItems: 'stretch',
   justifyContent: 'space-between',
   gap: '$3',
-  py: '$2',
 });
 
 const LeadingContainer = styled(XStack, {
   alignItems: 'center',
   justifyContent: 'center',
   flexShrink: 0,
+  py: '$2',
+});
+
+const MainContentContainer = styled(XStack, {
+  flex: 1,
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: '$3',
+  py: '$2',
+  borderBottomWidth: 0,
+  borderBottomColor: '$background2',
+
+  variants: {
+    showSeparator: {
+      true: {
+        borderBottomWidth: 1,
+      },
+    },
+  } as const,
 });
 
 const BodyContainer = styled(YStack, {
   flex: 1,
   minWidth: 0,
-  height: '100%',
+  justifyContent: 'center',
+  gap: '$2',
 });
 
 const RowContainer = styled(XStack, {
-  flex: 1,
   alignItems: 'center',
   justifyContent: 'space-between',
   gap: '$2',
@@ -73,61 +93,45 @@ function ListItemComponent({
   bodyRightBottom,
   trailing,
   rightAccessory,
+  separator = true,
   ...rest
 }: ListItemProps) {
-  const leadingNode = leading ? (
-    <LeadingContainer>
-      {leading}
-    </LeadingContainer>
-  ) : null;
+  const leadingNode = leading ? <LeadingContainer>{leading}</LeadingContainer> : null;
 
   const hasTopRow = bodyLeftTop || bodyRightTop;
   const hasBottomRow = bodyLeftBottom || bodyRightBottom;
 
-  const bodyNode = (hasTopRow || hasBottomRow) ? (
-    <BodyContainer>
-      {hasTopRow ? (
-        <RowContainer>
-          <LeftColumn>
-            {bodyLeftTop}
-          </LeftColumn>
-          <RightColumn>
-            {bodyRightTop}
-          </RightColumn>
-        </RowContainer>
-      ) : null}
+  const bodyNode =
+    hasTopRow || hasBottomRow ? (
+      <BodyContainer>
+        {hasTopRow ? (
+          <RowContainer>
+            <LeftColumn>{bodyLeftTop}</LeftColumn>
+            <RightColumn>{bodyRightTop}</RightColumn>
+          </RowContainer>
+        ) : null}
 
-      {hasBottomRow ? (
-        <RowContainer>
-          <LeftColumn>
-            {bodyLeftBottom}
-          </LeftColumn>
-          <RightColumn>
-            {bodyRightBottom}
-          </RightColumn>
-        </RowContainer>
-      ) : null}
-    </BodyContainer>
-  ) : null;
+        {hasBottomRow ? (
+          <RowContainer>
+            <LeftColumn>{bodyLeftBottom}</LeftColumn>
+            <RightColumn>{bodyRightBottom}</RightColumn>
+          </RowContainer>
+        ) : null}
+      </BodyContainer>
+    ) : null;
 
-  const trailingNode = trailing ? (
-    <TrailingContainer>
-      {trailing}
-    </TrailingContainer>
-  ) : null;
+  const trailingNode = trailing ? <TrailingContainer>{trailing}</TrailingContainer> : null;
 
-  const accessoryNode = rightAccessory ? (
-    <AccessoryContainer>
-      {rightAccessory}
-    </AccessoryContainer>
-  ) : null;
+  const accessoryNode = rightAccessory ? <AccessoryContainer>{rightAccessory}</AccessoryContainer> : null;
 
   return (
     <ListItemContainer {...rest}>
       {leadingNode}
-      {bodyNode}
-      {trailingNode}
-      {accessoryNode}
+      <MainContentContainer showSeparator={separator}>
+        {bodyNode}
+        {trailingNode}
+        {accessoryNode}
+      </MainContentContainer>
     </ListItemContainer>
   );
 }

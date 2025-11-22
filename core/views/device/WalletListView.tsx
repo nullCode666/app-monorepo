@@ -38,6 +38,7 @@ export function WalletListView() {
       trailing={item.isCurrent ? <Check fontWeight='700' size={20} color='$color12' /> : undefined}
       py='$4'
       px='$4'
+      separator={false}
     />
   );
 

@@ -20,9 +20,10 @@ export type ApprovalItemData = {
 
 type ApprovalItemProps = {
   item: ApprovalItemData;
+  isLast?: boolean;
 };
 
-function ApprovalItem({ item }: ApprovalItemProps) {
+function ApprovalItem({ item, isLast }: ApprovalItemProps) {
   const theme = useTheme();
 
   const mutedColor = theme.color10.val;
@@ -62,6 +63,7 @@ function ApprovalItem({ item }: ApprovalItemProps) {
             {item.spender}
           </Typography.Text>
         )}
+        separator={!isLast}
       />
     </YStack>
   );

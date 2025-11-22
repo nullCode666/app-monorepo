@@ -41,7 +41,7 @@ type TradePanelProps = {
   };
 };
 
-export function SwapHomeView() {
+export function TradeHomeView() {
   const { top, bottom } = useSafeAreaInsets();
   const theme = useTheme();
 
@@ -71,9 +71,7 @@ export function SwapHomeView() {
   );
 
   return (
-    <Tabs.Container
-      containerStyle={{ top: top + 38 }}
-    >
+    <Tabs.Container containerStyle={{ top: top + 38 }}>
       <Tabs.Tab name='swap' label='Swap'>
         <Tabs.ScrollView
           contentContainerStyle={styles.scrollContent}
@@ -110,7 +108,6 @@ export function SwapHomeView() {
                       background='linear-gradient(135deg, #43C6AC, #191654)'
                     />
                     <Typography.Text fontWeight='600'>LiquidMesh</Typography.Text>
-
                   </XStack>
                 ),
                 chevron: true,
@@ -146,10 +143,7 @@ function TradePanel({ from, to, actionButton, infoRows, notice, colors }: TradeP
   return (
     <YStack gap='$1'>
       <Section label='从' mutedColor={colors.muted}>
-        <TradeTokenCard
-          card={from}
-          colors={colors}
-        />
+        <TradeTokenCard card={from} colors={colors} />
       </Section>
 
       <View
@@ -165,21 +159,11 @@ function TradePanel({ from, to, actionButton, infoRows, notice, colors }: TradeP
       </View>
 
       <Section label='到' mutedColor={colors.muted}>
-        <TradeTokenCard
-          card={to}
-          colors={colors}
-        />
+        <TradeTokenCard card={to} colors={colors} />
       </Section>
 
       {notice ? (
-        <XStack
-          gap='$2'
-          alignItems='center'
-          borderRadius={16}
-          px='$3'
-          py='$3'
-        
-        >
+        <XStack gap='$2' alignItems='center' borderRadius={16} px='$3' py='$3'>
           {notice.icon}
           <Typography.Text color='#FF3B30' flex={1} fontSize={13} lineHeight={18}>
             {notice.text}
@@ -187,13 +171,7 @@ function TradePanel({ from, to, actionButton, infoRows, notice, colors }: TradeP
         </XStack>
       ) : null}
 
-      <Button
-        type="primary"
-        size="large"
-        height={56}
-        borderRadius={16}
-        disabled={actionButton.disabled}
-      >
+      <Button type='primary' size='large' height={56} borderRadius={16} disabled={actionButton.disabled}>
         <Typography.Text fontSize={17} fontWeight='600' color='#000'>
           {actionButton.label}
         </Typography.Text>
@@ -259,9 +237,7 @@ function TradeTokenCard({ card, colors }: { card: CardProps; colors: TradePanelP
           </Typography.Text>
         </XStack>
         <XStack gap='$2' alignItems='center'>
-          <Typography.NumberSecondary color='$color'>
-            {card.walletAmount}
-          </Typography.NumberSecondary>
+          <Typography.NumberSecondary color='$color'>{card.walletAmount}</Typography.NumberSecondary>
           {card.walletActionLabel ? (
             <Typography.Text fontSize={13} fontWeight='600' color={colors.primary as any}>
               {card.walletActionLabel}
@@ -275,7 +251,14 @@ function TradeTokenCard({ card, colors }: { card: CardProps; colors: TradePanelP
 
 function TokenAvatar({ meta }: { meta: TradeTokenMeta }) {
   return (
-    <View width={52} height={52} borderRadius={16} backgroundColor={meta.accentColor as any} alignItems='center' justifyContent='center'>
+    <View
+      width={52}
+      height={52}
+      borderRadius={16}
+      backgroundColor={meta.accentColor as any}
+      alignItems='center'
+      justifyContent='center'
+    >
       <Typography.Text fontSize={20} fontWeight='700' color='#fff'>
         {meta.symbol}
       </Typography.Text>
@@ -302,15 +285,8 @@ function TokenAvatar({ meta }: { meta: TradeTokenMeta }) {
 
 function TradeInfoRow({ label, children, chevron = false, mutedColor }: TradeInfoRowProps & { mutedColor: string }) {
   return (
-    <XStack
-      justifyContent='space-between'
-      alignItems='center'
-      py='$1'
-      px='$2'
-    >
-      <Typography.TextSecondary>
-        {label}
-      </Typography.TextSecondary>
+    <XStack justifyContent='space-between' alignItems='center' py='$1' px='$2'>
+      <Typography.TextSecondary>{label}</Typography.TextSecondary>
       <XStack alignItems='center' gap='$2'>
         {children}
         {chevron ? <ChevronRight size={16} color={mutedColor as any} /> : null}
@@ -318,4 +294,3 @@ function TradeInfoRow({ label, children, chevron = false, mutedColor }: TradeInf
     </XStack>
   );
 }
-

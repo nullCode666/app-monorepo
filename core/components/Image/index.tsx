@@ -14,28 +14,21 @@ export type ImageProps = BaseImageProps & {
   imageStyle?: BaseImageProps['style'];
 };
 
-
 const BASE_CONTAINER_STYLE = { position: 'relative', overflow: 'hidden', width: '100%', height: '100%' } as const;
 
 export const Image = forwardRef<any, ImageProps>(function InnerImage(
-  {
-    containerStyle,
-    imageStyle,
-    onLoad,
-    onError,
-    src,
-    ...rest
-  },
+  { containerStyle, imageStyle, onLoad, onError, src, ...rest },
   ref,
 ) {
   const [isLoading, setIsLoading] = useState(() => Boolean(src));
   const [hasError, setHasError] = useState(false);
 
-  const resolvedSource = useMemo<ImageSourcePropType | undefined>(() => (
-    src ? { width: '100%', height: '100%', uri: src } as unknown as ImageSourcePropType : undefined
-  ), [src]);
+  const resolvedSource = useMemo<ImageSourcePropType | undefined>(
+    () => (src ? ({ width: '100%', height: '100%', uri: src } as unknown as ImageSourcePropType) : undefined),
+    [src],
+  );
 
-  const opacityStyle = useMemo(() => ({ opacity: hasError ? 0 : 1 } as const), [hasError]);
+  const opacityStyle = useMemo(() => ({ opacity: hasError ? 0 : 1 }) as const, [hasError]);
 
   useEffect(() => {
     setIsLoading(Boolean(src));
@@ -54,14 +47,9 @@ export const Image = forwardRef<any, ImageProps>(function InnerImage(
     onError?.(event);
   };
 
-  const containerStyles = useMemo(() => (
-    [BASE_CONTAINER_STYLE, containerStyle].filter(Boolean)
-  ), [containerStyle]);
+  const containerStyles = useMemo(() => [BASE_CONTAINER_STYLE, containerStyle].filter(Boolean), [containerStyle]);
 
-
-  const imageStyles = useMemo(() => (
-    [imageStyle, opacityStyle].filter(Boolean)
-  ), [imageStyle, opacityStyle]);
+  const imageStyles = useMemo(() => [imageStyle, opacityStyle].filter(Boolean), [imageStyle, opacityStyle]);
 
   return (
     <View ref={ref} borderWidth={0} style={containerStyles as StackProps['style']}>
@@ -74,27 +62,11 @@ export const Image = forwardRef<any, ImageProps>(function InnerImage(
       />
 
       {isLoading ? (
-        <Skeleton
-          width='100%'
-          height='100%'
-          position='absolute'
-          top={0}
-          left={0}
-          right={0}
-          bottom={0}
-        />
+        <Skeleton width='100%' height='100%' position='absolute' top={0} left={0} right={0} bottom={0} />
       ) : null}
 
       {hasError ? (
-        <View
-          position='absolute'
-          top={0}
-          bottom={0}
-          left={0}
-          right={0}
-          alignItems='center'
-          justifyContent='center'
-        >
+        <View position='absolute' top={0} bottom={0} left={0} right={0} alignItems='center' justifyContent='center'>
           <ImageOff size={24} color='$color11' />
         </View>
       ) : null}
@@ -103,4 +75,3 @@ export const Image = forwardRef<any, ImageProps>(function InnerImage(
 });
 
 export default Image;
-

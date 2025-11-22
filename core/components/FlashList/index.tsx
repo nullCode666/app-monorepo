@@ -34,26 +34,23 @@ function InnerFlashList<T>(
 ) {
   const { top, bottom } = useSafeAreaInsets();
 
-  const safeAreaStyle = useMemo<ViewStyle | undefined>(
-    () => {
-      if (!insetHorizontal) return undefined;
+  const safeAreaStyle = useMemo<ViewStyle | undefined>(() => {
+    if (!insetHorizontal) return undefined;
 
-      const paddingTop = (insetSafearea ? top : 0) + (insetHeaderFooter ? 54 : 0);
-      const paddingBottom = (insetSafearea ? bottom : 0) + (insetHeaderFooter ? 72 : 0);
+    const paddingTop = (insetSafearea ? top : 0) + (insetHeaderFooter ? 54 : 0);
+    const paddingBottom = (insetSafearea ? bottom : 0) + (insetHeaderFooter ? 72 : 0);
 
-      if (!paddingTop && !paddingBottom) return undefined;
+    if (!paddingTop && !paddingBottom) return undefined;
 
-      return {
-        paddingTop,
-        paddingBottom,
-      };
-    },
-    [bottom, insetHeaderFooter, insetHorizontal, insetSafearea, top]
-  );
+    return {
+      paddingTop,
+      paddingBottom,
+    };
+  }, [bottom, insetHeaderFooter, insetHorizontal, insetSafearea, top]);
 
   const mergedContentStyle = useMemo<ContentStyle>(
     () => mergeContentStyle(contentContainerStyle, safeAreaStyle),
-    [contentContainerStyle, safeAreaStyle]
+    [contentContainerStyle, safeAreaStyle],
   );
 
   return (
@@ -67,7 +64,7 @@ function InnerFlashList<T>(
 }
 
 export const FlashList = forwardRef(InnerFlashList) as <T>(
-  props: FlashListProps<T> & { ref?: React.Ref<FlashListRef<T>> }
+  props: FlashListProps<T> & { ref?: React.Ref<FlashListRef<T>> },
 ) => React.ReactElement | null;
 
 export { FlashListRef };

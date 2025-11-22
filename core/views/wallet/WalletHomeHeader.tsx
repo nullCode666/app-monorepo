@@ -13,7 +13,7 @@ export default function WalletHomeHeader() {
     <YStack alignItems='center' pt='$10' gap='$10' pb='$10'>
       <YStack gap='$2' justifyContent='center' alignItems='center'>
         <Typography.NumberHeading flexWrap='wrap' textAlign='center'>
-          $8,888,888.88
+          $23,456,789.11
         </Typography.NumberHeading>
 
         <XStack gap='$2' alignItems='center'>
@@ -27,9 +27,7 @@ export default function WalletHomeHeader() {
         {ACTION_ITEMS.map(({ Icon, label, href }) => (
           <Link key={label} href={href} asChild>
             <Button type='default' size='large' fullWidth icon={<Icon size={24} color='$color' />}>
-              <Typography.TextPrimary mt={2} color='$color'>
-                {label}
-              </Typography.TextPrimary>
+              <Typography.TextPrimary color='$color'>{label}</Typography.TextPrimary>
             </Button>
           </Link>
         ))}
