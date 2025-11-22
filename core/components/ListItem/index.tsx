@@ -1,5 +1,5 @@
-import { type ComponentProps, type ReactNode } from 'react';
-import { XStack, YStack } from 'tamagui';
+import { type ComponentProps, memo, type ReactNode } from 'react';
+import { styled, XStack, YStack } from 'tamagui';
 
 type XStackProps = ComponentProps<typeof XStack>;
 
@@ -13,7 +13,59 @@ export type ListItemProps = Omit<XStackProps, 'children'> & {
   rightAccessory?: ReactNode;
 };
 
-function ListItem({
+const ListItemContainer = styled(XStack, {
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: '$3',
+  py: '$2',
+});
+
+const LeadingContainer = styled(XStack, {
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexShrink: 0,
+});
+
+const BodyContainer = styled(YStack, {
+  flex: 1,
+  minWidth: 0,
+  height: '100%',
+});
+
+const RowContainer = styled(XStack, {
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: '$2',
+});
+
+const LeftColumn = styled(YStack, {
+  minWidth: 0,
+  flexShrink: 1,
+  justifyContent: 'center',
+});
+
+const RightColumn = styled(XStack, {
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  minWidth: 0,
+  flexShrink: 1,
+  gap: '$2',
+});
+
+const TrailingContainer = styled(XStack, {
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexShrink: 0,
+});
+
+const AccessoryContainer = styled(XStack, {
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexShrink: 0,
+});
+
+function ListItemComponent({
   leading,
   bodyLeftTop,
   bodyLeftBottom,
@@ -24,87 +76,60 @@ function ListItem({
   ...rest
 }: ListItemProps) {
   const leadingNode = leading ? (
-    <XStack
-      alignItems='center'
-      justifyContent='center'
-      flexShrink={0}
-    >
+    <LeadingContainer>
       {leading}
-    </XStack>
+    </LeadingContainer>
   ) : null;
 
   const hasTopRow = bodyLeftTop || bodyRightTop;
   const hasBottomRow = bodyLeftBottom || bodyRightBottom;
 
   const bodyNode = (hasTopRow || hasBottomRow) ? (
-    <YStack flex={1} minWidth={0} height='100%'>
+    <BodyContainer>
       {hasTopRow ? (
-        <XStack flex={1} alignItems='center' justifyContent='space-between' gap='$2'>
-          <YStack width='50%' minWidth={0}>
+        <RowContainer>
+          <LeftColumn>
             {bodyLeftTop}
-          </YStack>
-          <XStack
-            alignItems='center'
-            justifyContent='flex-end'
-            minWidth={0}
-            width='50%'
-            gap='$2'
-          >
+          </LeftColumn>
+          <RightColumn>
             {bodyRightTop}
-          </XStack>
-        </XStack>
+          </RightColumn>
+        </RowContainer>
       ) : null}
 
       {hasBottomRow ? (
-        <XStack flex={1} alignItems='center' justifyContent='space-between' gap='$2'>
-          <YStack width='50%'>
+        <RowContainer>
+          <LeftColumn>
             {bodyLeftBottom}
-          </YStack>
-          <XStack
-            alignItems='center'
-            justifyContent='flex-end'
-            minWidth={0}
-            gap='$2'
-            width='50%'
-          >
+          </LeftColumn>
+          <RightColumn>
             {bodyRightBottom}
-          </XStack>
-        </XStack>
+          </RightColumn>
+        </RowContainer>
       ) : null}
-    </YStack>
+    </BodyContainer>
   ) : null;
 
   const trailingNode = trailing ? (
-    <XStack
-      alignItems='center'
-      justifyContent='center'
-      flexShrink={0}
-    >
+    <TrailingContainer>
       {trailing}
-    </XStack>
+    </TrailingContainer>
   ) : null;
 
   const accessoryNode = rightAccessory ? (
-    <XStack alignItems='center' justifyContent='center' flexShrink={0}>
+    <AccessoryContainer>
       {rightAccessory}
-    </XStack>
+    </AccessoryContainer>
   ) : null;
 
   return (
-    <XStack
-      alignItems='center'
-      justifyContent='space-between'
-      gap='$3'
-      px='$4'
-      py='$2'
-      {...rest}
-    >
+    <ListItemContainer {...rest}>
       {leadingNode}
       {bodyNode}
       {trailingNode}
       {accessoryNode}
-    </XStack>
+    </ListItemContainer>
   );
 }
 
-export default ListItem;
+export default memo(ListItemComponent);

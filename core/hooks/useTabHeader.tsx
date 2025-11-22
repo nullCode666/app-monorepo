@@ -1,8 +1,10 @@
-import { Link, useNavigation } from 'expo-router';
+import { useNavigation } from 'expo-router';
 import { useLayoutEffect } from 'react';
 
-import { Avatar, Pressable, Typography, XStack, YStack, useTheme } from '@/core/components';
-import { Settings } from '@/core/components/icons';
+import { useTheme } from '@/core/components';
+import { HeaderLeft } from '@/core/views/header/HeaderLeft';
+import { HeaderRight } from '@/core/views/header/HeaderRight';
+import { HeaderTitle } from '@/core/views/header/HeaderTitle';
 
 type LargeTitleHeaderOptions = {
   title: string;
@@ -24,50 +26,11 @@ export const useLargeTitleHeader = ({ title, enabled = true }: LargeTitleHeaderO
       headerTransparent: true,
       headerStyle: { backgroundColor: 'transparent' },
       headerShadowVisible: false,
-      headerLeft: null,
-      headerRight: null,
+      headerLeft: () => null,
+      headerRight: () => null,
       headerBlurEffect: 'none',
     });
   }, [enabled, navigation, titleColor, title]);
-}
-
-function HeaderLeft() {
-  return (
-    <Link href='/device' asChild>
-      <Pressable hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
-        <XStack width={36} height={36} justifyContent='center' alignItems='center'>
-          <Avatar.Token size='small' type='outline' backgroundColor='$green10' />
-        </XStack>
-      </Pressable>
-    </Link>
-  );
-}
-
-function HeaderTitle() {
-  return (
-    <Link asChild href='/device'>
-      <XStack px='$1' justifyContent='flex-start' alignItems='center' flex={1} height={44}>
-        <YStack maxWidth={200} height='100%' gap='$2' justifyContent='center'>
-          <Typography.TextPrimary fontSize={20} lineHeight={20} numberOfLines={1}>
-            piggy🐷存币账户
-          </Typography.TextPrimary>
-          <Typography.TextSecondary numberOfLines={1}>
-            Wallet A
-          </Typography.TextSecondary>
-        </YStack>
-      </XStack>
-    </Link>
-  );
-}
-
-function HeaderRight() {
-  return (
-    <Link asChild href='/settings'>
-      <XStack width={36} height={36} justifyContent='center' alignItems='center'>
-        <Settings size={24} />
-      </XStack>
-    </Link>
-  );
 }
 
 type StickyWalletSelectorHeaderOptions = {
@@ -86,9 +49,9 @@ export const useStickyWalletSelectorHeader = ({ enabled = true }: StickyWalletSe
 
     navigation.setOptions({
       headerShown: true,
-      headerTitle: HeaderTitle,
-      headerLeft: HeaderLeft,
-      headerRight: HeaderRight,
+      headerTitle: () => <HeaderTitle />,
+      headerLeft: () => <HeaderLeft />,
+      headerRight: () => <HeaderRight />,
       headerTintColor: accentColor,
       headerShadowVisible: false,
       backButtonDisplayMode: 'generic',

@@ -1,92 +1,46 @@
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useRouteInfo } from 'expo-router/build/hooks';
-import { Icon, Label, NativeTabs, VectorIcon } from 'expo-router/unstable-native-tabs';
-import { useMemo } from 'react';
 
-import { useTheme } from '@/core/components';
+import { RVNativeTabs, type TabItemConfig } from '@/core/components';
 import { useLargeTitleHeader, useStickyWalletSelectorHeader } from '@/core/hooks/useTabHeader';
 
-export default () => {
-  const t = useTheme();
-  const { pathname } = useRouteInfo();
+const TABS_CONFIG: TabItemConfig[] = [
+  {
+    name: 'wallet',
+    sfSymbol: { default: 'creditcard', selected: 'creditcard.fill' },
+    materialIcon: { default: 'wallet-outline', selected: 'wallet' },
+  },
+  {
+    name: 'swap',
+    sfSymbol: { default: 'arrow.triangle.2.circlepath', selected: 'arrow.triangle.2.circlepath' },
+    materialIcon: { default: 'swap-horizontal', selected: 'swap-horizontal-bold' },
+  },
+  {
+    name: 'profile',
+    sfSymbol: { default: 'person', selected: 'person.fill' },
+    materialIcon: { default: 'account-circle-outline', selected: 'account-circle' },
+  },
+  {
+    name: 'explore',
+    role: 'search',
+    sfSymbol: { default: 'magnifyingglass', selected: 'magnifyingglass' },
+    materialIcon: { default: 'compass-outline', selected: 'compass' },
+  },
+];
 
-  const primaryColor = t.primary.val;
-  const mutedIconColor = t.color10.val;
-  const tabItemBackgroundColor = 'transparent';
+export default () => {
+  const { pathname } = useRouteInfo();
   const normalizedPath = pathname?.toLowerCase() ?? '';
 
-  const isDeveloperRoute = normalizedPath.startsWith('/developer');
+  const isProfileRoute = normalizedPath.startsWith('/profile');
   const isExploreRoute = normalizedPath.startsWith('/explore');
   const isWalletRoute = normalizedPath.startsWith('/wallet');
-  const isTradeRoute = normalizedPath.startsWith('/trade');
-  const useLargeHeader = isDeveloperRoute || isExploreRoute;
+  const isSwapRoute = normalizedPath.startsWith('/swap');
+  const useLargeHeader = isProfileRoute || isExploreRoute;
 
-  const largeHeaderTitle = isDeveloperRoute ? 'Developer' : '';
+  const largeHeaderTitle = isProfileRoute ? 'Profile' : '';
 
-  // Switch tab header behavior based on active pathname.
   useLargeTitleHeader({ title: largeHeaderTitle, enabled: useLargeHeader });
-  useStickyWalletSelectorHeader({ enabled: isWalletRoute || isTradeRoute });
+  useStickyWalletSelectorHeader({ enabled: isWalletRoute || isSwapRoute });
 
-  const tabsColorConfig = useMemo(() => {
-    return {
-      iconColor: {
-        default: mutedIconColor,
-        selected: primaryColor,
-      },
-      labelStyle: {
-        selected: { color: primaryColor },
-      },
-      indicatorColor: tabItemBackgroundColor,
-      rippleColor: tabItemBackgroundColor,
-      labelVisibilityMode: 'auto' as const,
-    };
-  }, [mutedIconColor, primaryColor, tabItemBackgroundColor]);
-
-  return (
-    <NativeTabs {...tabsColorConfig}>
-      <NativeTabs.Trigger name='developer'>
-        <Icon
-          sf={{ default: 'hammer', selected: 'hammer.fill' }}
-          androidSrc={{
-            default: <VectorIcon family={MaterialCommunityIcons} name='toolbox-outline' />,
-            selected: <VectorIcon family={MaterialCommunityIcons} name='toolbox' />,
-          }}
-        />
-        <Label>Developer</Label>
-      </NativeTabs.Trigger>
-      <NativeTabs.Trigger name='wallet'>
-        <Icon
-          sf={{ default: 'creditcard', selected: 'creditcard.fill' }}
-          androidSrc={{
-            default: <VectorIcon family={MaterialCommunityIcons} name='wallet-outline' />,
-            selected: <VectorIcon family={MaterialCommunityIcons} name='wallet' />,
-          }}
-        />
-        <Label>Wallet</Label>
-      </NativeTabs.Trigger>
-
-      <NativeTabs.Trigger name='trade'>
-        <Icon
-          sf={{ default: 'arrow.triangle.2.circlepath', selected: 'arrow.triangle.2.circlepath' }}
-          androidSrc={{
-            default: <VectorIcon family={MaterialCommunityIcons} name='swap-horizontal' />,
-            selected: <VectorIcon family={MaterialCommunityIcons} name='swap-horizontal-bold' />,
-          }}
-        />
-        <Label>Trade</Label>
-      </NativeTabs.Trigger>
-
-      <NativeTabs.Trigger name='explore' role='search'>
-        <Icon
-          sf={{ default: 'magnifyingglass', selected: 'magnifyingglass' }}
-          androidSrc={{
-            default: <VectorIcon family={MaterialCommunityIcons} name='compass-outline' />,
-            selected: <VectorIcon family={MaterialCommunityIcons} name='compass' />,
-          }}
-        />
-        <Label>Explore</Label>
-      </NativeTabs.Trigger>
-    </NativeTabs>
-
-  );
-}
+  return <RVNativeTabs items={TABS_CONFIG} />;
+};

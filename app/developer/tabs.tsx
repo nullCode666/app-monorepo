@@ -1,3 +1,5 @@
+import { StyleSheet } from 'react-native';
+
 import { Tabs, Typography, YStack } from '@/core/components';
 import { DemoPage, DemoSection } from '@/core/views/developer/DemoComponents';
 
@@ -8,7 +10,6 @@ const TAB_CONTENT = [
 ];
 
 export default function TabsScreen() {
-
   return (
     <DemoPage>
       <DemoSection
@@ -19,16 +20,9 @@ export default function TabsScreen() {
           <Tabs.Container>
             {TAB_CONTENT.map((tab) => (
               <Tabs.Tab key={tab.name} name={tab.name} label={tab.label}>
-                <Tabs.ScrollView
-                  contentContainerStyle={{ padding: 16, gap: 8 }}
-                  showsVerticalScrollIndicator={false}
-                >
-                  <Typography.TextPrimary fontSize={18}>
-                    {tab.label}
-                  </Typography.TextPrimary>
-                  <Typography.TextSecondary>
-                    {tab.body}
-                  </Typography.TextSecondary>
+                <Tabs.ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
+                  <Typography.TextPrimary fontSize={18}>{tab.label}</Typography.TextPrimary>
+                  <Typography.TextSecondary>{tab.body}</Typography.TextSecondary>
                 </Tabs.ScrollView>
               </Tabs.Tab>
             ))}
@@ -38,3 +32,7 @@ export default function TabsScreen() {
     </DemoPage>
   );
 }
+
+const styles = StyleSheet.create({
+  contentContainer: { padding: 16, gap: 8 },
+});

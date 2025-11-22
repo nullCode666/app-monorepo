@@ -68,7 +68,7 @@ export default function PieChartScreen() {
           </YStack>
 
           <YStack gap='$3'>
-            {DISTRIBUTION.map(item => {
+            {DISTRIBUTION.map((item) => {
               const percentage = Math.round(item.share * 100);
 
               return (
@@ -77,9 +77,14 @@ export default function PieChartScreen() {
                     size={48}
                     thickness={6}
                     gapAngle={0}
-                    data={[{ value: item.share, color: item.color }, { value: 1 - item.share, color: 'none' }]}
+                    data={[
+                      { value: item.share, color: item.color },
+                      { value: 1 - item.share, color: 'none' },
+                    ]}
                   >
-                    <Typography.NumberSecondary fontSize={12} lineHeight={12}>{percentage}%</Typography.NumberSecondary>
+                    <Typography.NumberSecondary fontSize={12} lineHeight={12}>
+                      {percentage}%
+                    </Typography.NumberSecondary>
                   </PieChart>
 
                   <YStack flex={1} gap='$1'>
@@ -97,4 +102,3 @@ export default function PieChartScreen() {
     </DemoPage>
   );
 }
-

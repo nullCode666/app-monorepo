@@ -1,5 +1,5 @@
-import { Redirect } from 'expo-router';
+import { SendTokenListView } from '@/core/views/send/SendTokenListView';
 
-export default function SendIndex() {
-  return <Redirect href='/send/wallet' />;
+export default function SendWalletScreen() {
+  return <SendTokenListView />;
 }

@@ -1,5 +1,6 @@
 import { useNavigation } from 'expo-router';
 import { useEffect, useMemo } from 'react';
+import { StyleSheet } from 'react-native';
 
 import { AnimatedSection, ScrollView, useTheme } from '@/core/components';
 import { Check } from '@/core/components/icons';
@@ -10,15 +11,18 @@ export default function CurrencyPreferenceScreen() {
   const navigation = useNavigation();
   const theme = useTheme();
 
-  const currency = useSettingsStore(state => state.currency);
+  const currency = useSettingsStore((state) => state.currency);
 
   const backgroundColor = theme.backgroundModal.val;
-  const contentContainerStyle = useMemo(() => ({
-    paddingTop: 70,
-    paddingHorizontal: 20,
-    paddingBottom: 24,
-    gap: 24,
-  }), []);
+  const contentContainerStyle = useMemo(
+    () => ({
+      paddingTop: 70,
+      paddingHorizontal: 20,
+      paddingBottom: 24,
+      gap: 24,
+    }),
+    [],
+  );
 
   useEffect(() => {
     navigation.setOptions({
@@ -31,13 +35,13 @@ export default function CurrencyPreferenceScreen() {
 
   return (
     <ScrollView
-      style={{ flex: 1, backgroundColor }}
+      style={[styles.container, { backgroundColor }]}
       contentContainerStyle={contentContainerStyle}
       keyboardShouldPersistTaps='handled'
       showsVerticalScrollIndicator={false}
     >
       <AnimatedSection.Container>
-        {CURRENCY_OPTIONS.map(option => {
+        {CURRENCY_OPTIONS.map((option) => {
           const isSelected = option.value === currency;
 
           return (
@@ -56,3 +60,7 @@ export default function CurrencyPreferenceScreen() {
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+});

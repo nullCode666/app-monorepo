@@ -7,24 +7,26 @@ export default function ButtonScreen() {
     <DemoPage>
       <DemoSection title='Contained Buttons' description='Default Tamagui button variants themed with our palette.'>
         <XStack gap='$3' flexWrap='wrap'>
-          <Button onPress={() => { }}>Default</Button>
-          <Button theme='active'>Active</Button>
-          <Button theme='blue'>Blue Theme</Button>
-          <Button theme='red' icon={Check}>
-            With Icon
+          <Button>Default</Button>
+          <Button type='primary'>Primary</Button>
+          <Button type='dashed'>Dashed</Button>
+          <Button type='primary' danger icon={Check}>
+            Danger Primary
+          </Button>
+          <Button danger icon={Check}>
+            Danger Default
           </Button>
         </XStack>
       </DemoSection>
 
-      <DemoSection title='Outlined & Chromeless' description='Using `variant` and `chromeless` to change button treatment.'>
+      <DemoSection title='Text & Link' description='Using `type="text"` and `type="link"`.'>
         <XStack gap='$3' flexWrap='wrap'>
-          <Button variant='outlined'>Outlined</Button>
-          <Button variant='outlined' theme='green' icon={Settings}>
-            Outlined Icon
+          <Button type='text'>Text Button</Button>
+          <Button type='link' icon={Settings}>
+            Link Button
           </Button>
-          <Button chromeless>Chromeless</Button>
-          <Button chromeless theme='purple'>
-            Chromeless Accent
+          <Button type='text' danger>
+            Text Danger
           </Button>
         </XStack>
       </DemoSection>
@@ -33,15 +35,25 @@ export default function ButtonScreen() {
         <YStack gap='$2'>
           <XStack gap='$3' alignItems='center'>
             <Typography.TextSecondary width={120}>Size Examples</Typography.TextSecondary>
-            <XStack gap='$2'>
-              <Button size='$2'>S</Button>
-              <Button size='$3'>M</Button>
-              <Button size='$4'>L</Button>
+            <XStack gap='$2' alignItems='center'>
+              <Button size='small'>Small</Button>
+              <Button size='middle'>Middle</Button>
+              <Button size='large'>Large</Button>
             </XStack>
+          </XStack>
+          <XStack gap='$3' alignItems='center'>
+            <Typography.TextSecondary width={120}>Loading</Typography.TextSecondary>
+            <Button loading>Loading</Button>
+            <Button type='primary' loading>
+              Loading
+            </Button>
           </XStack>
           <XStack gap='$3' alignItems='center'>
             <Typography.TextSecondary width={120}>Disabled</Typography.TextSecondary>
             <Button disabled>Disabled</Button>
+            <Button type='primary' disabled>
+              Disabled
+            </Button>
           </XStack>
         </YStack>
       </DemoSection>

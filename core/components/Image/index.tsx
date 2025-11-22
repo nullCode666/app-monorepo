@@ -14,6 +14,9 @@ export type ImageProps = BaseImageProps & {
   imageStyle?: BaseImageProps['style'];
 };
 
+
+const BASE_CONTAINER_STYLE = { position: 'relative', overflow: 'hidden', width: '100%', height: '100%' } as const;
+
 export const Image = forwardRef<any, ImageProps>(function InnerImage(
   {
     containerStyle,
@@ -52,8 +55,9 @@ export const Image = forwardRef<any, ImageProps>(function InnerImage(
   };
 
   const containerStyles = useMemo(() => (
-    [{ position: 'relative', overflow: 'hidden', width: '100%', height: '100%' }, containerStyle].filter(Boolean)
+    [BASE_CONTAINER_STYLE, containerStyle].filter(Boolean)
   ), [containerStyle]);
+
 
   const imageStyles = useMemo(() => (
     [imageStyle, opacityStyle].filter(Boolean)

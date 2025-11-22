@@ -27,10 +27,7 @@ export default function AvatarScreen() {
         </XStack>
       </DemoSection>
 
-      <DemoSection
-        title='Media Variants'
-        description='`Avatar.Token` 支持字符串 URL 或 React 元素作为内容'
-      >
+      <DemoSection title='Media Variants' description='`Avatar.Token` 支持字符串 URL 或 React 元素作为内容'>
         <XStack gap='$6' alignItems='center'>
           <YStack gap='$1' alignItems='center'>
             <Avatar.Token media={Github} size='tiny' cornerMedia={SAMPLE_AVATAR} />
@@ -47,30 +44,16 @@ export default function AvatarScreen() {
         </XStack>
       </DemoSection>
 
-      <DemoSection
-        title='Type Variants'
-        description='使用 `type` 切换默认背景或主色背景。'
-      >
+      <DemoSection title='Type Variants' description='使用 `type` 切换默认背景或主色背景。'>
         <XStack gap='$6'>
           <Avatar.Token label='Default' media={Github} size='default' />
           <Avatar.Token label='Primary' media={Headset} type='primary' size='default' />
         </XStack>
       </DemoSection>
 
-      <DemoSection
-        title='Link Actions'
-        description='传入 `link` 让头像变为可点击元素。'
-      >
-        <Avatar.Token
-          label='Open Settings'
-          media={ShieldCheck}
-          type='primary'
-          link='/settings'
-          size='default'
-        />
-        <Typography.TextSecondary>
-          点击头像将通过 `openLink` 触发导航。
-        </Typography.TextSecondary>
+      <DemoSection title='Link Actions' description='传入 `link` 让头像变为可点击元素。'>
+        <Avatar.Token label='Open Settings' media={ShieldCheck} type='primary' link='/settings' size='default' />
+        <Typography.TextSecondary>点击头像将通过 `openLink` 触发导航。</Typography.TextSecondary>
       </DemoSection>
 
       <DemoSection
@@ -102,10 +85,7 @@ export default function AvatarScreen() {
         </Typography.TextSecondary>
       </DemoSection>
 
-      <DemoSection
-        title='Corner Badge'
-        description='`corner` 支持与 `media` 相同的类型，用于展示右下角角标。'
-      >
+      <DemoSection title='Corner Badge' description='`corner` 支持与 `media` 相同的类型，用于展示右下角角标。'>
         <XStack gap='$6'>
           <Avatar.Token
             label='NFT'
@@ -115,9 +95,11 @@ export default function AvatarScreen() {
           <Avatar.Token
             label='VIP'
             media={Headset}
-            cornerMedia={(
-              <Typography.TextPrimary fontSize={10} fontWeight='700'>PRO</Typography.TextPrimary>
-            )}
+            cornerMedia={
+              <Typography.TextPrimary fontSize={10} fontWeight='700'>
+                PRO
+              </Typography.TextPrimary>
+            }
             type='primary'
             labelColor='$color'
           />

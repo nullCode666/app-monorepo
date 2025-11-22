@@ -12,7 +12,7 @@ export default function SkeletonDemoScreen() {
         description='Use skeletons to reserve layout while data loads. Tokens are resolved automatically so you can rely on Tamagui shorthand.'
       >
         <YStack gap='$3'>
-          {LOADING_ROWS.map(row => (
+          {LOADING_ROWS.map((row) => (
             <XStack key={row} alignItems='center' gap='$3'>
               <Skeleton width={48} height={48} borderRadius='$8' />
               <YStack flex={1} gap='$2'>
@@ -43,19 +43,8 @@ export default function SkeletonDemoScreen() {
 
           <YStack gap='$2'>
             <Typography.TextSecondary>Custom Animation</Typography.TextSecondary>
-            <View
-              borderRadius='$5'
-              borderWidth={1}
-              borderColor='$color6'
-              padding='$3'
-            >
-              <Skeleton
-                height={16}
-                width='100%'
-                animate={{ opacity: 0.6 }}
-                from={{ opacity: 0.2 }}
-                transition={{ type: 'timing', duration: 600, repeat: Infinity, repeatReverse: true } as any}
-              />
+            <View borderRadius='$5' borderWidth={1} borderColor='$color6' padding='$3'>
+              <Skeleton height={16} width='100%' animate={{ opacity: 0.6 }} from={{ opacity: 0.2 }} />
             </View>
           </YStack>
         </YStack>
@@ -63,4 +52,3 @@ export default function SkeletonDemoScreen() {
     </DemoPage>
   );
 }
-

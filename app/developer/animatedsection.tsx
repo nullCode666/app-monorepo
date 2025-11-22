@@ -14,19 +14,14 @@ export default function AnimatedSectionDemoScreen() {
 
   return (
     <DemoPage>
-      <DemoSection
-        title='开关控制内容'
-        description='与设置页一致，切换开关时平滑展开或收起附加说明。'
-      >
+      <DemoSection title='开关控制内容' description='与设置页一致，切换开关时平滑展开或收起附加说明。'>
         <AnimatedSection.Container animate description='开关状态与额外信息保持在同一容器内。'>
           <AnimatedSection.Item
             leading={<Avatar.Token size='small' media='🛠️' />}
             title='启用高级模式'
             trailing={<Form.Switch value={advancedMode} onValueChange={setAdvancedMode} />}
           />
-          <AnimatedSection.Collapsible
-            open={advancedMode}
-          >
+          <AnimatedSection.Collapsible open={advancedMode}>
             <AnimatedSection.Item
               leading={<Avatar.Token size='small' media='ℹ️' />}
               title='高级模式说明'
@@ -42,7 +37,7 @@ export default function AnimatedSectionDemoScreen() {
         description='`AnimatedSection.Container` 包裹一组设置项，并提供统一的圆角卡片、分隔与描述。'
       >
         <AnimatedSection.Container description='常用操作入口'>
-          {MOCK_ITEMS.map(item => (
+          {MOCK_ITEMS.map((item) => (
             <AnimatedSection.Item
               key={item.id}
               leading={<Avatar.Token size='small' media={item.label.slice(0, 1)} />}

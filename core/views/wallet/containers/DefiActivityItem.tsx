@@ -1,6 +1,6 @@
 import { Link } from 'expo-router';
 
-import { Avatar, ListItem, Pressable, Typography, YStack, useTheme } from '@/core/components';
+import { Avatar, ListItem, Pressable, Typography, YStack } from '@/core/components';
 
 export type ActivityBadge = {
   label: string;
@@ -22,10 +22,6 @@ type DefiActivityItemProps = {
 };
 
 function DefiActivityItem({ item, href = '/detail/defi' }: DefiActivityItemProps) {
-  const theme = useTheme();
-
-  const secondaryTextColor = theme.color11.val;
-
   const primaryBadge = item.badges[0];
   const secondaryBadge = item.badges[1];
 
@@ -34,50 +30,52 @@ function DefiActivityItem({ item, href = '/detail/defi' }: DefiActivityItemProps
       <Pressable>
         {() => (
           <ListItem
-            leading={(
+            leading={
               <Avatar.Token
-                media={primaryBadge ? (
-                  <YStack
-                    width='100%'
-                    height='100%'
-                    borderRadius='$10'
-                    alignItems='center'
-                    justifyContent='center'
-                    backgroundColor='$backgroundPress'
-                  >
-                    <Typography.TextPrimary fontSize={12} fontWeight='700'>
-                      {primaryBadge.label.slice(0, 3).toUpperCase()}
-                    </Typography.TextPrimary>
-                  </YStack>
-                ) : undefined}
-                cornerMedia={secondaryBadge ? (
-                  <YStack
-                    width='100%'
-                    height='100%'
-                    borderRadius='$10'
-                    alignItems='center'
-                    justifyContent='center'
-                    backgroundColor='$backgroundPress'
-                  >
-                    <Typography.TextPrimary fontSize={10} fontWeight='700'>
-                      {secondaryBadge.label.slice(0, 3).toUpperCase()}
-                    </Typography.TextPrimary>
-                  </YStack>
-                ) : undefined}
+                media={
+                  primaryBadge ? (
+                    <YStack
+                      width='100%'
+                      height='100%'
+                      borderRadius='$10'
+                      alignItems='center'
+                      justifyContent='center'
+                      backgroundColor='$backgroundPress'
+                    >
+                      <Typography.TextPrimary fontSize={12} fontWeight='700'>
+                        {primaryBadge.label.slice(0, 3).toUpperCase()}
+                      </Typography.TextPrimary>
+                    </YStack>
+                  ) : undefined
+                }
+                cornerMedia={
+                  secondaryBadge ? (
+                    <YStack
+                      width='100%'
+                      height='100%'
+                      borderRadius='$10'
+                      alignItems='center'
+                      justifyContent='center'
+                      backgroundColor='$backgroundPress'
+                    >
+                      <Typography.TextPrimary fontSize={10} fontWeight='700'>
+                        {secondaryBadge.label.slice(0, 3).toUpperCase()}
+                      </Typography.TextPrimary>
+                    </YStack>
+                  ) : undefined
+                }
               />
-            )}
-            bodyLeftTop={(
-              <Typography.Text fontSize={15} fontWeight='600'>
-                {item.title}
-              </Typography.Text>
-            )}
-            bodyLeftBottom={(
-              <Typography.TextSecondary fontSize={13} color={secondaryTextColor as any}>
+            }
+            bodyLeftTop={<Typography.TextPrimary>{item.title}</Typography.TextPrimary>}
+            bodyLeftBottom={
+              <Typography.TextSecondary fontSize={13} color='$color11'>
                 {item.subtitle}
               </Typography.TextSecondary>
-            )}
+            }
             bodyRightTop={<Typography.TextSecondary>{item.rightTop}</Typography.TextSecondary>}
-            bodyRightBottom={<Typography.TextSecondary>{item.rightBottom}</Typography.TextSecondary>}
+            bodyRightBottom={
+              <Typography.TextSecondary>{item.rightBottom}</Typography.TextSecondary>
+            }
             borderRadius='$6'
             py='$3'
           />
@@ -88,4 +86,3 @@ function DefiActivityItem({ item, href = '/detail/defi' }: DefiActivityItemProps
 }
 
 export default DefiActivityItem;
-

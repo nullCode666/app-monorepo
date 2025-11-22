@@ -8,3 +8,5 @@ export type {
 export { default as Switch } from './Switch';
 export type { RVSwitchProps } from './Switch';
 
+export { Input } from './Input';
+export type { InputProps } from './Input';

@@ -1,78 +1,74 @@
+import React, { forwardRef, type ComponentRef } from 'react';
 import { Platform } from 'react-native';
-import { ColorTokens, Text as TGText, type TextProps as TGTextProps } from 'tamagui';
+import { ColorTokens, styled, Text as TGText, type TextProps as TGTextProps } from 'tamagui';
 
 export const FONT_FAMILY_TEXT =
   Platform.select({ ios: 'System', android: 'sans-serif', default: 'System' }) ?? 'System';
-export const FONT_FAMILY_NUMBER = FONT_FAMILY_TEXT;
+export const FONT_FAMILY_NUMBER = 'JetBrainsMono';
+export const FONT_FAMILY_HEADING = 'Quicksand';
 
-const textBaseProps: TGTextProps = {
+const BaseText = styled(TGText, {
   fontFamily: FONT_FAMILY_TEXT as any,
   color: '$color',
   includeFontPadding: false,
   letterSpacing: 0,
-};
+});
 
-const textProps: TGTextProps = {
-  ...textBaseProps,
-  fontSize: 17,
-  lineHeight: 17,
-};
-
-const textHeadingProps: TGTextProps = {
-  ...textBaseProps,
-  fontSize: 42,
-  lineHeight: 42,
-  fontWeight: '700',
-};
-
-const textPrimaryProps: TGTextProps = {
-  ...textBaseProps,
-  fontSize: 17,
-  lineHeight: 17,
-  fontWeight: 500,
-};
-
-const textSecondaryProps: TGTextProps = {
-  ...textBaseProps,
-  color: '$color10',
-  fontSize: 14,
-  lineHeight: 14,
-};
-
-const numberBaseProps: TGTextProps = {
-  ...textBaseProps,
+const BaseNumber = styled(BaseText, {
   fontFamily: FONT_FAMILY_NUMBER as any,
   fontVariant: ['tabular-nums'],
-};
+});
 
-const numberProps: TGTextProps = {
-  ...numberBaseProps,
+
+const StyledText = styled(BaseText, {
   fontSize: 17,
-  lineHeight: 17,
-};
+  lineHeight: 22, 
+});
 
-const numberHeadingProps: TGTextProps = {
-  ...numberBaseProps,
-  fontSize: 48,
-  lineHeight: 48,
+const StyledTextHeading = styled(BaseText, {
+  fontSize: 42,
+  lineHeight: 50, 
   fontWeight: '700',
-};
+});
 
-const numberPrimaryProps: TGTextProps = {
-  ...numberBaseProps,
+const StyledTextPrimary = styled(BaseText, {
   fontSize: 17,
-  lineHeight: 17,
-  fontWeight: 500,
-};
+  lineHeight: 22, 
+  fontWeight: '500',
+});
 
-const numberSecondaryProps: TGTextProps = {
-  ...numberBaseProps,
+const StyledTextSecondary = styled(BaseText, {
   color: '$color10',
   fontSize: 14,
-  lineHeight: 14,
-};
+  lineHeight: 18, 
+});
 
-type TypographyProps = TGTextProps & {
+const StyledNumber = styled(BaseNumber, {
+  fontSize: 17,
+  lineHeight: 22, 
+});
+
+const StyledNumberHeading = styled(BaseNumber, {
+  fontFamily: FONT_FAMILY_HEADING as any,
+  fontSize: 54,
+  lineHeight: 60, 
+  fontWeight: '700',
+});
+
+const StyledNumberPrimary = styled(BaseNumber, {
+  fontSize: 17,
+  lineHeight: 22, 
+  fontWeight: '500',
+});
+
+const StyledNumberSecondary = styled(BaseNumber, {
+  color: '$color10',
+  fontSize: 14,
+  lineHeight: 18, 
+  fontWeight: '500',
+});
+
+export type TypographyProps = TGTextProps & {
   percentageChange?: number;
   valueChange?: number;
   wrapInBrackets?: boolean;
@@ -82,14 +78,14 @@ function getPositiveColor(isPositive: boolean): ColorTokens {
   return isPositive ? '$green10' : '$red10';
 }
 
-const createTypographyComponent = (baseProps: TGTextProps) => {
-  function TypographyComponent({
+function withValueFormatting(Component: typeof TGText) {
+  return forwardRef<ComponentRef<typeof TGText>, TypographyProps>(({
     percentageChange,
     valueChange,
     wrapInBrackets,
     children,
     ...rest
-  }: TypographyProps) {
+  }, ref) => {
     let content = children;
     let overrideColor: ColorTokens | undefined;
 
@@ -106,37 +102,27 @@ const createTypographyComponent = (baseProps: TGTextProps) => {
       content = `${isPositive ? '+' : '-'}${formatted}`;
     }
 
-    const { style, color, ...restProps } = rest;
-
-    const mergedStyle = [
-      baseProps.style,
-      style,
-    ].filter(Boolean) as TGTextProps['style'][];
-
     const finalContent = wrapInBrackets
       ? ['(', content, ')']
       : content;
 
     return (
-      <TGText
-        {...baseProps}
-        {...(restProps as TGTextProps)}
-        color={overrideColor ?? color ?? baseProps.color}
-        style={mergedStyle.length ? mergedStyle : undefined}
+      <Component
+        ref={ref}
+        {...rest}
+        color={overrideColor ?? rest.color}
       >
         {finalContent}
-      </TGText>
+      </Component>
     );
-  }
+  });
+}
 
-  return TypographyComponent;
-};
-
-export const Text = createTypographyComponent(textProps);
-export const TextHeading = createTypographyComponent(textHeadingProps);
-export const TextPrimary = createTypographyComponent(textPrimaryProps);
-export const TextSecondary = createTypographyComponent(textSecondaryProps);
-export const Number = createTypographyComponent(numberProps);
-export const NumberHeading = createTypographyComponent(numberHeadingProps);
-export const NumberPrimary = createTypographyComponent(numberPrimaryProps);
-export const NumberSecondary = createTypographyComponent(numberSecondaryProps);
+export const Text = withValueFormatting(StyledText);
+export const TextHeading = withValueFormatting(StyledTextHeading);
+export const TextPrimary = withValueFormatting(StyledTextPrimary);
+export const TextSecondary = withValueFormatting(StyledTextSecondary);
+export const Number = withValueFormatting(StyledNumber);
+export const NumberHeading = withValueFormatting(StyledNumberHeading);
+export const NumberPrimary = withValueFormatting(StyledNumberPrimary);
+export const NumberSecondary = withValueFormatting(StyledNumberSecondary);

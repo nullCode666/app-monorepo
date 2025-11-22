@@ -2,30 +2,23 @@ import { useNavigation } from 'expo-router';
 import { useCallback, useEffect } from 'react';
 
 import { FlashList, Typography } from '@/core/components';
-import { HISTORY_ACTIVITY, type HistoryRow } from '@/core/constants/wallet';
+import { HISTORY_ACTIVITY } from '@/core/constants/wallet';
 import type { HistoryActivityItemData } from '@/core/views/wallet/containers/HistoryActivityItem';
 import HistoryActivityItem from '@/core/views/wallet/containers/HistoryActivityItem';
 
-const ACTIVITY = HISTORY_ACTIVITY;
-
-export default function HistoryScreen() {
+export function HistoryListView() {
   const navigation = useNavigation();
 
-  const renderItem = useCallback(({ item }: { item: HistoryRow }) => {
+  const renderItem = useCallback(({ item }: { item: (typeof HISTORY_ACTIVITY)[number] }) => {
     if (item.type === 'section') {
       return (
-        <Typography.TextSecondary
-          p='$4'
-          pb='$2'
-          color='$color11'
-          textTransform='uppercase'
-        >
+        <Typography.TextSecondary pt='$4' pb='$2' color='$color11' textTransform='uppercase'>
           {item.date}
         </Typography.TextSecondary>
       );
     }
 
-    return <HistoryActivityItem item={item as HistoryActivityItemData} />;
+    return <HistoryActivityItem item={item as HistoryActivityItemData} href='/detail/history' />;
   }, []);
 
   useEffect(() => {
@@ -38,10 +31,12 @@ export default function HistoryScreen() {
   }, [navigation]);
 
   return (
-    <FlashList<HistoryRow>
-      data={ACTIVITY}
+    <FlashList
+      contentContainerStyle={{ paddingHorizontal: 16 }}
+      data={HISTORY_ACTIVITY}
       renderItem={renderItem}
-      keyExtractor={item => item.id}
+      keyExtractor={(item) => item.id}
+      insetHeaderFooter={false}
     />
   );
 }

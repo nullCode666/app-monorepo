@@ -13,9 +13,7 @@ export default function ImageDemoScreen() {
       >
         <XStack gap='$4'>
           <View width={72} height={72}>
-            <Image
-              src={SAMPLE_AVATAR}
-            />
+            <Image src={SAMPLE_AVATAR} />
           </View>
 
           <YStack flex={1} gap='$2'>
@@ -24,8 +22,8 @@ export default function ImageDemoScreen() {
                 width='100%'
                 height='100%'
                 src={SAMPLE_CARD}
-                containerStyle={{ borderRadius: '$6', overflow: 'hidden' }}
-                imageStyle={{ objectFit: 'cover' }}
+                containerStyle={styles.remoteContainer}
+                imageStyle={styles.coverImage}
               />
             </View>
             <Typography.TextSecondary>
@@ -35,21 +33,14 @@ export default function ImageDemoScreen() {
         </XStack>
       </DemoSection>
 
-      <DemoSection
-        title='失败回退'
-        description='提供无效链接可看到默认的故障图标。'
-      >
+      <DemoSection title='失败回退' description='提供无效链接可看到默认的故障图标。'>
         <XStack gap='$4' alignItems='center'>
           <View width={80} height={80}>
             <Image
               width='100%'
               height='100%'
               src='https://invalid-url.example.com/not-found.png'
-              containerStyle={{
-                borderRadius: '$8',
-                borderWidth: 1,
-                borderColor: '$color6',
-              }}
+              containerStyle={styles.errorContainer}
             />
           </View>
           <Typography.TextSecondary flex={1}>
@@ -68,8 +59,8 @@ export default function ImageDemoScreen() {
               width='100%'
               height='100%'
               src={SAMPLE_AVATAR}
-              containerStyle={{ borderRadius: '$10', borderWidth: 1, borderColor: '$color6' }}
-              imageStyle={{ objectFit: 'contain', backgroundColor: '$backgroundPress' }}
+              containerStyle={styles.tokenContainer}
+              imageStyle={styles.tokenImage}
             />
           </View>
 
@@ -79,8 +70,8 @@ export default function ImageDemoScreen() {
                 width='100%'
                 height='100%'
                 src={SAMPLE_CARD}
-                containerStyle={{ borderRadius: '$6', overflow: 'hidden', backgroundColor: '$backgroundStrong' }}
-                imageStyle={{ objectFit: 'cover' }}
+                containerStyle={styles.tokenCardContainer}
+                imageStyle={styles.coverImage}
               />
             </View>
             <Typography.TextSecondary>
@@ -93,3 +84,19 @@ export default function ImageDemoScreen() {
   );
 }
 
+const styles = {
+  remoteContainer: { borderRadius: '$6', overflow: 'hidden' },
+  coverImage: { objectFit: 'cover' },
+  errorContainer: {
+    borderRadius: '$8',
+    borderWidth: 1,
+    borderColor: '$color6',
+  },
+  tokenContainer: { borderRadius: '$10', borderWidth: 1, borderColor: '$color6' },
+  tokenImage: { objectFit: 'contain', backgroundColor: '$backgroundPress' },
+  tokenCardContainer: {
+    borderRadius: '$6',
+    overflow: 'hidden',
+    backgroundColor: '$backgroundStrong',
+  },
+} as const;

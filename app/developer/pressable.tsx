@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { StyleSheet } from 'react-native';
 
 import { Pressable, Typography, View, XStack, YStack } from '@/core/components';
 import { DemoPage, DemoSection } from '@/core/views/developer/DemoComponents';
@@ -14,7 +15,7 @@ export default function PressableScreen() {
       >
         <Pressable
           onPress={() => setCounter((current) => current + 1)}
-          style={{ alignSelf: 'flex-start' }}
+          style={styles.alignSelf}
           animate={({ pressed }) => ({ scale: pressed ? 0.96 : 1 })}
         >
           <YStack
@@ -38,10 +39,7 @@ export default function PressableScreen() {
         description='Combine press events with our stack components to build richer interactions.'
       >
         <XStack gap='$3'>
-          <Pressable
-            animate={({ pressed }) => ({ opacity: pressed ? 0.6 : 1 })}
-            style={{ borderRadius: 16 }}
-          >
+          <Pressable animate={({ pressed }) => ({ opacity: pressed ? 0.6 : 1 })} style={styles.rounded}>
             <View
               width={120}
               height={80}
@@ -53,10 +51,7 @@ export default function PressableScreen() {
               <Typography.TextSecondary>Opacity</Typography.TextSecondary>
             </View>
           </Pressable>
-          <Pressable
-            animate={({ pressed }) => ({ rotate: pressed ? '3deg' : '0deg' })}
-            style={{ borderRadius: 16 }}
-          >
+          <Pressable animate={({ pressed }) => ({ rotate: pressed ? '3deg' : '0deg' })} style={styles.rounded}>
             <View
               width={120}
               height={80}
@@ -73,3 +68,8 @@ export default function PressableScreen() {
     </DemoPage>
   );
 }
+
+const styles = StyleSheet.create({
+  alignSelf: { alignSelf: 'flex-start' },
+  rounded: { borderRadius: 16 },
+});

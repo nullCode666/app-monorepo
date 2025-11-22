@@ -7,7 +7,7 @@ import { Card, Pressable, Typography, XStack, YStack, useTheme } from '@/core/co
 import { ChevronRight } from '@/core/components/icons';
 import { COMPONENT_LIST } from '@/core/constants/developer';
 
-export default function DevList() {
+export function DeveloperInfoView() {
   const t = useTheme();
   const backgroundColor = t.background.val;
 
@@ -66,3 +66,4 @@ export default function DevList() {
     />
   );
 }
+

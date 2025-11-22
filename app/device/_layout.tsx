@@ -21,7 +21,7 @@ export default function DeviceLayout() {
       headerStyle: { backgroundColor: 'transparent' },
       contentStyle: { backgroundColor: backgroundModalColor },
     }),
-    [accentColor, backgroundModalColor, titleColor]
+    [accentColor, backgroundModalColor, titleColor],
   );
 
   const renderCloseButton = useCallback(
@@ -32,7 +32,7 @@ export default function DeviceLayout() {
         </View>
       </Pressable>
     ),
-    []
+    [],
   );
 
   const renderSettingsButton = useCallback(
@@ -45,14 +45,19 @@ export default function DeviceLayout() {
         </Pressable>
       </Link>
     ),
-    []
+    [],
   );
   return (
     <Stack screenOptions={screenOptions}>
-      <Stack.Screen name='index' options={{ title: '我的钱包', headerLeft: renderCloseButton, headerRight: renderSettingsButton }} />
+      <Stack.Screen
+        name='index'
+        options={{
+          title: '我的钱包',
+          headerLeft: renderCloseButton,
+          headerRight: renderSettingsButton,
+        }}
+      />
       <Stack.Screen name='manager' options={{ title: '钱包管理' }} />
     </Stack>
   );
 }
-
-

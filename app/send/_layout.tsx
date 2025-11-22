@@ -20,16 +20,15 @@ export default function SendLayout() {
       headerStyle: { backgroundColor: 'transparent' },
       contentStyle: { backgroundColor: backgroundModalColor },
     }),
-    [accentColor, backgroundModalColor, titleColor]
+    [accentColor, backgroundModalColor, titleColor],
   );
 
   return (
     <Stack screenOptions={screenOptions}>
-      <Stack.Screen name='wallet' options={{ title: '选择资产' }} />
+      <Stack.Screen name='index' options={{ title: '选择资产' }} />
       <Stack.Screen name='network' options={{ title: '选择待发送资产的网络' }} />
+      <Stack.Screen name='address' options={{ title: '接收地址' }} />
       <Stack.Screen name='token' options={{ title: '发送资产' }} />
     </Stack>
   );
 }
-
-

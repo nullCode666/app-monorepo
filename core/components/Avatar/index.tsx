@@ -68,7 +68,7 @@ const SIZE_PRESETS = {
     roundedRadius: 8,
   },
   default: {
-    container: 52,
+    container: 56,
     icon: 28,
     label: 13,
     symbol: 18,

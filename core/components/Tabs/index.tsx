@@ -1,8 +1,6 @@
 import { ComponentProps, useCallback, useMemo } from 'react';
-import { StyleSheet } from 'react-native';
 import { MaterialTabBar, Tabs } from 'react-native-collapsible-tab-view';
-
-import { useTheme } from '../useTheme';
+import { useTheme } from 'tamagui';
 
 export type TabContainerProps = ComponentProps<typeof Tabs.Container> & {
   materialTabBarProps?: ComponentProps<typeof MaterialTabBar>;
@@ -16,21 +14,19 @@ function Container({ children, materialTabBarProps, containerStyle, ...rest }: T
   const activeLabelColor = theme.color.val;
   const inactiveLabelColor = theme.color10.val;
 
-  const styles = useMemo(
-    () =>
-      StyleSheet.create({
+  const styles = useMemo(() => ({
         container: {
           backgroundColor,
         },
         tabBar: {
           borderWidth: 0,
-          backgroundColor: backgroundColor,
+      backgroundColor,
           height: 48,
           borderBottomWidth: 0,
           paddingHorizontal: 20,
         },
         tabBarContent: {
-          justifyContent: 'flex-start',
+      justifyContent: 'flex-start' as const,
         },
         tabItem: {
           minWidth: 0,
@@ -38,8 +34,8 @@ function Container({ children, materialTabBarProps, containerStyle, ...rest }: T
           borderWidth: 0,
           paddingVertical: 0,
           marginRight: 16,
-          alignItems: 'center',
-          justifyContent: 'flex-end',
+      alignItems: 'center' as const,
+      justifyContent: 'flex-end' as const,
           paddingBottom: 8,
           height: 48,
           lineHeight: 48,
@@ -47,9 +43,9 @@ function Container({ children, materialTabBarProps, containerStyle, ...rest }: T
         tabLabel: {
           minWidth: 0,
           borderWidth: 0,
-          fontWeight: '600',
-          textTransform: 'none',
-          textAlign: 'left',
+      fontWeight: '600' as const,
+      textTransform: 'none' as const,
+      textAlign: 'left' as const,
           fontSize: 17,
           includeFontPadding: false,
           margin: 0,
@@ -61,12 +57,7 @@ function Container({ children, materialTabBarProps, containerStyle, ...rest }: T
           marginTop: 0,
           borderWidth: 0,
         },
-      }),
-    [
-      indicatorColor,
-      backgroundColor,
-    ]
-  );
+  }), [backgroundColor, indicatorColor]);
 
   const renderTabBar = useCallback(
     (props: ComponentProps<typeof MaterialTabBar>) => (

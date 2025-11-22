@@ -5,7 +5,7 @@ export type LinkProps = string | Href;
 
 export const openLink = (linkProps: LinkProps) => {
   if (typeof linkProps === 'object' || /^\//.test(linkProps)) {
-    // start with '/' or Href object
+    
     return router.push(linkProps);
   }
 

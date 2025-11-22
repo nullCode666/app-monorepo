@@ -13,7 +13,7 @@ function buildBaseParams(token: TokenItemData) {
   };
 }
 
-export default function SendWalletScreen() {
+export function SendTokenListView() {
   const handleSelect = useCallback((token: TokenItemData) => {
     const params = buildBaseParams(token);
     if (token.multiple) {
@@ -21,7 +21,7 @@ export default function SendWalletScreen() {
       return;
     }
 
-    router.push({ pathname: '/send/token', params });
+    router.push({ pathname: '/send/address', params });
   }, []);
 
   const renderItem = useCallback(
@@ -58,3 +58,4 @@ export default function SendWalletScreen() {
     />
   );
 }
+

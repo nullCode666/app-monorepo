@@ -20,7 +20,7 @@ export default function ReceiveLayout() {
       headerStyle: { backgroundColor: 'transparent' },
       contentStyle: { backgroundColor: backgroundModalColor },
     }),
-    [accentColor, backgroundModalColor, titleColor]
+    [accentColor, backgroundModalColor, titleColor],
   );
 
   return (

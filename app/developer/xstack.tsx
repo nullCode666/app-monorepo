@@ -27,13 +27,34 @@ export default function XStackScreen() {
 
       <DemoSection title='Space Between & Alignment'>
         <XStack gap='$3' justifyContent='space-between' alignItems='center'>
-          <View width={92} height={72} borderRadius='$4' backgroundColor='$backgroundPress' alignItems='center' justifyContent='center'>
+          <View
+            width={92}
+            height={72}
+            borderRadius='$4'
+            backgroundColor='$backgroundPress'
+            alignItems='center'
+            justifyContent='center'
+          >
             <Typography.TextSecondary>Start</Typography.TextSecondary>
           </View>
-          <View width={92} height={72} borderRadius='$4' backgroundColor='$backgroundPress' alignItems='center' justifyContent='center'>
+          <View
+            width={92}
+            height={72}
+            borderRadius='$4'
+            backgroundColor='$backgroundPress'
+            alignItems='center'
+            justifyContent='center'
+          >
             <Typography.TextSecondary>Center</Typography.TextSecondary>
           </View>
-          <View width={92} height={72} borderRadius='$4' backgroundColor='$backgroundPress' alignItems='center' justifyContent='center'>
+          <View
+            width={92}
+            height={72}
+            borderRadius='$4'
+            backgroundColor='$backgroundPress'
+            alignItems='center'
+            justifyContent='center'
+          >
             <Typography.TextSecondary>End</Typography.TextSecondary>
           </View>
         </XStack>

@@ -13,7 +13,10 @@ export default function TypographyScreen() {
         </YStack>
       </DemoSection>
 
-      <DemoSection title='Percentage & Value Helpers' description='The helper props add automatic coloring, sign prefixes, and optional brackets.'>
+      <DemoSection
+        title='Percentage & Value Helpers'
+        description='The helper props add automatic coloring, sign prefixes, and optional brackets.'
+      >
         <YStack gap='$2'>
           <XStack gap='$2' alignItems='center'>
             <Typography.TextSecondary width={160}>Percentage Gain</Typography.TextSecondary>

@@ -29,9 +29,7 @@ export default function SheetDemoScreen() {
   const [open, setOpen] = useState(false);
   const [language, setLanguage] = useState<LanguageOption['value']>('en');
 
-  const selectedLabel = useMemo(() => (
-    LANGUAGES.find(item => item.value === language)?.label ?? 'Auto'
-  ), [language]);
+  const selectedLabel = useMemo(() => LANGUAGES.find((item) => item.value === language)?.label ?? 'Auto', [language]);
 
   const handleSelect = (value: (typeof LANGUAGES)[number]['value']) => {
     setLanguage(value);
@@ -50,7 +48,7 @@ export default function SheetDemoScreen() {
             <Typography.TextPrimary fontWeight='600'>{selectedLabel}</Typography.TextPrimary>
           </YStack>
 
-          <Button onPress={() => setOpen(true)} size='$5'>
+          <Button onPress={() => setOpen(true)} size='large'>
             打开语言选择
           </Button>
         </YStack>
@@ -63,7 +61,7 @@ export default function SheetDemoScreen() {
           snapPoints={[70]}
           contentProps={{ gap: '$2' }}
         >
-          {LANGUAGES.map(item => {
+          {LANGUAGES.map((item) => {
             const isSelected = item.value === language;
 
             return (
@@ -79,9 +77,7 @@ export default function SheetDemoScreen() {
                 >
                   <YStack flex={1} gap={item.description ? '$1' : undefined}>
                     <Typography.Text>{item.label}</Typography.Text>
-                    {item.description ? (
-                      <Typography.TextSecondary>{item.description}</Typography.TextSecondary>
-                    ) : null}
+                    {item.description ? <Typography.TextSecondary>{item.description}</Typography.TextSecondary> : null}
                   </YStack>
                   {isSelected ? <Check size={18} color='$primary' /> : null}
                 </XStack>

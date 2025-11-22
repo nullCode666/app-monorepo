@@ -1,7 +1,7 @@
 import { Link } from 'expo-router';
 import { memo } from 'react';
 
-import { Avatar, ListItem, Typography, XStack } from '@/core/components';
+import { Avatar, ListItem, Pressable, Typography, XStack } from '@/core/components';
 
 export type TokenItemData = {
   id: string;
@@ -20,9 +20,11 @@ export type TokenItemData = {
 type TokenItemProps = {
   token: TokenItemData;
   href?: string;
+  isFirst?: boolean;
+  isLast?: boolean;
 };
 
-function TokenItemComponent({ token, href = '/detail/token' }: TokenItemProps) {
+function TokenItemComponent({ token, href = '/detail/token', isFirst, isLast }: TokenItemProps) {
   const linkParams = {
     symbol: token.symbol,
     name: token.name ?? token.symbol,
@@ -32,22 +34,34 @@ function TokenItemComponent({ token, href = '/detail/token' }: TokenItemProps) {
     <Avatar.Token
       media={token.image}
       cornerMedia={token.networkLogo}
+      backgroundColor='$background'
     />
   );
 
   const bodyLeftBottom = (
     <XStack gap='$2'>
-      <Typography.NumberSecondary numberOfLines={1}>{token.price}</Typography.NumberSecondary>
-      <Typography.NumberSecondary numberOfLines={1} percentageChange={token.change} />
+      <Typography.NumberSecondary numberOfLines={1} color='$color10' fontSize={15}>
+        {token.price}
+      </Typography.NumberSecondary>
+      <Typography.NumberSecondary
+        numberOfLines={1}
+        percentageChange={token.change}
+        fontSize={15}
+      
+      />
     </XStack>
   );
 
   const bodyRightTop = (
-    <Typography.Number numberOfLines={1}>{token.balance}</Typography.Number>
+    <Typography.Number numberOfLines={1} color='$color' fontSize={17} fontWeight='600'>
+      {token.balance}
+    </Typography.Number>
   );
 
   const bodyRightBottom = (
-    <Typography.NumberSecondary numberOfLines={1}>{token.balanceFiat}</Typography.NumberSecondary>
+    <Typography.NumberSecondary numberOfLines={1} color='$color10' fontSize={15}>
+      {token.balanceFiat}
+    </Typography.NumberSecondary>
   );
 
   return (
@@ -58,13 +72,19 @@ function TokenItemComponent({ token, href = '/detail/token' }: TokenItemProps) {
       }}
       asChild
     >
-      <ListItem
-        leading={leading}
-        bodyLeftTop={<Typography.Text numberOfLines={1}>{token.symbol}</Typography.Text>}
-        bodyLeftBottom={bodyLeftBottom}
-        bodyRightTop={bodyRightTop}
-        bodyRightBottom={bodyRightBottom}
-      />
+      <Pressable>
+        <ListItem
+          leading={leading}
+          bodyLeftTop={
+            <Typography.Text numberOfLines={1} color='$color' fontSize={17} fontWeight='600'>
+              {token.symbol}
+            </Typography.Text>
+          }
+          bodyLeftBottom={bodyLeftBottom}
+          bodyRightTop={bodyRightTop}
+          bodyRightBottom={bodyRightBottom}
+        />
+      </Pressable>
     </Link>
   );
 }
@@ -72,4 +92,3 @@ function TokenItemComponent({ token, href = '/detail/token' }: TokenItemProps) {
 const TokenItem = memo(TokenItemComponent);
 
 export default TokenItem;
-

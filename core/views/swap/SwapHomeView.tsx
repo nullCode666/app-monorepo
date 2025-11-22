@@ -41,7 +41,7 @@ type TradePanelProps = {
   };
 };
 
-export default function TradeScreen() {
+export function SwapHomeView() {
   const { top, bottom } = useSafeAreaInsets();
   const theme = useTheme();
 
@@ -95,6 +95,7 @@ export default function TradeScreen() {
               amountHint: '≈¥2.10184',
               walletLabel: 'Wallet 2...WrbW',
               walletAmount: '2.5861',
+              walletActionLabel: undefined,
             }}
             actionButton={{ label: '兑换' }}
             infoRows={[
@@ -177,7 +178,7 @@ function TradePanel({ from, to, actionButton, infoRows, notice, colors }: TradeP
           borderRadius={16}
           px='$3'
           py='$3'
-        // backgroundColor={notice.backgroundColor}
+        
         >
           {notice.icon}
           <Typography.Text color='#FF3B30' flex={1} fontSize={13} lineHeight={18}>
@@ -187,12 +188,11 @@ function TradePanel({ from, to, actionButton, infoRows, notice, colors }: TradeP
       ) : null}
 
       <Button
+        type="primary"
+        size="large"
         height={56}
-        backgroundColor='$primary'
         borderRadius={16}
-        pressStyle={{ opacity: 0.85 }}
         disabled={actionButton.disabled}
-        opacity={actionButton.disabled ? 0.6 : 1}
       >
         <Typography.Text fontSize={17} fontWeight='600' color='#000'>
           {actionButton.label}
@@ -318,3 +318,4 @@ function TradeInfoRow({ label, children, chevron = false, mutedColor }: TradeInf
     </XStack>
   );
 }
+

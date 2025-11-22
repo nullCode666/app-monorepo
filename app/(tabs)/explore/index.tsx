@@ -1,9 +1,5 @@
-import { Typography, View } from '@/core/components';
+import { ExploreHomeView } from '@/core/views/explore/ExploreHomeView';
 
-export default function Explore() {
-  return (
-    <View>
-      <Typography.Text>hello world</Typography.Text>
-    </View>
-  );
+export default function ExploreScreen() {
+  return <ExploreHomeView />;
 }

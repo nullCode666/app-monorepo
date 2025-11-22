@@ -2,12 +2,14 @@ import Adapt from './Adapt';
 import AnimatedSection from './AnimatedSection';
 import * as Avatar from './Avatar';
 import Button from './Button';
-import CardComponent from './Card';
+import Card from './Card';
+import * as FamilyInput from './FamilyInput';
 import { FlashList, FlashListProps } from './FlashList';
 import * as Form from './Form';
 import ImageComponent from './Image';
 import LineGraph from './LineGraph';
 import ListItem, { ListItemProps } from './ListItem';
+import { RVNativeTabs, type TabItemConfig } from './NativeTabs';
 import PieChart from './PieChart';
 import Pressable from './Pressable';
 import ScrollViewComponent from './ScrollView';
@@ -30,8 +32,9 @@ export {
   AnimatedSection,
   Avatar,
   Button,
-  CardComponent as Card,
+  Card,
   CardProps,
+  FamilyInput,
   FlashList,
   FlashListProps,
   Form,
@@ -42,6 +45,7 @@ export {
   ListItemProps,
   PieChart,
   Pressable,
+  RVNativeTabs,
   ScrollViewComponent as ScrollView,
   ScrollViewProps,
   Sheet,
@@ -49,6 +53,7 @@ export {
   SheetProvider,
   Skeleton,
   SkeletonProps,
+  TabItemConfig,
   Tabs,
   Typography,
   useSheetController,

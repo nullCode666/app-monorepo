@@ -1,5 +1,6 @@
 import { useNavigation } from 'expo-router';
 import { useEffect, useMemo } from 'react';
+import { StyleSheet } from 'react-native';
 
 import { AnimatedSection, ScrollView, useTheme } from '@/core/components';
 import { Check } from '@/core/components/icons';
@@ -10,15 +11,18 @@ export default function AutoLockScreen() {
   const navigation = useNavigation();
   const theme = useTheme();
 
-  const autoLockDuration = useSettingsStore(state => state.autoLockDuration);
+  const autoLockDuration = useSettingsStore((state) => state.autoLockDuration);
 
   const backgroundColor = theme.backgroundModal.val;
-  const contentContainerStyle = useMemo(() => ({
-    paddingTop: 70,
-    paddingHorizontal: 20,
-    paddingBottom: 24,
-    gap: 24,
-  }), []);
+  const contentContainerStyle = useMemo(
+    () => ({
+      paddingTop: 70,
+      paddingHorizontal: 20,
+      paddingBottom: 24,
+      gap: 24,
+    }),
+    [],
+  );
 
   useEffect(() => {
     navigation.setOptions({
@@ -31,13 +35,13 @@ export default function AutoLockScreen() {
 
   return (
     <ScrollView
-      style={{ flex: 1, backgroundColor }}
+      style={[styles.container, { backgroundColor }]}
       contentContainerStyle={contentContainerStyle}
       keyboardShouldPersistTaps='handled'
       showsVerticalScrollIndicator={false}
     >
       <AnimatedSection.Container>
-        {AUTO_LOCK_OPTIONS.map(option => {
+        {AUTO_LOCK_OPTIONS.map((option) => {
           const isSelected = option.value === autoLockDuration;
 
           return (
@@ -56,3 +60,7 @@ export default function AutoLockScreen() {
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+});

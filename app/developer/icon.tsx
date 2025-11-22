@@ -1,12 +1,5 @@
 import { Typography, XStack, YStack } from '@/core/components';
-import {
-  ArrowDownToLine,
-  ArrowUpFromLine,
-  Check,
-  Github,
-  History,
-  ShieldCheck,
-} from '@/core/components/icons';
+import { ArrowDownToLine, ArrowUpFromLine, Check, Github, History, ShieldCheck } from '@/core/components/icons';
 import { DemoPage, DemoSection } from '@/core/views/developer/DemoComponents';
 
 const ICON_SETS = [

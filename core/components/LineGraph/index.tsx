@@ -12,9 +12,20 @@ export default function LineGraphChart({ points, ...rest }: LineGraphProps) {
   const theme = useTheme();
   const [red, green] = [theme.red10.val, theme.green10.val];
 
-  const values = points.map(point => point.value);
-  const min = Math.min(...values);
-  const max = Math.max(...values);
+  const { min, max, first, last } = useMemo(() => {
+    if (points.length === 0) {
+      return { min: 0, max: 0, first: null, last: null };
+    }
+    let minVal = points[0].value;
+    let maxVal = points[0].value;
+
+    for (let i = 1; i < points.length; i++) {
+      const val = points[i].value;
+      if (val < minVal) minVal = val;
+      if (val > maxVal) maxVal = val;
+    }
+    return { min: minVal, max: maxVal, first: points[0], last: points[points.length - 1] };
+  }, [points]);
 
   const yRange = useMemo(() => {
     const padding = Math.max(1, (max - min) * 0.08);
@@ -25,12 +36,12 @@ export default function LineGraphChart({ points, ...rest }: LineGraphProps) {
     };
   }, [min, max]);
 
-  if (points.length === 0) {
+  if (points.length === 0 || !first || !last) {
     return <View width='100%' height='100%' />;
   }
 
-  const { date: beginDate, value: beginValue } = points[0];
-  const { date: endDate, value: endValue } = points[points.length - 1];
+  const { date: beginDate, value: beginValue } = first;
+  const { date: endDate, value: endValue } = last;
 
   return (
     <View width='100%' height='100%'>
