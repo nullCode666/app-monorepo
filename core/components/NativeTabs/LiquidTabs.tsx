@@ -29,7 +29,7 @@ export function LiquidTabs({ items }: RVNativeTabsProps) {
     <NativeTabs {...tabsColorConfig}>
       {items.map((item) => (
         <NativeTabs.Trigger key={item.name} name={item.name} role={item.role}>
-          <Label>{item.name}</Label>
+          <Label>{item.label}</Label>
           <Icon sf={{ default: item.sfSymbol.default, selected: item.sfSymbol.selected }} />
         </NativeTabs.Trigger>
       ))}

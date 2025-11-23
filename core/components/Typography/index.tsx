@@ -100,7 +100,7 @@ function getPositiveColor(isPositive: boolean): ColorTokens {
 
 function withValueFormatting(Component: typeof TGText) {
   return forwardRef<ComponentRef<typeof TGText>, TypographyProps>(
-    ({ percentageChange, valueChange, wrapInBrackets, short, children, ...rest }, ref) => {
+    ({ percentageChange, valueChange, wrapInBrackets, short, children, fontSize, lineHeight, ...rest }, ref) => {
       let content = children;
       let overrideColor: ColorTokens | undefined;
 
@@ -124,8 +124,21 @@ function withValueFormatting(Component: typeof TGText) {
       const finalContent = wrapInBrackets ? ['(', content, ')'] : content;
       const computedColor = overrideColor ?? rest.color;
 
+      const computedLineHeight = typeof fontSize === 'number' ? fontSize * 1.2 : lineHeight;
+
+      const finalProps: TGTextProps = { ...rest };
+      if (computedColor) {
+        finalProps.color = computedColor;
+      }
+      if (fontSize !== undefined) {
+        finalProps.fontSize = fontSize;
+      }
+      if (computedLineHeight !== undefined) {
+        finalProps.lineHeight = computedLineHeight;
+      }
+
       return (
-        <Component ref={ref} {...rest} {...(computedColor ? { color: computedColor } : {})}>
+        <Component ref={ref} {...finalProps}>
           {finalContent}
         </Component>
       );

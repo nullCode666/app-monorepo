@@ -7,7 +7,7 @@ import { TOKEN_LIST } from '@/core/constants/wallet';
 const ACTION_ITEMS = [
   { id: 'send', Icon: ArrowUpFromLine, label: 'Send', href: '/send/wallet' },
   { id: 'receive', Icon: ArrowDownToLine, label: 'Receive', href: '/receive' },
-  { id: 'swap', Icon: ArrowLeftRight, label: 'Swap', href: '/trade' },
+  { id: 'swap', Icon: ArrowLeftRight, label: 'Swap', href: '/modal/trade' },
   { id: 'defi', Icon: Landmark, label: 'Defi', href: '/defi' },
 ] as const;
 

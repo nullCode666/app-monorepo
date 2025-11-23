@@ -15,12 +15,7 @@ import {
   useTheme,
 } from '@/core/components';
 import RVSwitch from '@/core/components/Form/Switch';
-import {
-  ArrowUpRight,
-  ChevronRight,
-  Headset,
-  Lock
-} from '@/core/components/icons';
+import { ArrowUpRight, ChevronRight, Headset, Lock } from '@/core/components/icons';
 import {
   APP_BUILD_NUMBER,
   APP_VERSION,
@@ -52,7 +47,12 @@ const BASIC_ACTIONS = [
 const APP_INFO_ACTIONS = [
   { id: 'version', label: '应用版本', onPress: undefined, trailing: undefined },
   { id: 'updates', label: '检查更新', onPress: () => openLink(CHANGELOG), trailing: undefined },
-  { id: 'policies', label: '服务条款与隐私政策', onPress: () => openLink(PRIVACY_POLICY), trailing: <ArrowUpRight size={18} color='$color10' /> },
+  {
+    id: 'policies',
+    label: '服务条款与隐私政策',
+    onPress: () => openLink(PRIVACY_POLICY),
+    trailing: <ArrowUpRight size={18} color='$color10' />,
+  },
 ] as const;
 
 const WEB_LINK_ROWS = [
@@ -124,7 +124,7 @@ export function SettingsHomeView() {
         placeholder: '搜索设置',
       },
       headerRight: () =>
-        (autoAddContacts && biometricsEnabled) ? (
+        autoAddContacts && biometricsEnabled ? (
           <XStack width={36} height={36} justifyContent='center' alignItems='center'>
             <Lock size={24} color='$color' />
           </XStack>
@@ -142,12 +142,10 @@ export function SettingsHomeView() {
     });
     return () => {
       navigation.setOptions(navigationOptions);
-    }
+    };
   }, [autoAddContacts, biometricsEnabled, navigation, sheet.isOpen]);
 
-  const collapsibleHeight = useMemo(() => (
-    (ROW_HEIGHT * 2) + (DIVIDER_HEIGHT * 2)
-  ), []);
+  const collapsibleHeight = useMemo(() => ROW_HEIGHT * 2 + DIVIDER_HEIGHT * 2, []);
 
   return (
     <SheetHost name='settings-screen-sheet'>
@@ -163,12 +161,8 @@ export function SettingsHomeView() {
           <SupportCard />
 
           <AnimatedSection.Container description='设置常用联系人，可以有效避免转账时输入错误地址'>
-            {QUICK_ACTIONS.map(action => (
-              <AnimatedSection.Item
-                key={action.id}
-                title={action.label}
-                onPress={action.onPress}
-              />
+            {QUICK_ACTIONS.map((action) => (
+              <AnimatedSection.Item key={action.id} title={action.label} onPress={action.onPress} />
             ))}
           </AnimatedSection.Container>
 
@@ -177,23 +171,17 @@ export function SettingsHomeView() {
               title='启用面容识别'
               trailing={<RVSwitch value={biometricsEnabled} onValueChange={handleBiometricsChange} />}
             />
-            <AnimatedSection.Collapsible
-              open={biometricsEnabled}
-              height={collapsibleHeight}
-            >
+            <AnimatedSection.Collapsible open={biometricsEnabled} height={collapsibleHeight}>
               <AnimatedSection.Item
                 title='每次启动前需面容识别'
                 trailing={<RVSwitch value={autoAddContacts} onValueChange={handleAutoAddContactsChange} />}
               />
-              <AnimatedSection.Item
-                title='安全与防护'
-                onPress={() => openLink('/settings/security')}
-              />
+              <AnimatedSection.Item title='安全与防护' onPress={() => openLink('/settings/security')} />
             </AnimatedSection.Collapsible>
           </AnimatedSection.Container>
 
           <AnimatedSection.Container>
-            {BASIC_ACTIONS.map(action => (
+            {BASIC_ACTIONS.map((action) => (
               <AnimatedSection.Item
                 key={action.id}
                 title={action.label}
@@ -204,24 +192,26 @@ export function SettingsHomeView() {
           </AnimatedSection.Container>
 
           <AnimatedSection.Container>
-            {APP_INFO_ACTIONS.map(action => (
+            {APP_INFO_ACTIONS.map((action) => (
               <AnimatedSection.Item
                 key={action.id}
                 title={action.label}
-                trailing={action.id === 'version'
-                  ? (
+                trailing={
+                  action.id === 'version' ? (
                     <Typography.Text fontSize={15}>
                       {`${APP_VERSION ?? ''}${APP_BUILD_NUMBER ? ` - ${APP_BUILD_NUMBER}` : ''}`}
                     </Typography.Text>
+                  ) : (
+                    action.trailing
                   )
-                  : action.trailing}
+                }
                 onPress={action.onPress}
               />
             ))}
           </AnimatedSection.Container>
 
           <AnimatedSection.Container>
-            {WEB_LINK_ROWS.map(link => (
+            {WEB_LINK_ROWS.map((link) => (
               <AnimatedSection.Item
                 key={link.id}
                 title={link.label}
@@ -234,33 +224,20 @@ export function SettingsHomeView() {
       </ScrollView>
     </SheetHost>
   );
-};
+}
 
 const SupportCard = () => (
   <YStack pt='$2'>
-    <XStack
-      borderRadius={20}
-      height={56 + 18 * 2}
-      backgroundColor='$background2'
-      padding='$4'
-      gap='$4'
-    >
+    <XStack borderRadius={20} height={56 + 18 * 2} backgroundColor='$background2' padding='$4' gap='$4'>
       <Avatar.Token type='primary' media={Headset} size='default' />
       <YStack flex={1} justifyContent='center' gap='$2'>
-        <Typography.TextPrimary>
-          需要协助？联系在线客服
-        </Typography.TextPrimary>
+        <Typography.TextPrimary>需要协助？联系在线客服</Typography.TextPrimary>
         <YStack gap='$1'>
-          <Typography.TextSecondary fontSize={12}>
-            · 7 x 24 专业技术支持，极速响应
-          </Typography.TextSecondary>
-          <Typography.TextSecondary fontSize={12}>
-            · 一站式服务，安全便捷
-          </Typography.TextSecondary>
+          <Typography.TextSecondary fontSize={12}>· 7 x 24 专业技术支持，极速响应</Typography.TextSecondary>
+          <Typography.TextSecondary fontSize={12}>· 一站式服务，安全便捷</Typography.TextSecondary>
         </YStack>
       </YStack>
       <ChevronRight size={20} color='$color10' alignSelf='center' />
     </XStack>
   </YStack>
 );
-

@@ -1,64 +1,15 @@
-import { type ReactNode, useMemo } from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useMemo } from 'react';
 
-import { Button, Tabs, Typography, View, XStack, YStack, useTheme } from '@/core/components';
-import { ArrowUpDown, ChevronRight, Wallet } from '@/core/components/icons';
-import { TRADE_TOKEN_MAP, type TradeTokenMeta } from '@/core/constants/trade';
-
-type CardProps = {
-  token: TradeTokenMeta;
-  amount: string;
-  amountHint: string;
-  walletLabel: string;
-  walletAmount: string;
-  walletActionLabel?: string;
-};
-
-type TradeInfoRowProps = {
-  label: string;
-  children: ReactNode;
-  chevron?: boolean;
-};
-
-type TradePanelProps = {
-  from: CardProps;
-  to: CardProps;
-  actionButton: {
-    label: string;
-    disabled?: boolean;
-  };
-  infoRows: TradeInfoRowProps[];
-  notice?: {
-    icon?: ReactNode;
-    text: string;
-    backgroundColor: string;
-  };
-  colors: {
-    muted: string;
-    primary: string;
-    badgeSuccessBackground: string;
-    badgeSuccessColor: string;
-  };
-};
+import { ScrollView, Typography, useTheme } from '@/core/components';
+import { TRADE_TOKEN_MAP } from '@/core/constants/trade';
+import { TradePanel } from '@/core/views/trade/containers/TradePanel';
 
 export function TradeHomeView() {
-  const { top, bottom } = useSafeAreaInsets();
   const theme = useTheme();
 
   const mutedColor = theme.color10.val;
   const primaryColor = theme.primary.val;
   const successColor = theme.green10.val;
-
-  const styles = useMemo(
-    () => ({
-      scrollContent: {
-        paddingBottom: bottom + 32,
-        paddingHorizontal: 16,
-        paddingTop: 16,
-      },
-    }),
-    [bottom],
-  );
 
   const colors = useMemo(
     () => ({
@@ -71,226 +22,55 @@ export function TradeHomeView() {
   );
 
   return (
-    <Tabs.Container containerStyle={{ top: top + 38 }}>
-      <Tabs.Tab name='swap' label='Swap'>
-        <Tabs.ScrollView
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps='handled'
-        >
-          <TradePanel
-            from={{
-              token: TRADE_TOKEN_MAP.trx,
-              amount: '1',
-              amountHint: '≈¥2.10178',
-              walletLabel: 'Wallet 2...WrbW',
-              walletAmount: '37.16185',
-              walletActionLabel: '全部',
-            }}
-            to={{
-              token: TRADE_TOKEN_MAP.usdt,
-              amount: '0.295618',
-              amountHint: '≈¥2.10184',
-              walletLabel: 'Wallet 2...WrbW',
-              walletAmount: '2.5861',
-              walletActionLabel: undefined,
-            }}
-            actionButton={{ label: '兑换' }}
-            infoRows={[
-              {
-                label: '路径',
-                children: (
-                  <XStack alignItems='center' gap='$2'>
-                    <View
-                      width={24}
-                      height={24}
-                      borderRadius={12}
-                      background='linear-gradient(135deg, #43C6AC, #191654)'
-                    />
-                    <Typography.Text fontWeight='600'>LiquidMesh</Typography.Text>
-                  </XStack>
-                ),
-                chevron: true,
-              },
-              {
-                label: '兑换率',
-                children: <Typography.NumberSecondary>{'1 TRX ≈ 0.29561 USDT'}</Typography.NumberSecondary>,
-                chevron: true,
-              },
-              {
-                label: '滑点',
-                children: <Typography.Text>自动 | 1%</Typography.Text>,
-                chevron: true,
-              },
-              {
-                label: '最低收款金额',
-                children: <Typography.NumberSecondary color='$color'>{'0.29266 USDT'}</Typography.NumberSecondary>,
-              },
-              {
-                label: '交易手续费',
-                children: <Typography.NumberSecondary color='$color'>{'0.0002 USDT'}</Typography.NumberSecondary>,
-              },
-            ]}
-            colors={colors}
-          />
-        </Tabs.ScrollView>
-      </Tabs.Tab>
-    </Tabs.Container>
-  );
-}
-
-function TradePanel({ from, to, actionButton, infoRows, notice, colors }: TradePanelProps) {
-  return (
-    <YStack gap='$1'>
-      <Section label='从' mutedColor={colors.muted}>
-        <TradeTokenCard card={from} colors={colors} />
-      </Section>
-
-      <View
-        width={0}
-        height={0}
-        borderRadius={22}
-        alignSelf='center'
-        alignItems='center'
-        justifyContent='center'
-        bg='$background'
-      >
-        <ArrowUpDown size={24} marginTop={-24} color='$primary' />
-      </View>
-
-      <Section label='到' mutedColor={colors.muted}>
-        <TradeTokenCard card={to} colors={colors} />
-      </Section>
-
-      {notice ? (
-        <XStack gap='$2' alignItems='center' borderRadius={16} px='$3' py='$3'>
-          {notice.icon}
-          <Typography.Text color='#FF3B30' flex={1} fontSize={13} lineHeight={18}>
-            {notice.text}
-          </Typography.Text>
-        </XStack>
-      ) : null}
-
-      <Button type='primary' size='large' height={56} borderRadius={16} disabled={actionButton.disabled}>
-        <Typography.Text fontSize={17} fontWeight='600' color='#000'>
-          {actionButton.label}
-        </Typography.Text>
-      </Button>
-
-      <YStack gap='$1' borderRadius={16} px='$1'>
-        {infoRows.map((row, index) => (
-          <TradeInfoRow key={`${row.label}-${index}`} label={row.label} chevron={row.chevron} mutedColor={colors.muted}>
-            {row.children}
-          </TradeInfoRow>
-        ))}
-      </YStack>
-    </YStack>
-  );
-}
-
-function Section({ label, mutedColor, children }: { label: string; mutedColor: string; children: ReactNode }) {
-  return (
-    <YStack gap='$2'>
-      <Typography.Text fontSize={13} color={mutedColor as any}>
-        {label}
-      </Typography.Text>
-      {children}
-    </YStack>
-  );
-}
-
-function TradeTokenCard({ card, colors }: { card: CardProps; colors: TradePanelProps['colors'] }) {
-  return (
-    <YStack
-      bg='$backgroundPress'
-      borderRadius={20}
-      px='$4'
-      py='$4'
-      gap='$3'
-      shadowColor='rgba(15, 23, 42, 0.16)'
-      shadowOpacity={0.1}
-      shadowRadius={12}
-      shadowOffset={{ width: 0, height: 6 }}
-      elevation={3}
-    >
-      <XStack justifyContent='space-between' alignItems='center' gap='$3'>
-        <TokenAvatar meta={card.token} />
-        <YStack flex={1} gap='$1'>
-          <Typography.Text fontSize={17} fontWeight='700'>
-            {card.token.symbol}
-          </Typography.Text>
-          <Typography.Text fontSize={13} color={colors.muted as any}>
-            {card.token.name}
-          </Typography.Text>
-        </YStack>
-        <YStack alignItems='flex-end' gap='$1'>
-          <Typography.Number fontWeight='600'>{card.amount}</Typography.Number>
-          <Typography.NumberSecondary>{card.amountHint}</Typography.NumberSecondary>
-        </YStack>
-      </XStack>
-
-      <XStack justifyContent='space-between' alignItems='center'>
-        <XStack gap='$2' alignItems='center'>
-          <Wallet size={18} color='$color' />
-          <Typography.Text fontSize={13} color={colors.muted as any}>
-            {card.walletLabel}
-          </Typography.Text>
-        </XStack>
-        <XStack gap='$2' alignItems='center'>
-          <Typography.NumberSecondary color='$color'>{card.walletAmount}</Typography.NumberSecondary>
-          {card.walletActionLabel ? (
-            <Typography.Text fontSize={13} fontWeight='600' color={colors.primary as any}>
-              {card.walletActionLabel}
-            </Typography.Text>
-          ) : null}
-        </XStack>
-      </XStack>
-    </YStack>
-  );
-}
-
-function TokenAvatar({ meta }: { meta: TradeTokenMeta }) {
-  return (
-    <View
-      width={52}
-      height={52}
-      borderRadius={16}
-      backgroundColor={meta.accentColor as any}
-      alignItems='center'
-      justifyContent='center'
-    >
-      <Typography.Text fontSize={20} fontWeight='700' color='#fff'>
-        {meta.symbol}
-      </Typography.Text>
-      {meta.badge ? (
-        <View
-          position='absolute'
-          bottom={-4}
-          right={-4}
-          borderRadius={12}
-          borderWidth={2}
-          borderColor='#fff'
-          backgroundColor={meta.badge.accentColor as any}
-          px={6}
-          py={2}
-        >
-          <Typography.Text fontSize={10} fontWeight='600' color='#fff'>
-            {meta.badge.label}
-          </Typography.Text>
-        </View>
-      ) : null}
-    </View>
-  );
-}
-
-function TradeInfoRow({ label, children, chevron = false, mutedColor }: TradeInfoRowProps & { mutedColor: string }) {
-  return (
-    <XStack justifyContent='space-between' alignItems='center' py='$1' px='$2'>
-      <Typography.TextSecondary>{label}</Typography.TextSecondary>
-      <XStack alignItems='center' gap='$2'>
-        {children}
-        {chevron ? <ChevronRight size={16} color={mutedColor as any} /> : null}
-      </XStack>
-    </XStack>
+    <ScrollView keyboardShouldPersistTaps='handled' px='$4' pt='$6'>
+      <TradePanel
+        from={{
+          token: TRADE_TOKEN_MAP.trx,
+          amount: '0.0056372',
+          amountHint: '≈¥2.10178',
+          walletLabel: 'Wallet 2...WrbW',
+          walletAmount: '37.16185 TRX',
+          walletActionLabel: '全部',
+        }}
+        to={{
+          token: TRADE_TOKEN_MAP.usdt,
+          amount: '0.295618',
+          amountHint: '≈¥2.10184',
+          walletLabel: 'Wallet 2...WrbW',
+          walletAmount: '2.5861 USDT',
+          walletActionLabel: undefined,
+        }}
+        actionButton={{ label: '兑换' }}
+        infoRows={[
+          {
+            label: '兑换率',
+            children: <Typography.NumberSecondary fontSize={14}>{'1 TRX ≈ 0.29561 USDT'}</Typography.NumberSecondary>,
+            chevron: true,
+          },
+          {
+            label: '滑点',
+            children: <Typography.Text fontSize={14}>自动 | 1%</Typography.Text>,
+            chevron: true,
+          },
+          {
+            label: '最低收款金额',
+            children: (
+              <Typography.NumberSecondary color='$color' fontSize={14}>
+                {'0.29266 USDT'}
+              </Typography.NumberSecondary>
+            ),
+          },
+          {
+            label: '交易手续费',
+            children: (
+              <Typography.NumberSecondary color='$color' fontSize={14}>
+                {'0.0002 USDT'}
+              </Typography.NumberSecondary>
+            ),
+          },
+        ]}
+        colors={colors}
+      />
+    </ScrollView>
   );
 }

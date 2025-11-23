@@ -1,63 +1,73 @@
 import { ComponentProps, useCallback, useMemo } from 'react';
 import { MaterialTabBar, Tabs } from 'react-native-collapsible-tab-view';
-import { useTheme } from 'tamagui';
+import { ColorTokens, useTheme } from 'tamagui';
 
 export type TabContainerProps = ComponentProps<typeof Tabs.Container> & {
   materialTabBarProps?: ComponentProps<typeof MaterialTabBar>;
-}
+  backgroundColor?: ColorTokens;
+};
 
-function Container({ children, materialTabBarProps, containerStyle, ...rest }: TabContainerProps) {
+function Container({
+  children,
+  materialTabBarProps,
+  containerStyle,
+  backgroundColor = '$background',
+  ...rest
+}: TabContainerProps) {
   const theme = useTheme();
 
-  const backgroundColor = theme.background.val;
+  const resolvedBackgroundColor = theme[backgroundColor]?.val ?? backgroundColor;
   const indicatorColor = theme.primary.val;
   const activeLabelColor = theme.color.val;
   const inactiveLabelColor = theme.color10.val;
 
-  const styles = useMemo(() => ({
-        container: {
-          backgroundColor,
-        },
-        tabBar: {
-          borderWidth: 0,
-      backgroundColor,
-          height: 48,
-          borderBottomWidth: 0,
-          paddingHorizontal: 20,
-        },
-        tabBarContent: {
-      justifyContent: 'flex-start' as const,
-        },
-        tabItem: {
-          minWidth: 0,
-          paddingHorizontal: 0,
-          borderWidth: 0,
-          paddingVertical: 0,
-          marginRight: 16,
-      alignItems: 'center' as const,
-      justifyContent: 'flex-end' as const,
-          paddingBottom: 8,
-          height: 48,
-          lineHeight: 48,
-        },
-        tabLabel: {
-          minWidth: 0,
-          borderWidth: 0,
-      fontWeight: '600' as const,
-      textTransform: 'none' as const,
-      textAlign: 'left' as const,
-          fontSize: 17,
-          includeFontPadding: false,
-          margin: 0,
-        },
-        tabIndicator: {
-          backgroundColor: indicatorColor,
-          height: 2,
-          borderRadius: 1,
-          marginTop: 0,
-          borderWidth: 0,
-        },
-  }), [backgroundColor, indicatorColor]);
+  const styles = useMemo(
+    () => ({
+      container: {
+        backgroundColor: resolvedBackgroundColor,
+      },
+      tabBar: {
+        borderWidth: 0,
+        backgroundColor: resolvedBackgroundColor,
+        height: 48,
+        borderBottomWidth: 0,
+        paddingHorizontal: 20,
+      },
+      tabBarContent: {
+        justifyContent: 'flex-start' as const,
+      },
+      tabItem: {
+        minWidth: 0,
+        paddingHorizontal: 0,
+        borderWidth: 0,
+        paddingVertical: 0,
+        marginRight: 16,
+        alignItems: 'center' as const,
+        justifyContent: 'flex-end' as const,
+        paddingBottom: 8,
+        height: 48,
+        lineHeight: 48,
+      },
+      tabLabel: {
+        minWidth: 0,
+        borderWidth: 0,
+        fontWeight: '600' as const,
+        textTransform: 'none' as const,
+        textAlign: 'left' as const,
+        fontSize: 17,
+        includeFontPadding: false,
+        margin: 0,
+      },
+      tabIndicator: {
+        backgroundColor: indicatorColor,
+        height: 2,
+        borderRadius: 1,
+        marginTop: 0,
+        borderWidth: 0,
+      },
+    }),
+    [indicatorColor, resolvedBackgroundColor],
+  );
 
   const renderTabBar = useCallback(
     (props: ComponentProps<typeof MaterialTabBar>) => (
@@ -74,20 +84,21 @@ function Container({ children, materialTabBarProps, containerStyle, ...rest }: T
         {...materialTabBarProps}
       />
     ),
-    [activeLabelColor, inactiveLabelColor, styles, materialTabBarProps]
+    [activeLabelColor, inactiveLabelColor, styles, materialTabBarProps],
   );
 
-  const headerContainerStyle = useMemo(() => (
-    {
+  const headerContainerStyle = useMemo(
+    () => ({
       elevation: 0,
       shadowOpacity: 0,
       shadowRadius: 0,
       shadowOffset: { width: 0, height: 0 },
       borderBottomWidth: 0,
-      backgroundColor,
+      backgroundColor: resolvedBackgroundColor,
       paddingHorizontal: 0,
-    }
-  ), [backgroundColor]);
+    }),
+    [resolvedBackgroundColor],
+  );
 
   return (
     <Tabs.Container

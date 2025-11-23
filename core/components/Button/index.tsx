@@ -1,13 +1,11 @@
-import React, { ComponentType, forwardRef } from 'react';
+import React, { forwardRef, type ComponentPropsWithRef } from 'react';
 import {
   Spinner,
   styled,
   Button as TamaguiButton,
   type SizeTokens,
-  type ButtonProps as TamaguiButtonProps
+  type ButtonProps as TamaguiButtonProps,
 } from 'tamagui';
-
-
 
 type ButtonType = 'primary' | 'default' | 'text' | 'link' | 'dashed';
 type ButtonSize = 'small' | 'middle' | 'large';
@@ -86,9 +84,7 @@ const StyledButton = styled(TamaguiButton, {
     },
 
     danger: {
-      true: {
-
-      },
+      true: {},
     },
 
     fullWidth: {
@@ -103,7 +99,7 @@ const StyledButton = styled(TamaguiButton, {
         opacity: 0.5,
         pointerEvents: 'none',
       },
-    }
+    },
   } as const,
 
   defaultVariants: {
@@ -121,22 +117,10 @@ export type ButtonProps = Omit<TamaguiButtonProps, 'size'> & {
   htmlType?: 'button' | 'submit' | 'reset';
 };
 
-const Button = forwardRef<ComponentType<typeof TamaguiButton>, ButtonProps>((props, ref) => {
-  const {
-    type = 'default',
-    size = 'middle',
-    danger,
-    loading,
-    disabled,
-    children,
-    icon,
-    iconAfter,
-    ...rest
-  } = props;
+const Button = forwardRef<ComponentPropsWithRef<typeof TamaguiButton>, ButtonProps>((props, ref) => {
+  const { type = 'default', size = 'middle', danger, loading, disabled, children, icon, iconAfter, ...rest } = props;
 
-  const dangerStyles = danger
-    ? getDangerStyles(type)
-    : {};
+  const dangerStyles = danger ? getDangerStyles(type) : {};
 
   const isLoading = loading;
   const isDisabled = disabled || isLoading;
@@ -149,9 +133,10 @@ const Button = forwardRef<ComponentType<typeof TamaguiButton>, ButtonProps>((pro
       buttonSize={size}
       fullWidth={props.fullWidth}
       disabled={isDisabled}
-      icon={isLoading ? <Spinner color={danger ? '$red10' : (type === 'primary' ? 'white' : '$primary')} /> : icon}
+      icon={isLoading ? <Spinner color={danger ? '$red10' : type === 'primary' ? 'white' : '$primary'} /> : icon}
       iconAfter={iconAfter}
-      {...dangerStyles as any}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      {...(dangerStyles as any)}
       {...rest}
     >
       {children}
@@ -178,7 +163,11 @@ function getDangerStyles(type: ButtonType) {
     case 'link':
       return {
         color: '$red10',
-        hoverStyle: { color: '$red10', opacity: 0.8, backgroundColor: type === 'text' ? '$backgroundHover' : 'transparent' },
+        hoverStyle: {
+          color: '$red10',
+          opacity: 0.8,
+          backgroundColor: type === 'text' ? '$backgroundHover' : 'transparent',
+        },
       };
     default:
       return {};

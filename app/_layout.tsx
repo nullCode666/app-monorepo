@@ -5,7 +5,7 @@ import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useMemo } from 'react';
-import { useColorScheme, StyleSheet } from 'react-native';
+import { StyleSheet, useColorScheme } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-reanimated';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
@@ -121,6 +121,8 @@ function RootNavigator() {
       <Stack.Screen name='receive' options={{ title: '', ...modalScreenOptions, headerShown: false }} />
       <Stack.Screen name='send' options={{ title: '', ...modalScreenOptions, headerShown: false }} />
       <Stack.Screen name='send-confirm' options={{ title: '', ...modalScreenOptions }} />
+      <Stack.Screen name='modal/trade' options={{ title: '', ...modalScreenOptions }} />
+      <Stack.Screen name='modal/trade-token-select' options={{ title: '', ...modalScreenOptions }} />
     </Stack>
   );
 }

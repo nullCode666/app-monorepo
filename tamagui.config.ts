@@ -8,24 +8,22 @@ const light = {
   background2: '#f2f2f7',
   background3: '#e5e5ea',
   primary: '#FF9500',
-  green10: '#30d158', // Softer iOS Green
+  green10: '#30d158',
   red10: '#cd2b31',
   textPrimary: '#000000',
   textSecondary: '#8E8E93',
-  cardBackground: '#ffffff',
 };
 
 const dark = {
-  background: '#000000', // Pure Black
-  backgroundModal: '#121214', // Deeper Dark Grey for modals
-  background2: '#1C1C1E', // Dark Grey for cards
-  background3: '#2C2C2E', // Tertiary System Fill
+  background: '#000000',
+  backgroundModal: '#0F0F11',
+  background2: '#18181A',
+  background3: '#262628',
   primary: '#FF9F0A',
-  green10: '#30d158', // Softer iOS Green
+  green10: '#30d158',
   red10: '#ff6369',
   textPrimary: '#FFFFFF',
-  textSecondary: '#8E8E93', // System Gray
-  cardBackground: '#1C1C1E',
+  textSecondary: '#8E8E93',
 };
 
 const tokens = createTokens({
@@ -52,9 +50,6 @@ const tokens = createTokens({
     textPrimaryDark: dark.textPrimary,
     textSecondaryLight: light.textSecondary,
     textSecondaryDark: dark.textSecondary,
-
-    cardBackgroundLight: light.cardBackground,
-    cardBackgroundDark: dark.cardBackground,
   },
 });
 
@@ -71,7 +66,6 @@ const themes = {
     red10: tokens.color.red10Light,
     color: tokens.color.textPrimaryLight,
     color10: tokens.color.textSecondaryLight,
-    cardBackground: tokens.color.cardBackgroundLight,
   },
   dark: {
     ...baseThemes.dark,
@@ -84,7 +78,6 @@ const themes = {
     red10: tokens.color.red10Dark,
     color: tokens.color.textPrimaryDark,
     color10: tokens.color.textSecondaryDark,
-    cardBackground: tokens.color.cardBackgroundDark,
   },
 };
 

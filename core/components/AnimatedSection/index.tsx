@@ -11,7 +11,7 @@ import YStack from '../YStack';
 import type { MotiProps } from 'moti';
 import type { ComponentProps, ReactElement, ReactNode } from 'react';
 
-const SECTION_BORDER_RADIUS = 18;
+const SECTION_BORDER_RADIUS = 20;
 const ROW_HEIGHT = 48;
 const DIVIDER_HEIGHT = 1;
 
@@ -27,15 +27,8 @@ const getDividerHeight = (dividerProps?: ComponentProps<typeof View>) => {
   return typeof value === 'number' ? value : DIVIDER_HEIGHT;
 };
 
-const createDivider = (
-  key: string,
-  dividerProps?: ComponentProps<typeof View>,
-) => (
-  <View
-    key={key}
-    {...BASE_DIVIDER_PROPS}
-    {...dividerProps}
-  />
+const createDivider = (key: string, dividerProps?: ComponentProps<typeof View>) => (
+  <View key={key} {...BASE_DIVIDER_PROPS} {...dividerProps} />
 );
 
 type ChildArray = ReturnType<typeof Children.toArray>;
@@ -43,9 +36,8 @@ type AnimatedSectionItemElement = ReactElement<AnimatedSectionItemProps>;
 
 const isRenderableChild = (child: ReactNode) => child !== null && child !== undefined && child !== false;
 
-const isItemElement = (child: ReactNode): child is AnimatedSectionItemElement => (
-  isValidElement(child) && child.type === Item
-);
+const isItemElement = (child: ReactNode): child is AnimatedSectionItemElement =>
+  isValidElement(child) && child.type === Item;
 
 const shouldShowDividerAfter = (child: AnimatedSectionItemElement) => child.props.showDividerAfter !== false;
 const shouldShowDividerBefore = (child: AnimatedSectionItemElement) => child.props.showDividerBefore !== false;
@@ -102,22 +94,16 @@ function Container({
   const childArray = useMemo(() => Children.toArray(children), [children]);
 
   const contentChildren = useMemo(
-    () => (
+    () =>
       showDividers
         ? interleaveDividers(childArray, dividerProps, 'animated-section-container')
-        : childArray.filter(isRenderableChild)
-    ),
+        : childArray.filter(isRenderableChild),
     [childArray, dividerProps, showDividers],
   );
 
   const content = (
     <YStack gap='$2' width='100%' {...containerProps}>
-      <YStack
-        borderRadius={SECTION_BORDER_RADIUS}
-        backgroundColor='$background2'
-        overflow='hidden'
-        {...cardProps}
-      >
+      <YStack borderRadius={SECTION_BORDER_RADIUS} backgroundColor='$background2' overflow='hidden' {...cardProps}>
         {contentChildren}
       </YStack>
       {description ? (
@@ -169,13 +155,14 @@ function Item({
 }: AnimatedSectionItemProps) {
   const trailingNode = trailing ?? <ChevronRight size={18} color='$color10' />;
 
-  const titleNode = typeof title === 'string'
-    ? (
+  const titleNode =
+    typeof title === 'string' ? (
       <Typography.Text fontSize={15} numberOfLines={1}>
         {title}
       </Typography.Text>
-    )
-    : title;
+    ) : (
+      title
+    );
 
   const mainContent = (
     <XStack
@@ -188,9 +175,7 @@ function Item({
       {...stackProps}
     >
       <XStack flex={1} alignItems='center' gap='$3'>
-        {leading ? (
-          <View flexShrink={0}>{leading}</View>
-        ) : null}
+        {leading ? <View flexShrink={0}>{leading}</View> : null}
         <YStack flex={1} minWidth={0}>
           {titleNode}
         </YStack>
@@ -236,11 +221,7 @@ function Collapsible({
   const childArray = useMemo(() => Children.toArray(children).filter(isRenderableChild), [children]);
 
   const contentChildren = useMemo(
-    () => (
-      showDividers
-        ? interleaveDividers(childArray, dividerProps, 'animated-section-collapsible')
-        : childArray
-    ),
+    () => (showDividers ? interleaveDividers(childArray, dividerProps, 'animated-section-collapsible') : childArray),
     [childArray, dividerProps, showDividers],
   );
 
@@ -253,7 +234,7 @@ function Collapsible({
       const dividerHeight = getDividerHeight(dividerProps);
       const internalDividerTotal = showDividers ? dividerHeight * Math.max(childArray.length - 1, 0) : 0;
       const topDividerTotal = includeTopDivider ? dividerHeight : 0;
-      return (childArray.length * ROW_HEIGHT) + internalDividerTotal + topDividerTotal;
+      return childArray.length * ROW_HEIGHT + internalDividerTotal + topDividerTotal;
     }
 
     return ROW_HEIGHT;
@@ -284,7 +265,12 @@ function Collapsible({
             pointerEvents={open ? 'auto' : 'none'}
             {...contentProps}
           >
-            {includeTopDivider ? createDivider('animated-section-collapsible-top-divider', { ...dividerProps, height: resolvedDividerHeight }) : null}
+            {includeTopDivider
+              ? createDivider('animated-section-collapsible-top-divider', {
+                ...dividerProps,
+                height: resolvedDividerHeight,
+              })
+              : null}
             {contentChildren}
           </MotiView>
         ) : null}
