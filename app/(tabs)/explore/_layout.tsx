@@ -1,9 +1,13 @@
 import { Stack } from 'expo-router';
 
-export default () => {
+export default function ExploreTabLayout() {
   return (
-    <Stack screenOptions={{ headerShown: false }}>
+    <Stack
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Stack.Screen name='index' />
     </Stack>
   );
-};
+}

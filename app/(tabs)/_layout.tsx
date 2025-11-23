@@ -1,7 +1,4 @@
-import { useRouteInfo } from 'expo-router/build/hooks';
-
 import { RVNativeTabs, type TabItemConfig } from '@/core/components';
-import { useLargeTitleHeader, useStickyWalletSelectorHeader } from '@/core/hooks/useTabHeader';
 
 const TABS_CONFIG: TabItemConfig[] = [
   {
@@ -32,19 +29,5 @@ const TABS_CONFIG: TabItemConfig[] = [
 ];
 
 export default () => {
-  const { pathname } = useRouteInfo();
-  const normalizedPath = pathname?.toLowerCase() ?? '';
-
-  const isProfileRoute = normalizedPath.startsWith('/profile');
-  const isExploreRoute = normalizedPath.startsWith('/explore');
-  const isWalletRoute = normalizedPath.startsWith('/wallet');
-  const isTradeRoute = normalizedPath.startsWith('/trade');
-  const useLargeHeader = isProfileRoute || isExploreRoute;
-
-  const largeHeaderTitle = isProfileRoute ? 'Profile' : '';
-
-  useLargeTitleHeader({ title: largeHeaderTitle, enabled: useLargeHeader });
-  useStickyWalletSelectorHeader({ enabled: isWalletRoute || isTradeRoute });
-
   return <RVNativeTabs items={TABS_CONFIG} />;
 };

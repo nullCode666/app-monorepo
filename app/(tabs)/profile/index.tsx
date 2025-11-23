@@ -1,5 +1,5 @@
-import { ProfileHomeView } from '@/core/views/profile/ProfileHomeView';
+import { UniversalAccountView } from '@/core/views/profile/UniversalAccountView';
 
 export default function ProfileScreen() {
-  return <ProfileHomeView />;
+  return <UniversalAccountView />;
 }
