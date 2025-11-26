@@ -13,6 +13,7 @@ import { TamaguiProvider } from 'tamagui';
 
 import { SheetProvider, useTheme } from '@/core/components';
 import { COMPONENT_LIST } from '@/core/constants/developer';
+import { useNavigationHeaderStyle } from '@/core/hooks/navigation';
 import { tamaguiConfig } from '@/tamagui.config';
 
 configureReanimatedLogger({
@@ -70,6 +71,7 @@ function RootNavigator() {
   const backgroundModalColor = theme.backgroundModal.val;
   const accentColor = theme.color10.val;
   const titleColor = theme.color.val;
+  const navigationHeaderStyle = useNavigationHeaderStyle();
 
   const screenOptions = useMemo(
     () => ({
@@ -81,8 +83,9 @@ function RootNavigator() {
       contentStyle: { backgroundColor },
       headerTransparent: true,
       headerStyle: { backgroundColor: 'transparent' },
+      ...navigationHeaderStyle,
     }),
-    [accentColor, backgroundColor, titleColor],
+    [accentColor, backgroundColor, titleColor, navigationHeaderStyle],
   );
 
   const modalScreenOptions = useMemo(
@@ -92,8 +95,9 @@ function RootNavigator() {
       presentation: 'modal' as const,
       headerTransparent: true,
       headerShadowVisible: false,
+      ...navigationHeaderStyle,
     }),
-    [backgroundModalColor],
+    [backgroundModalColor, navigationHeaderStyle],
   );
 
   return (

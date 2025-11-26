@@ -96,7 +96,7 @@ function renderMedia({ content, size, color }: RenderOptions): ReactNode {
   }
 
   if (typeof content === 'string') {
-    return <BaseImage src={content} />;
+    return <BaseImage src={content} width='100%' height='100%' resizeMode='cover' />;
   }
 
   if (isValidElement(content)) {

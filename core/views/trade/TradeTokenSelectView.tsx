@@ -8,15 +8,12 @@ import TokenItem, { type TokenItemData } from '@/core/views/wallet/containers/To
 
 export function TradeTokenSelectView() {
   const { top, bottom } = useSafeAreaInsets();
+
   const navigation = useNavigation();
   const theme = useTheme();
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerSearchBarOptions: {
-        placeholder: '搜索 Token',
-        hideWhenScrolling: false,
-      },
       title: '选择代币',
       headerShown: true,
       headerTitle: '选择代币',
@@ -34,7 +31,7 @@ export function TradeTokenSelectView() {
 
   return (
     <Tabs.Container
-      containerStyle={{ backgroundColor: theme.backgroundModal.val, marginTop: top }}
+      containerStyle={{ backgroundColor: theme.backgroundModal.val, marginTop: top + 24 }}
       backgroundColor='$backgroundModal'
     >
       {networks.map((network) => (

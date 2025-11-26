@@ -69,7 +69,7 @@ export function ReceiveQRCodeView({ networkId }: Props) {
 
         <YStack gap='$4' width='100%' alignItems='center'>
           <Typography.TextSecondary fontSize={14} color='$color11'>
-            {network?.label} 钱包地址
+            {network?.label} 账户地址
           </Typography.TextSecondary>
 
           <XStack flexWrap='wrap' gap='$2' justifyContent='center' width='100%'>

@@ -2,13 +2,14 @@ import { Stack } from 'expo-router';
 import { useMemo } from 'react';
 
 import { useTheme } from '@/core/components';
+import { useNavigationHeaderStyle } from '@/core/hooks/navigation';
 
 export default function ReceiveLayout() {
   const theme = useTheme();
   const accentColor = theme.color10.val;
   const titleColor = theme.color.val;
   const backgroundModalColor = theme.backgroundModal.val;
-
+  const navigationHeaderStyle = useNavigationHeaderStyle(true);
   const screenOptions = useMemo(
     () => ({
       headerBackButtonDisplayMode: 'minimal' as const,
@@ -19,8 +20,9 @@ export default function ReceiveLayout() {
       headerShadowVisible: false,
       headerStyle: { backgroundColor: 'transparent' },
       contentStyle: { backgroundColor: backgroundModalColor },
+      ...navigationHeaderStyle,
     }),
-    [accentColor, backgroundModalColor, titleColor],
+    [accentColor, backgroundModalColor, titleColor, navigationHeaderStyle],
   );
 
   return (

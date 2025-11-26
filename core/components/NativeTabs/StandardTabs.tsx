@@ -1,16 +1,20 @@
 import { Tabs } from 'expo-router';
+import { ColorTokens, useTheme } from 'tamagui';
 
-import { FloatingBottomTabBar } from './components/FloatingBottomTabBar';
 import { type RVNativeTabsProps } from './types';
 
 export function StandardTabs({ items }: RVNativeTabsProps) {
+  const theme = useTheme();
+
   return (
     <Tabs
-      tabBar={(props) => <FloatingBottomTabBar {...props} items={items} />}
       screenOptions={{
         headerShown: false,
+        tabBarActiveTintColor: theme.primary.val,
+        tabBarInactiveTintColor: theme.color10.val,
         tabBarStyle: {
-          position: 'absolute', 
+          backgroundColor: theme.background.val,
+          borderTopColor: theme.borderColor.val,
         },
       }}
     >
@@ -19,8 +23,12 @@ export function StandardTabs({ items }: RVNativeTabsProps) {
           key={item.name}
           name={item.name}
           options={{
-            title: item.name,
-            
+            title: item.label,
+            tabBarLabel: item.label,
+            tabBarIcon: ({ color }) => {
+              const Icon = item.icon;
+              return <Icon size={24} color={color as ColorTokens} />;
+            },
           }}
         />
       ))}

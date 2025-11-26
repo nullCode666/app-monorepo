@@ -17,22 +17,24 @@ export const StyledInput = styled(TInput, {
   },
 });
 
-export type InputProps = TInputProps & {
+export type InputProps = Omit<TInputProps, 'onChangeText'> & {
   leftIcon?: React.ComponentType<any>;
+  onValueChange?: (value: string) => void;
 };
 
-export function Input({ leftIcon: LeftIcon, ...props }: InputProps) {
+export const Input = React.forwardRef<TInput, InputProps>(({ leftIcon: LeftIcon, onValueChange, ...props }, ref) => {
+  const inputElement = <StyledInput ref={ref} onChangeText={onValueChange} {...props} />;
+
   if (LeftIcon) {
     return (
       <XStack alignItems='center' width='100%' position='relative'>
         <XStack position='absolute' left='$3' zIndex={1} pointerEvents='none'>
           <LeftIcon size={20} color='$color10' />
         </XStack>
-        <StyledInput {...props} paddingLeft='$8' />
+        {React.cloneElement(inputElement as any, { paddingLeft: '$8' })}
       </XStack>
     );
   }
 
-  return <StyledInput {...props} />;
-}
-
+  return inputElement;
+});

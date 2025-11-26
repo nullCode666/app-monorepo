@@ -1,22 +1,9 @@
-import { useNavigation } from 'expo-router';
-import { useLayoutEffect } from 'react';
-
 import { FlashList, Typography, XStack } from '@/core/components';
 import { TOKEN_LIST } from '@/core/constants/wallet';
 import TokenDetailHeader from '@/core/views/wallet/containers/TokenDetailHeader';
 import TokenItem, { type TokenItemData } from '@/core/views/wallet/containers/TokenItem';
 
 export function TokenListView() {
-  const navigation = useNavigation();
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerSearchBarOptions: {
-        placeholder: '搜索 Token',
-      },
-    });
-  }, [navigation]);
-
   const PrimaryNode = (
     <Typography.NumberHeading flexWrap='wrap' textAlign='center'>
       $12,345.66

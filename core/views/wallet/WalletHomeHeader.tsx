@@ -12,13 +12,13 @@ export default function WalletHomeHeader() {
   return (
     <YStack alignItems='center' pt='$10' gap='$10' pb='$10'>
       <YStack gap='$2' justifyContent='center' alignItems='center'>
-        <Typography.NumberHeading flexWrap='wrap' textAlign='center'>
-          $23,456,789.11
+        <Typography.NumberHeading flexWrap='wrap' textAlign='center' highlightDecimal>
+          $23,456,789.12
         </Typography.NumberHeading>
 
         <XStack gap='$2' alignItems='center'>
-          <Typography.NumberSecondary valueChange={100} fontSize={15} color='$color10' />
-          <Typography.NumberSecondary percentageChange={100} wrapInBrackets fontSize={15} />
+          <Typography.NumberSecondary valueChange={123456789.12} fontSize={15} color='$color10' />
+          <Typography.NumberSecondary percentageChange={32.44} wrapInBrackets fontSize={15} />
           <Typography.TextSecondary>· 24h</Typography.TextSecondary>
         </XStack>
       </YStack>

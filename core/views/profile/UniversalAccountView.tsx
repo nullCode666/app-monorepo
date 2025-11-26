@@ -2,9 +2,10 @@ import { useMemo, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'tamagui';
 
-import { Button, ListItem, ScrollView, Typography, View, XStack, YStack } from '@/core/components';
+import { Avatar, Button, ListItem, ScrollView, Typography, View, XStack, YStack } from '@/core/components';
 import Switch from '@/core/components/Form/Switch';
-import { ArrowDownToLine, ArrowUpFromLine, Fuel, Gift, UserCircle, Zap } from '@/core/components/icons';
+import { ArrowDownToLine, ArrowUpFromLine, Fuel, Gift, Settings, User, Zap } from '@/core/components/icons';
+import { openLink } from '@/core/utils';
 import { GradientHeader } from '@/core/views/header/GradientHeader';
 
 export function UniversalAccountView() {
@@ -60,7 +61,12 @@ export function UniversalAccountView() {
       gradientColor={primaryColor}
       rightItem={
         <XStack width={36} height={36} justifyContent='center' alignItems='center' borderRadius={18} bg='transparent'>
-          <UserCircle size={24} color='$color' />
+          <Button
+            size='small'
+            type='text'
+            icon={<Settings size={24} color='$color' />}
+            onPress={() => openLink('/settings')}
+          />
         </XStack>
       }
     >
@@ -80,22 +86,42 @@ export function UniversalAccountView() {
           gap='$4'
           mb='$6'
         >
-          <XStack justifyContent='space-between' alignItems='flex-start'>
+          <YStack justifyContent='space-between' alignItems='flex-start' gap='$4'>
+            <XStack alignItems='center' justifyContent='space-between' gap='$2' width='100%'>
+              <Typography.TextPrimary fontSize={18} fontWeight='600'>
+                @SunnySunny
+              </Typography.TextPrimary>
+              <XStack alignItems='center' gap='$2'>
+                <Typography.TextSecondary fontSize={13}>user@gmail.com</Typography.TextSecondary>
+                <View
+                  width={34}
+                  height={34}
+                  borderRadius={34}
+                  borderWidth={1}
+                  borderColor='$borderColor'
+                  overflow='hidden'
+                >
+                  <Avatar.Token
+                    size='small'
+                    type='default'
+                    shape='circle'
+                    backgroundColor='$background2'
+                    media={<User size={18} color='$color10' />}
+                  />
+                </View>
+              </XStack>
+            </XStack>
             <YStack gap='$2'>
-              <Typography.TextSecondary>Balance</Typography.TextSecondary>
               <Typography.NumberHeading color='$primary' fontSize={46} fontWeight='700'>
                 $48.50
               </Typography.NumberHeading>
               <Typography.TextSecondary fontSize={13}>≈ 500+ Transactions Gas</Typography.TextSecondary>
             </YStack>
-            <YStack>
-              <Typography.TextSecondary fontSize={13}>user@gmail.com</Typography.TextSecondary>
-            </YStack>
-          </XStack>
+          </YStack>
 
           <XStack gap='$3'>
-            <Button flex={1} type='primary' size='middle' icon={<ArrowDownToLine size={18} color='#000' />}>
-              <Typography.TextPrimary fontWeight='600' color='#000'>
+            <Button flex={1} type='primary' size='middle' icon={<ArrowDownToLine size={18} color='$color1' />}>
+              <Typography.TextPrimary fontWeight='600' color='$color1'>
                 Deposit
               </Typography.TextPrimary>
             </Button>
@@ -145,7 +171,7 @@ export function UniversalAccountView() {
 
         {/* Activity List */}
         <YStack gap='$4'>
-          <Typography.Text fontSize={18} fontWeight='700' color='#8E8E93'>
+          <Typography.Text fontSize={18} fontWeight='700' color='$color10'>
             Recent Activity
           </Typography.Text>
 

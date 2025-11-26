@@ -120,9 +120,6 @@ export function SettingsHomeView() {
       headerTransparent: true,
       headerShadowVisible: false,
       headerStyle: { backgroundColor: 'transparent' },
-      headerSearchBarOptions: {
-        placeholder: '搜索设置',
-      },
       headerRight: () =>
         autoAddContacts && biometricsEnabled ? (
           <XStack width={36} height={36} justifyContent='center' alignItems='center'>
@@ -138,7 +135,6 @@ export function SettingsHomeView() {
       title: '',
       headerLeft: () => null,
       headerRight: () => null,
-      headerSearchBarOptions: undefined,
     });
     return () => {
       navigation.setOptions(navigationOptions);

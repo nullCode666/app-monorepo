@@ -19,7 +19,7 @@ export default function AnimatedSectionDemoScreen() {
           <AnimatedSection.Item
             leading={<Avatar.Token size='small' media='🛠️' />}
             title='启用高级模式'
-            trailing={<Form.Switch value={advancedMode} onValueChange={setAdvancedMode} />}
+            trailing={<Form.Switch name='advancedMode' value={advancedMode} onValueChange={setAdvancedMode} />}
           />
           <AnimatedSection.Collapsible open={advancedMode}>
             <AnimatedSection.Item

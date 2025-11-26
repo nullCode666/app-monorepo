@@ -1,15 +1,16 @@
 import { Link, router, Stack } from 'expo-router';
 import { useCallback, useMemo } from 'react';
 
-import { Pressable, View, useTheme } from '@/core/components';
+import { Pressable, useTheme, View } from '@/core/components';
 import { Wallet, X } from '@/core/components/icons';
+import { useNavigationHeaderStyle } from '@/core/hooks/navigation';
 
 export default function DeviceLayout() {
   const theme = useTheme();
   const accentColor = theme.color10.val;
   const titleColor = theme.color.val;
   const backgroundModalColor = theme.backgroundModal.val;
-
+  const navigationHeaderStyle = useNavigationHeaderStyle(true);
   const screenOptions = useMemo(
     () => ({
       headerBackButtonDisplayMode: 'minimal' as const,
@@ -20,8 +21,9 @@ export default function DeviceLayout() {
       headerShadowVisible: false,
       headerStyle: { backgroundColor: 'transparent' },
       contentStyle: { backgroundColor: backgroundModalColor },
+      ...navigationHeaderStyle,
     }),
-    [accentColor, backgroundModalColor, titleColor],
+    [accentColor, backgroundModalColor, titleColor, navigationHeaderStyle],
   );
 
   const renderCloseButton = useCallback(
@@ -52,12 +54,12 @@ export default function DeviceLayout() {
       <Stack.Screen
         name='index'
         options={{
-          title: '我的钱包',
+          title: '我的账户',
           headerLeft: renderCloseButton,
           headerRight: renderSettingsButton,
         }}
       />
-      <Stack.Screen name='manager' options={{ title: '钱包管理' }} />
+      <Stack.Screen name='manager' options={{ title: '账户管理' }} />
     </Stack>
   );
 }

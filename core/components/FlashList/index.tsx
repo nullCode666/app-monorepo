@@ -2,6 +2,7 @@ import { FlashList as FlashListBase, FlashListProps as FlashListPropsBase, Flash
 import { forwardRef, useMemo } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { isIOS26OrAbove } from '@/core/utils';
 import type { StyleProp, ViewStyle } from 'react-native';
 
 type ContentStyle = StyleProp<ViewStyle>;
@@ -15,6 +16,17 @@ function mergeContentStyle(original: ContentStyle, extra?: ViewStyle): ContentSt
   return [original, extra];
 }
 
+/**
+ * Default insets for FlashList.
+ * If the iOS version is 26 or above, the insets will be true.
+ * Otherwise, the insets will be false.
+ *
+ * Because in iOS 26, the header is transparent, so we need to set the insets to true.
+ */
+const DEFAULT_INSETS = isIOS26OrAbove()
+  ? { insetHeaderFooter: true, insetSafearea: true }
+  : { insetHeaderFooter: false, insetSafearea: false };
+
 export type FlashListProps<T> = FlashListPropsBase<T> & {
   insetHorizontal?: boolean;
   insetSafearea?: boolean;
@@ -24,8 +36,8 @@ export type FlashListProps<T> = FlashListPropsBase<T> & {
 function InnerFlashList<T>(
   {
     insetHorizontal = true,
-    insetSafearea = true,
-    insetHeaderFooter = true,
+    insetSafearea = DEFAULT_INSETS.insetSafearea,
+    insetHeaderFooter = DEFAULT_INSETS.insetHeaderFooter,
     contentContainerStyle,
     showsVerticalScrollIndicator = false,
     ...rest

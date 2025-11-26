@@ -1,5 +1,6 @@
 import { Pressable, Typography, View, XStack, YStack } from '@/core/components';
 import { Link } from 'expo-router';
+import { type ComponentProps } from 'react';
 
 export type NFTItemData = {
   id: string;
@@ -14,13 +15,13 @@ export type NFTItemData = {
 type NFTItemProps = {
   item: NFTItemData;
   width: number;
-};
+} & ComponentProps<typeof View>;
 
-export default function NFTItem({ item, width }: NFTItemProps) {
+export default function NFTItem({ item, width, ...rest }: NFTItemProps) {
   return (
     <Link href='/detail/nft' asChild>
       <Pressable>
-        <YStack width={width} gap='$2' borderRadius='$2' mb='$4'>
+        <YStack width={width} gap='$2' borderRadius='$2' mb='$4' {...rest}>
           <View
             width={width}
             height={width}
@@ -29,19 +30,13 @@ export default function NFTItem({ item, width }: NFTItemProps) {
             justifyContent='center'
             style={{ backgroundColor: item.backgroundColor }}
           >
-            {item.artworkLabel ? (
-              <Typography.TextPrimary>{item.artworkLabel}</Typography.TextPrimary>
-            ) : null}
+            {item.artworkLabel ? <Typography.TextPrimary>{item.artworkLabel}</Typography.TextPrimary> : null}
           </View>
           <YStack gap='$1'>
             <XStack gap='$2' alignItems='center'>
-              <Typography.TextSecondary numberOfLines={1}>
-                {item.id}
-              </Typography.TextSecondary>
+              <Typography.TextSecondary numberOfLines={1}>{item.id}</Typography.TextSecondary>
             </XStack>
-            <Typography.Text numberOfLines={1}>
-              {item.name}
-            </Typography.Text>
+            <Typography.Text numberOfLines={1}>{item.name}</Typography.Text>
           </YStack>
         </YStack>
       </Pressable>

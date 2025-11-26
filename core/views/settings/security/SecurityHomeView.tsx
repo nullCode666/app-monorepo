@@ -16,23 +16,31 @@ const VALUE_TRAILING = (value: string) => (
 );
 
 const LOG_ACTIONS = [
-  { id: 'download', label: '下载 APP 日志', onPress: () => openLink('https://revault.one/support/logs'), trailing: <ArrowUpRight size={18} color='$color10' /> },
+  {
+    id: 'download',
+    label: '下载 APP 日志',
+    onPress: () => openLink('https://revault.one/support/logs'),
+    trailing: <ArrowUpRight size={18} color='$color10' />,
+  },
 ] as const;
 
 export function SecurityHomeView() {
   const navigation = useNavigation();
   const theme = useTheme();
 
-  const autoLockDuration = useSettingsStore(state => state.autoLockDuration);
-  const shareUsageData = useSettingsStore(state => state.shareUsageData);
+  const autoLockDuration = useSettingsStore((state) => state.autoLockDuration);
+  const shareUsageData = useSettingsStore((state) => state.shareUsageData);
 
   const backgroundColor = theme.backgroundModal.val;
-  const contentContainerStyle = useMemo(() => ({
-    paddingTop: 70,
-    paddingHorizontal: 20,
-    paddingBottom: 24,
-    gap: 24,
-  }), []);
+  const contentContainerStyle = useMemo(
+    () => ({
+      paddingTop: 70,
+      paddingHorizontal: 20,
+      paddingBottom: 24,
+      gap: 24,
+    }),
+    [],
+  );
 
   useEffect(() => {
     navigation.setOptions({
@@ -59,7 +67,7 @@ export function SecurityHomeView() {
       </AnimatedSection.Container>
 
       <AnimatedSection.Container>
-        {LOG_ACTIONS.map(action => (
+        {LOG_ACTIONS.map((action) => (
           <AnimatedSection.Item
             key={action.id}
             title={action.label}
@@ -72,33 +80,36 @@ export function SecurityHomeView() {
       <AnimatedSection.Container>
         <AnimatedSection.Item
           title='分享使用数据'
-          trailing={<Form.Switch value={shareUsageData} onValueChange={value => settingsActions.setShareUsageData(value)} />}
+          trailing={
+            <Form.Switch
+              name='shareUsageData'
+              value={shareUsageData}
+              onValueChange={(value) => settingsActions.setShareUsageData(value)}
+            />
+          }
         />
       </AnimatedSection.Container>
 
       <AnimatedSection.Container>
         <AnimatedSection.Item
-          title={(
-            <Typography.Text color='$red10' fontSize={15} numberOfLines={1}>重置 APP</Typography.Text>
-          )}
+          title={
+            <Typography.Text color='$red10' fontSize={15} numberOfLines={1}>
+              重置 APP
+            </Typography.Text>
+          }
           trailing={null}
           onPress={() => {
-            Alert.alert(
-              '重置 APP',
-              '这将清除所有本地配置，是否继续？',
-              [
-                { text: '取消', style: 'cancel' },
-                {
-                  text: '重置',
-                  style: 'destructive',
-                  onPress: () => settingsActions.resetApp(),
-                },
-              ],
-            );
+            Alert.alert('重置 APP', '这将清除所有本地配置，是否继续？', [
+              { text: '取消', style: 'cancel' },
+              {
+                text: '重置',
+                style: 'destructive',
+                onPress: () => settingsActions.resetApp(),
+              },
+            ]);
           }}
         />
       </AnimatedSection.Container>
     </ScrollView>
   );
 }
-

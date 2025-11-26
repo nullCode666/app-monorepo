@@ -1,6 +1,13 @@
 import React, { forwardRef, type ComponentRef } from 'react';
 import { Platform } from 'react-native';
-import { ColorTokens, styled, Text as TGText, type GetThemeValueForKey, type TextProps as TGTextProps } from 'tamagui';
+import {
+  ColorTokens,
+  styled,
+  Text as TGText,
+  XStack,
+  type GetThemeValueForKey,
+  type TextProps as TGTextProps,
+} from 'tamagui';
 
 export const FONT_FAMILY_TEXT =
   Platform.select({ ios: 'System', android: 'sans-serif', default: 'System' }) ?? 'System';
@@ -92,15 +99,29 @@ export type TypographyProps = TGTextProps & {
   valueChange?: number;
   wrapInBrackets?: boolean;
   short?: boolean;
+  highlightDecimal?: boolean;
 };
 
 function getPositiveColor(isPositive: boolean): ColorTokens {
   return isPositive ? '$green10' : '$red10';
 }
 
-function withValueFormatting(Component: typeof TGText) {
+function withValueFormatting(Component: typeof TGText, isNumberHeading = false) {
   return forwardRef<ComponentRef<typeof TGText>, TypographyProps>(
-    ({ percentageChange, valueChange, wrapInBrackets, short, children, fontSize, lineHeight, ...rest }, ref) => {
+    (
+      {
+        percentageChange,
+        valueChange,
+        wrapInBrackets,
+        short,
+        highlightDecimal = true,
+        children,
+        fontSize,
+        lineHeight,
+        ...rest
+      },
+      ref,
+    ) => {
       let content = children;
       let overrideColor: ColorTokens | undefined;
 
@@ -137,6 +158,27 @@ function withValueFormatting(Component: typeof TGText) {
         finalProps.lineHeight = computedLineHeight;
       }
 
+      if (highlightDecimal && isNumberHeading && typeof content === 'string') {
+        const parts = content.split('.');
+        if (parts.length === 2) {
+          return (
+            <XStack alignItems='baseline'>
+              <Component ref={ref} {...finalProps}>
+                {parts[0]}
+              </Component>
+              <Component
+                {...finalProps}
+                fontSize={finalProps.fontSize ?? 54}
+                lineHeight={finalProps.lineHeight ?? 60}
+                opacity={0.3}
+              >
+                .{parts[1]}
+              </Component>
+            </XStack>
+          );
+        }
+      }
+
       return (
         <Component ref={ref} {...finalProps}>
           {finalContent}
@@ -151,7 +193,7 @@ export const TextHeading = withValueFormatting(StyledTextHeading);
 export const TextPrimary = withValueFormatting(StyledTextPrimary);
 export const TextSecondary = withValueFormatting(StyledTextSecondary);
 export const Number = withValueFormatting(StyledNumber);
-export const NumberHeading = withValueFormatting(StyledNumberHeading);
+export const NumberHeading = withValueFormatting(StyledNumberHeading, true);
 export const NumberPrimary = withValueFormatting(StyledNumberPrimary);
 export const NumberSecondary = withValueFormatting(StyledNumberSecondary);
 export const Address = withValueFormatting(StyledAddress);

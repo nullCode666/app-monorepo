@@ -8,7 +8,7 @@ export function LiquidTabs({ items }: RVNativeTabsProps) {
   const theme = useTheme();
   const primaryColor = theme.primary.val;
   const mutedIconColor = theme.color10.val;
-  const tabItemBackgroundColor = 'transparent';
+  const tabItemBackgroundColor = theme.background.val;
 
   const tabsColorConfig = useMemo(() => {
     return {
@@ -19,20 +19,23 @@ export function LiquidTabs({ items }: RVNativeTabsProps) {
       labelStyle: {
         selected: { color: primaryColor },
       },
+      backgroundColor: tabItemBackgroundColor,
       indicatorColor: tabItemBackgroundColor,
       rippleColor: tabItemBackgroundColor,
-      labelVisibilityMode: 'unlabeled' as const,
+      disableTransparentOnScrollEdge: true,
     };
   }, [mutedIconColor, primaryColor, tabItemBackgroundColor]);
 
   return (
     <NativeTabs {...tabsColorConfig}>
-      {items.map((item) => (
-        <NativeTabs.Trigger key={item.name} name={item.name} role={item.role}>
-          <Label>{item.label}</Label>
-          <Icon sf={{ default: item.sfSymbol.default, selected: item.sfSymbol.selected }} />
-        </NativeTabs.Trigger>
-      ))}
+      {items.map((item) => {
+        return (
+          <NativeTabs.Trigger key={item.name} name={item.name} role={item.role}>
+            <Label>{item.label}</Label>
+            <Icon sf={{ default: item.sfSymbol.default, selected: item.sfSymbol.selected }} />
+          </NativeTabs.Trigger>
+        );
+      })}
     </NativeTabs>
   );
 }

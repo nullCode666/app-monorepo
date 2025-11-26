@@ -6,4 +6,3 @@ export function RVNativeTabs(props: RVNativeTabsProps) {
 }
 
 export { TabItemConfig };
-

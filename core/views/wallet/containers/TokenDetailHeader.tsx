@@ -84,8 +84,12 @@ export default function WalletHomeHeader({ symbol, primaryNode, secondaryNode }:
     <YStack bg='$background' p='$4' py='$6' gap='$6'>
       <XStack justifyContent='center' alignItems='center' flex={1}>
         <YStack gap='$1' alignItems='center' flex={1}>
-          {primaryNode ?? <Typography.NumberHeading flexWrap='wrap'>100 {symbol}</Typography.NumberHeading>}
-          {secondaryNode ?? <Typography.TextSecondary>$10,000.00</Typography.TextSecondary>}
+          {primaryNode ?? (
+            <Typography.NumberHeading flexWrap='wrap' highlightDecimal={false}>
+              100.12 {symbol}
+            </Typography.NumberHeading>
+          )}
+          {secondaryNode ?? <Typography.NumberSecondary>$123,456,789.12</Typography.NumberSecondary>}
         </YStack>
       </XStack>
       <XStack justifyContent='space-between' alignItems='center'>

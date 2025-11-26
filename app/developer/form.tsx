@@ -1,95 +1,74 @@
-import { Select } from '@tamagui/select';
-import { useCallback, useMemo, useState } from 'react';
+import React from 'react';
+import { Alert } from 'react-native';
 
-import { Adapt, Form, Sheet, Typography, XStack, YStack } from '@/core/components';
-import { Check, ChevronDown } from '@/core/components/icons';
+import { Button, Form, Typography, YStack } from '@/core/components';
 import { DemoPage, DemoSection } from '@/core/views/developer/DemoComponents';
 
-const NETWORK_OPTIONS = [
-  { label: '以太坊主网', value: 'ethereum' },
-  { label: 'Arbitrum One', value: 'arbitrum' },
-  { label: 'Polygon PoS', value: 'polygon' },
-  { label: 'Base', value: 'base' },
-] as const;
+type FormData = {
+  firstName: string;
+  lastName: string;
+  bio: string;
+};
 
-type NetworkValue = (typeof NETWORK_OPTIONS)[number]['value'];
+export default function FormDemoScreen() {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = Form.useForm<FormData>({
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      bio: '',
+    },
+  });
 
-export default function FormScreen() {
-  const [biometrics, setBiometrics] = useState(true);
-  const [notifications, setNotifications] = useState(false);
-
-  const [open, setOpen] = useState(false);
-  const [network, setNetwork] = useState<NetworkValue>('ethereum');
-
-  const selectedNetworkLabel = useMemo(
-    () => NETWORK_OPTIONS.find((o) => o.value === network)?.label ?? '未选择',
-    [network],
-  );
-
-  const handleNetworkChange = useCallback((value: string) => {
-    setNetwork(value as NetworkValue);
-    setOpen(false);
-  }, []);
+  const onSubmit: Form.SubmitHandler<FormData> = (data) => {
+    Alert.alert('Form Submitted', JSON.stringify(data, null, 2));
+  };
 
   return (
     <DemoPage>
-      <DemoSection title='Switch' description='通过 `Form.Switch` 封装原生开关组件，自动应用主题色轨道。'>
-        <YStack gap='$3'>
-          <XStack justifyContent='space-between' alignItems='center'>
-            <Typography.Text>启用面容识别</Typography.Text>
-            <Form.Switch value={biometrics} onValueChange={setBiometrics} />
-          </XStack>
-          <XStack justifyContent='space-between' alignItems='center'>
-            <Typography.Text>营销通知</Typography.Text>
-            <Form.Switch value={notifications} onValueChange={setNotifications} />
-          </XStack>
+      <DemoSection title='Input Integration'>
+        <YStack gap='$4'>
+          <Form.Input
+            control={control}
+            rules={{ required: true }}
+            name='firstName'
+            label='First Name (Required)'
+            placeholder='Enter first name'
+          />
+          {errors.firstName && <Typography.Text color='$red10'>This is required.</Typography.Text>}
+
+          <Form.Input
+            control={control}
+            rules={{ maxLength: 100 }}
+            name='lastName'
+            label='Last Name'
+            placeholder='Enter last name'
+          />
         </YStack>
       </DemoSection>
 
-      <DemoSection title='Select' description='受控模式 + 小屏使用 Sheet，自适配；关闭时完全不挂载内容，杜绝常驻。'>
-        <YStack gap='$3'>
-          <XStack justifyContent='space-between' alignItems='center'>
-            <Typography.Text>当前网络</Typography.Text>
-            <Typography.Text fontWeight='700'>{selectedNetworkLabel}</Typography.Text>
-          </XStack>
-
-          <Select value={network} onValueChange={handleNetworkChange} open={open} onOpenChange={setOpen}>
-            <Select.Trigger size='$4' width='100%' iconAfter={ChevronDown} aria-label='选择网络'>
-              <Select.Value placeholder='选择网络…' />
-            </Select.Trigger>
-
-            {}
-            <Adapt when='maxMd' platform='touch'>
-              <Sheet
-                open={open}
-                onOpenChange={setOpen}
-                snapPoints={[60]}
-                wrapContent={false}
-                scrollViewProps={{ contentContainerStyle: { paddingBottom: 0 } }}
-              >
-                <Adapt.Contents />
-              </Sheet>
-            </Adapt>
-
-            <Select.Content>
-              <Select.Viewport minWidth={220} borderRadius='$4' borderWidth={1} borderColor='$color6'>
-                <Select.Group>
-                  <Select.Label>以太坊生态</Select.Label>
-                  {NETWORK_OPTIONS.map((opt, i) => (
-                    <Select.Item key={opt.value} value={opt.value} index={i} bg='transparent'>
-                      <Select.ItemText>{opt.label}</Select.ItemText>
-                      <Select.ItemIndicator marginLeft='auto'>
-                        <Check size={16} />
-                      </Select.ItemIndicator>
-                    </Select.Item>
-                  ))}
-                </Select.Group>
-              </Select.Viewport>
-              <Select.ScrollDownButton />
-            </Select.Content>
-          </Select>
-        </YStack>
+      <DemoSection title='TextArea Integration'>
+        <Form.TextArea
+          control={control}
+          name='bio'
+          label='Bio'
+          placeholder='Tell us about yourself'
+          actions={[
+            { type: 'paste' },
+            {
+              type: 'scan',
+              onPress: () => {
+                // console.log('Scan pressed');
+              },
+            },
+          ]}
+        />
       </DemoSection>
+
+      <Button onPress={handleSubmit(onSubmit)}>Submit</Button>
     </DemoPage>
   );
 }

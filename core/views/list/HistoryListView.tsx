@@ -1,14 +1,16 @@
-import { useNavigation } from 'expo-router';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
+import { StyleSheet } from 'react-native';
 
 import { FlashList, Typography } from '@/core/components';
 import { HISTORY_ACTIVITY } from '@/core/constants/wallet';
 import type { HistoryActivityItemData } from '@/core/views/wallet/containers/HistoryActivityItem';
 import HistoryActivityItem from '@/core/views/wallet/containers/HistoryActivityItem';
 
-export function HistoryListView() {
-  const navigation = useNavigation();
+const styles = StyleSheet.create({
+  contentContainer: { paddingHorizontal: 16 },
+});
 
+export function HistoryListView() {
   const renderItem = useCallback(({ item }: { item: (typeof HISTORY_ACTIVITY)[number] }) => {
     if (item.type === 'section') {
       return (
@@ -21,18 +23,9 @@ export function HistoryListView() {
     return <HistoryActivityItem item={item as HistoryActivityItemData} href='/detail/history' />;
   }, []);
 
-  useEffect(() => {
-    navigation.setOptions({
-      title: '历史记录',
-      headerSearchBarOptions: {
-        placeholder: '搜索链上活动或协议',
-      },
-    });
-  }, [navigation]);
-
   return (
     <FlashList
-      contentContainerStyle={{ paddingHorizontal: 16 }}
+      contentContainerStyle={styles.contentContainer}
       data={HISTORY_ACTIVITY}
       renderItem={renderItem}
       keyExtractor={(item) => item.id}

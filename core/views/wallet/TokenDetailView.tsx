@@ -58,10 +58,6 @@ export function TokenDetailView({ symbol: symbolParam, name: nameParam }: Props)
   useEffect(() => {
     navigation.setOptions({
       title: headerTitle,
-      headerSearchBarOptions: {
-        placeholder: '搜索',
-        hideWhenScrolling: true,
-      },
     });
   }, [headerTitle, navigation]);
 

@@ -1,30 +1,30 @@
 import { RVNativeTabs, type TabItemConfig } from '@/core/components';
+import { ArrowRightLeft, Search, User, Wallet } from '@/core/components/icons';
 
 const TABS_CONFIG: TabItemConfig[] = [
   {
     name: 'wallet',
     label: 'Wallet',
+    icon: Wallet,
     sfSymbol: { default: 'creditcard', selected: 'creditcard.fill' },
-    materialIcon: { default: 'wallet-outline', selected: 'wallet' },
   },
   {
     name: 'trade',
     label: 'Trade',
+    icon: ArrowRightLeft,
     sfSymbol: { default: 'arrow.triangle.2.circlepath', selected: 'arrow.triangle.2.circlepath' },
-    materialIcon: { default: 'swap-horizontal', selected: 'swap-horizontal-bold' },
-  },
-  {
-    name: 'profile',
-    label: 'Profile',
-    sfSymbol: { default: 'person', selected: 'person.fill' },
-    materialIcon: { default: 'account-circle-outline', selected: 'account-circle' },
   },
   {
     name: 'explore',
     label: 'Explore',
-    role: 'search',
+    icon: Search,
     sfSymbol: { default: 'magnifyingglass', selected: 'magnifyingglass' },
-    materialIcon: { default: 'compass-outline', selected: 'compass' },
+  },
+  {
+    name: 'profile',
+    label: 'Profile',
+    icon: User,
+    sfSymbol: { default: 'person', selected: 'person.fill' },
   },
 ];
 
