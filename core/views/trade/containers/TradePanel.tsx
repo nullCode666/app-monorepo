@@ -25,19 +25,13 @@ export type TradePanelProps = {
     text: string;
     backgroundColor: string;
   };
-  colors: {
-    muted: string;
-    primary: string;
-    badgeSuccessBackground: string;
-    badgeSuccessColor: string;
-  };
 };
 
-export function TradePanel({ from, to, actionButton, infoRows, notice, colors }: TradePanelProps) {
+export function TradePanel({ from, to, actionButton, infoRows, notice }: TradePanelProps) {
   return (
     <YStack gap='$6'>
       <YStack>
-        <TradeTokenCard card={from} colors={colors} label='You Pay' />
+        <TradeTokenCard card={from} label='You Pay' />
         <View zIndex={1} alignSelf='center' marginTop={-16} marginBottom={-16}>
           <View bg='$background' p={4} borderRadius={30}>
             <View
@@ -55,7 +49,7 @@ export function TradePanel({ from, to, actionButton, infoRows, notice, colors }:
           </View>
         </View>
 
-        <TradeTokenCard card={to} colors={colors} label='You Receive' />
+        <TradeTokenCard card={to} label='You Receive' />
       </YStack>
 
       {notice ? (
@@ -83,7 +77,7 @@ export function TradePanel({ from, to, actionButton, infoRows, notice, colors }:
           ))}
         </AnimatedSection.Container>
 
-        <Button type='primary' size='large' height={56} borderRadius={100} disabled={actionButton.disabled}>
+        <Button type='primary' size='large' height={56} borderRadius={100} disabled={actionButton.disabled} mb='$12'>
           <Typography.Text fontSize={18} fontWeight='600' color='#000'>
             兑换
           </Typography.Text>

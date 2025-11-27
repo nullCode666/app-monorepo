@@ -7,18 +7,22 @@ import { NETWORK_LIST, TOKEN_LIST } from '@/core/constants/wallet';
 import TokenItem, { type TokenItemData } from '@/core/views/wallet/containers/TokenItem';
 
 export function TradeTokenSelectView() {
-  const { top, bottom } = useSafeAreaInsets();
+  const { bottom } = useSafeAreaInsets();
 
   const navigation = useNavigation();
   const theme = useTheme();
+  const backgroundModalColor = theme.backgroundModal.val;
 
   useLayoutEffect(() => {
     navigation.setOptions({
       title: '选择代币',
       headerShown: true,
       headerTitle: '选择代币',
+      headerTransparent: false,
+      headerShadowVisible: true,
+      headerStyle: { backgroundColor: backgroundModalColor },
     });
-  }, [navigation]);
+  }, [navigation, backgroundModalColor]);
 
   const networks = useMemo(() => [{ id: 'all', name: '所有网络', logo: null }, ...NETWORK_LIST], []);
 
@@ -30,10 +34,7 @@ export function TradeTokenSelectView() {
   );
 
   return (
-    <Tabs.Container
-      containerStyle={{ backgroundColor: theme.backgroundModal.val, marginTop: top + 24 }}
-      backgroundColor='$backgroundModal'
-    >
+    <Tabs.Container containerStyle={{ backgroundColor: backgroundModalColor }} backgroundColor='$backgroundModal'>
       {networks.map((network) => (
         <Tabs.Tab key={network.id} name={network.id} label={network.name}>
           <Tabs.FlashList

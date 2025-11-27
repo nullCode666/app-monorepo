@@ -26,6 +26,7 @@ import {
   WEBSITE_HOMEPAGE,
   XDOTCOM_OFFICIAL,
 } from '@/core/config';
+import { useNavigationHeaderStyle } from '@/core/hooks/navigation';
 import { openLink } from '@/core/utils';
 
 import type { ParamListBase } from '@react-navigation/native';
@@ -67,6 +68,7 @@ export function SettingsHomeView() {
   const { bottom } = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const sheet = useSheetController();
+  const navigationHeaderStyle = useNavigationHeaderStyle(true);
 
   const [biometricsEnabled, setBiometricsEnabled] = useState(true);
   const [autoAddContacts, setAutoAddContacts] = useState(true);
@@ -126,20 +128,11 @@ export function SettingsHomeView() {
             <Lock size={24} color='$color' />
           </XStack>
         ) : null,
+      ...navigationHeaderStyle,
     };
 
-    if (!sheet.isOpen) return navigation.setOptions(navigationOptions);
-
-    navigation.setOptions({
-      ...navigationOptions,
-      title: '',
-      headerLeft: () => null,
-      headerRight: () => null,
-    });
-    return () => {
-      navigation.setOptions(navigationOptions);
-    };
-  }, [autoAddContacts, biometricsEnabled, navigation, sheet.isOpen]);
+    navigation.setOptions(navigationOptions);
+  }, [autoAddContacts, biometricsEnabled, navigation, navigationHeaderStyle]);
 
   const collapsibleHeight = useMemo(() => ROW_HEIGHT * 2 + DIVIDER_HEIGHT * 2, []);
 
@@ -153,7 +146,7 @@ export function SettingsHomeView() {
         scrollIndicatorInsets={{ top: 12, bottom: 0, left: 0, right: 0 }}
         scrollEventThrottle={16}
       >
-        <YStack gap='$6'>
+        <YStack gap='$6' pt='$4'>
           <SupportCard />
 
           <AnimatedSection.Container description='设置常用联系人，可以有效避免转账时输入错误地址'>
@@ -224,8 +217,15 @@ export function SettingsHomeView() {
 
 const SupportCard = () => (
   <YStack pt='$2'>
-    <XStack borderRadius={20} height={56 + 18 * 2} backgroundColor='$background2' padding='$4' gap='$4'>
-      <Avatar.Token type='primary' media={Headset} size='default' />
+    <XStack
+      borderRadius={20}
+      height={56 + 18 * 2}
+      backgroundColor='$background2'
+      padding='$4'
+      gap='$4'
+      alignItems='center'
+    >
+      <Avatar.Token type='primary' media={Headset} size='small' />
       <YStack flex={1} justifyContent='center' gap='$2'>
         <Typography.TextPrimary>需要协助？联系在线客服</Typography.TextPrimary>
         <YStack gap='$1'>

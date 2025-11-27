@@ -1,7 +1,7 @@
-import { Link } from 'expo-router';
-import { useCallback } from 'react';
+import { Link, useNavigation } from 'expo-router';
+import { useCallback, useLayoutEffect } from 'react';
 
-import { ListItem, PieChart, Pressable, Tabs, Typography, View, YStack } from '@/core/components';
+import { ListItem, PieChart, Pressable, Tabs, Typography, useTheme, YStack } from '@/core/components';
 import { TOKEN_DETAIL_ACTIVITY, TOKEN_DETAIL_DISTRIBUTION, TOKEN_LIST } from '@/core/constants/wallet';
 import HistoryActivityItem from '@/core/views/wallet/containers/HistoryActivityItem';
 import TokenDetailHeader from '@/core/views/wallet/containers/TokenDetailHeader';
@@ -17,7 +17,9 @@ type Props = {
   bottom: number;
 };
 
-export function MultiTokenDetail({ symbol, distribution, preferredToken, top, bottom }: Props) {
+export function MultiTokenDetail({ symbol, distribution, preferredToken }: Props) {
+  const navigation = useNavigation();
+  const theme = useTheme();
   const renderHistoryItem = useCallback(({ item, index }: { item: TokenDetailActivity; index: number }) => {
     if (item.type === 'section') {
       return (
@@ -32,20 +34,19 @@ export function MultiTokenDetail({ symbol, distribution, preferredToken, top, bo
   }, []);
 
   const historyContentContainerStyle = {
-    paddingBottom: bottom + 64,
-    paddingTop: 24,
     paddingHorizontal: 16,
   };
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTransparent: false,
+      headerShadowVisible: true,
+      headerStyle: { backgroundColor: theme.background.val },
+    });
+  }, [navigation, theme.background.val]);
+
   return (
-    <Tabs.Container
-      renderHeader={() => (
-        <View paddingTop={top + 54}>
-          <TokenDetailHeader symbol={symbol} />
-        </View>
-      )}
-      minHeaderHeight={top + 54}
-    >
+    <Tabs.Container renderHeader={() => <TokenDetailHeader symbol={symbol} />}>
       <Tabs.Tab name='distribution' label='资产分布'>
         <Tabs.ScrollView showsVerticalScrollIndicator={false}>
           <YStack gap='$2' pt='$4'>

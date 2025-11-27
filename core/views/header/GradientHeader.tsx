@@ -98,7 +98,7 @@ export function GradientHeader({
           )}
         </XStack>
       </YStack>
-      <YStack flex={1} pb={insets.bottom}>
+      <YStack flex={1} mb={insets.bottom}>
         {children}
       </YStack>
     </YStack>

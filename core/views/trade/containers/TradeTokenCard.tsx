@@ -15,12 +15,6 @@ export type CardProps = {
 
 type TradeTokenCardProps = {
   card: CardProps;
-  colors: {
-    muted: string;
-    primary: string;
-    badgeSuccessBackground: string;
-    badgeSuccessColor: string;
-  };
   label: string;
 };
 

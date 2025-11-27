@@ -180,7 +180,7 @@ function Item({
           {titleNode}
         </YStack>
       </XStack>
-      {trailingNode}
+      <View>{trailingNode}</View>
     </XStack>
   );
 

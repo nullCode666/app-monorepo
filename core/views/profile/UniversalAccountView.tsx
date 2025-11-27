@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'tamagui';
 
 import { Avatar, Button, ListItem, ScrollView, Typography, View, XStack, YStack } from '@/core/components';
@@ -8,8 +7,9 @@ import { ArrowDownToLine, ArrowUpFromLine, Fuel, Gift, Settings, User, Zap } fro
 import { openLink } from '@/core/utils';
 import { GradientHeader } from '@/core/views/header/GradientHeader';
 
+const contentContainerStyle = { p: '$4', pb: '$12' } as const;
+
 export function UniversalAccountView() {
-  const insets = useSafeAreaInsets();
   const [autoPay, setAutoPay] = useState(true);
   const [airDrop, setAirDrop] = useState(false);
 
@@ -73,7 +73,7 @@ export function UniversalAccountView() {
       <ScrollView
         flex={1}
         backgroundColor='transparent'
-        contentContainerStyle={{ p: '$4', pb: insets.bottom + 20 }}
+        contentContainerStyle={contentContainerStyle}
         showsVerticalScrollIndicator={false}
       >
         {/* Header Card */}
