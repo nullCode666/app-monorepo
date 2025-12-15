@@ -1,16 +1,22 @@
-import { FlashList, Typography, XStack } from '@/core/components';
+import { FlashList, Typography, XStack, YStack } from '@/core/components';
 import { useTokenStore } from '@/core/stores/token';
 import TokenDetailHeader from '@/core/views/wallet/containers/TokenDetailHeader';
 import TokenItem, { type TokenItemData } from '@/core/views/wallet/containers/TokenItem';
 import { useToastController } from '@tamagui/toast';
 import { useNavigation } from 'expo-router';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { RefreshControl } from 'react-native';
+import { Button, Input } from 'tamagui';
 
 export function TokenListView() {
   const { tokens, loading, refreshTokens, updatePrices, error } = useTokenStore();
   const toast = useToastController();
   const navigation = useNavigation();
+  
+  // 添加搜索状态
+  const [searchQuery, setSearchQuery] = useState('');
+  // 搜索关键词，只有点击查询按钮时才更新
+  const [searchKeyword, setSearchKeyword] = useState('');
 
   // 优化：使用useMemo缓存header内容
   const headerContent = useMemo(() => {
@@ -31,6 +37,17 @@ export function TokenListView() {
     // 将loading状态传递给TokenDetailHeader
     return <TokenDetailHeader primaryNode={PrimaryNode} secondaryNode={SecondaryNode} />;
   }, [loading]);
+
+  // 过滤tokens，使用useMemo缓存结果，提高性能
+  const filteredTokens = useMemo(() => {
+    if (!searchKeyword.trim()) return tokens;
+    
+    const query = searchKeyword.toLowerCase().trim();
+    return tokens.filter(token => 
+      token.symbol.toLowerCase().includes(query) || 
+      (token.name && token.name.toLowerCase().includes(query))
+    );
+  }, [tokens, searchKeyword]);
 
   // 自定义刷新函数，添加Toast提示
   const handleRefresh = async () => {
@@ -65,6 +82,17 @@ export function TokenListView() {
     }
   };
 
+  // 处理查询按钮点击
+  const handleSearch = () => {
+    setSearchKeyword(searchQuery);
+  };
+
+  // 处理取消搜索
+  const handleCancelSearch = () => {
+    setSearchQuery('');
+    setSearchKeyword('');
+  };
+
   useEffect(() => {
     const interval = setInterval(() => {
       handleUpdatePrices();
@@ -74,27 +102,57 @@ export function TokenListView() {
   }, []);
 
   // 优化：使用React.memo包装ListHeaderComponent
-  const MemoizedHeader = useMemo(() => headerContent, [headerContent]);
+  const MemoizedHeader = useMemo(() => (
+    <YStack gap='$4' bg='$background'>
+      {/* 添加搜索框和按钮 */}
+      <XStack mx='$4' my='$2' alignItems="center" gap="$2">
+        {/* 使用Tamagui的Input组件 */}
+        <Input
+          flex={1}
+          placeholder="Search tokens..."
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          size="$3"
+         
+        />
+        
+        {/* 查询按钮 */}
+        <Button size="$3" onPress={handleSearch}>
+          查询
+        </Button>
+        
+        {/* 取消按钮，只有在有搜索结果时显示 */}
+        {searchKeyword && (
+          <Button size="$3" variant="outlined" onPress={handleCancelSearch}>
+            取消
+          </Button>
+        )}
+      </XStack>
+      
+      {/* 原有header内容 */}
+      {headerContent}
+    </YStack>
+  ), [headerContent, searchQuery, searchKeyword, setSearchQuery, handleSearch, handleCancelSearch]);
 
   return (
     <FlashList<TokenItemData>
       // 优化：添加estimatedItemSize，提高初始渲染性能
       estimatedItemSize={80}
 
-      // 优化：使用稳定的数据引用
-      data={tokens}
+      // 优化：使用过滤后的tokens数据
+      data={filteredTokens}
 
       // 优化：简化renderItem，减少不必要的计算
       renderItem={({ item, index }) => {
         // 提前计算isLast，减少renderItem内的计算
-        const isLast = index === tokens.length - 1;
+        const isLast = index === filteredTokens.length - 1;
         return <TokenItem px='$4' py='$2' token={item} isLast={isLast} />;
       }}
 
       // 优化：确保keyExtractor使用唯一ID
       keyExtractor={(item) => item.id}
 
-      // 优化：使用缓存的header组件
+      // 优化：使用缓存的header组件，包含搜索框
       ListHeaderComponent={() => MemoizedHeader}
 
       // 优化：使用自定义刷新函数，添加Toast提示
