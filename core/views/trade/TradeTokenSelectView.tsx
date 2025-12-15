@@ -3,11 +3,13 @@ import { useCallback, useLayoutEffect, useMemo } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Tabs, useTheme } from '@/core/components';
-import { NETWORK_LIST, TOKEN_LIST } from '@/core/constants/wallet';
+import { NETWORK_LIST } from '@/core/constants/wallet';
+import { useTokenStore } from '@/core/stores/token';
 import TokenItem, { type TokenItemData } from '@/core/views/wallet/containers/TokenItem';
 
 export function TradeTokenSelectView() {
   const { bottom } = useSafeAreaInsets();
+  const { tokens } = useTokenStore();
 
   const navigation = useNavigation();
   const theme = useTheme();
@@ -28,9 +30,9 @@ export function TradeTokenSelectView() {
 
   const renderItem = useCallback(
     ({ item, index }: { item: TokenItemData; index: number }) => (
-      <TokenItem px='$4' py='$2' token={item} isLast={index === TOKEN_LIST.length - 1} />
+      <TokenItem px='$4' py='$2' token={item} isLast={index === tokens.length - 1} />
     ),
-    [],
+    [tokens.length],
   );
 
   return (
@@ -39,7 +41,7 @@ export function TradeTokenSelectView() {
         <Tabs.Tab key={network.id} name={network.id} label={network.name}>
           <Tabs.FlashList
             showsVerticalScrollIndicator={false}
-            data={TOKEN_LIST}
+            data={tokens}
             renderItem={renderItem}
             keyExtractor={(item: TokenItemData) => item.id}
             contentContainerStyle={{ paddingBottom: bottom + 72 }}
