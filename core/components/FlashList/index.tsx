@@ -31,6 +31,7 @@ export type FlashListProps<T> = FlashListPropsBase<T> & {
   insetHorizontal?: boolean;
   insetSafearea?: boolean;
   insetHeaderFooter?: boolean;
+  estimatedItemSize?: number;
 };
 
 function InnerFlashList<T>(
