@@ -1,6 +1,6 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { PortalProvider } from '@tamagui/portal';
-import { ToastProvider } from '@tamagui/toast';
+import { Toast, ToastProvider, ToastViewport, useToastState } from '@tamagui/toast';
 import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -65,6 +65,25 @@ export default function RootLayout() {
   );
 }
 
+// 实现CurrentToast组件，用于处理toast显示
+function CurrentToast() {
+  const currentToast = useToastState();
+
+  if (!currentToast || currentToast.isHandledNatively) return null;
+
+  return (
+    <Toast
+      animation='200ms'
+      key={currentToast.id}
+      duration={currentToast.duration|| 1500}
+      viewportName={currentToast.viewportName}
+    >
+      {/* 简化toast内容显示 */}
+      <Toast.Title>{currentToast.title || currentToast.message || 'Toast'}</Toast.Title>
+    </Toast>
+  );
+}
+
 function RootNavigator() {
   const theme = useTheme();
   const backgroundColor = theme.background.val;
@@ -101,33 +120,47 @@ function RootNavigator() {
   );
 
   return (
-    <Stack screenOptions={screenOptions}>
-      <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+    <>
+      <Stack screenOptions={screenOptions}>
+        <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
 
-      <Stack.Screen name='list/token' options={{ title: 'Tokens' }} />
-      <Stack.Screen name='list/defi' options={{ title: 'DeFi' }} />
-      <Stack.Screen name='list/nft' options={{ title: 'NFTs' }} />
-      <Stack.Screen name='list/approval' options={{ title: 'Approvals' }} />
-      <Stack.Screen name='list/history' options={{ title: 'History', ...modalScreenOptions }} />
+        <Stack.Screen name='list/token' options={{ title: 'Tokens' }} />
+        <Stack.Screen name='list/defi' options={{ title: 'DeFi' }} />
+        <Stack.Screen name='list/nft' options={{ title: 'NFTs' }} />
+        <Stack.Screen name='list/approval' options={{ title: 'Approvals' }} />
+        <Stack.Screen name='list/history' options={{ title: 'History', ...modalScreenOptions }} />
 
-      <Stack.Screen name='detail/token' options={{ title: '' }} />
-      <Stack.Screen name='detail/defi' options={{ title: '' }} />
-      <Stack.Screen name='detail/nft' options={{ title: '' }} />
-      <Stack.Screen name='detail/approval' options={{ title: '' }} />
-      <Stack.Screen name='detail/history' options={{ title: '' }} />
+        <Stack.Screen name='detail/token' options={{ title: '' }} />
+        <Stack.Screen name='detail/defi' options={{ title: '' }} />
+        <Stack.Screen name='detail/nft' options={{ title: '' }} />
+        <Stack.Screen name='detail/approval' options={{ title: '' }} />
+        <Stack.Screen name='detail/history' options={{ title: '' }} />
 
-      {COMPONENT_LIST.map((item) => (
-        <Stack.Screen key={item.name} name={`developer/${item.name.toLowerCase()}`} options={{ title: item.name }} />
-      ))}
+        {COMPONENT_LIST.map((item) => (
+          <Stack.Screen key={item.name} name={`developer/${item.name.toLowerCase()}`} options={{ title: item.name }} />
+        ))}
 
-      <Stack.Screen name='settings' options={{ title: '', ...modalScreenOptions, headerShown: false }} />
-      <Stack.Screen name='device' options={{ title: '', ...modalScreenOptions, headerShown: false }} />
-      <Stack.Screen name='receive' options={{ title: '', ...modalScreenOptions, headerShown: false }} />
-      <Stack.Screen name='send' options={{ title: '', ...modalScreenOptions, headerShown: false }} />
-      <Stack.Screen name='send-confirm' options={{ title: '', ...modalScreenOptions }} />
-      <Stack.Screen name='modal/trade' options={{ title: '', ...modalScreenOptions }} />
-      <Stack.Screen name='modal/trade-token-select' options={{ title: '', ...modalScreenOptions }} />
-    </Stack>
+        <Stack.Screen name='settings' options={{ title: '', ...modalScreenOptions, headerShown: false }} />
+        <Stack.Screen name='device' options={{ title: '', ...modalScreenOptions, headerShown: false }} />
+        <Stack.Screen name='receive' options={{ title: '', ...modalScreenOptions, headerShown: false }} />
+        <Stack.Screen name='send' options={{ title: '', ...modalScreenOptions, headerShown: false }} />
+        <Stack.Screen name='send-confirm' options={{ title: '', ...modalScreenOptions }} />
+        <Stack.Screen name='modal/trade' options={{ title: '', ...modalScreenOptions }} />
+        <Stack.Screen name='modal/trade-token-select' options={{ title: '', ...modalScreenOptions }} />
+      </Stack>
+
+      {/* 添加Toast相关组件 */}
+      <CurrentToast />
+      <ToastViewport
+        style={{
+          position: 'absolute',
+          top: '80%',
+          left: '50%',
+          transform: [{ translateX: -150 }, { translateY: -50 }],
+          width: 300,
+        }}
+      />
+    </>
   );
 }
 
