@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { TOKEN_LIST } from '../constants/wallet';
+import { tokenApi } from '../services/api';
 import type { TokenItemData } from '../views/wallet/containers/TokenItem';
 
 type TokenStoreState = {
@@ -63,56 +64,97 @@ export const useTokenStore = create<TokenStore>((set, get) => ({
     set({ selectedToken: null });
   },
 
-  refreshTokens: () => {
+  refreshTokens: async () => {
     set({ loading: true, error: null });
     try {
-      // Simulate API call
-      setTimeout(() => {
-        set({ tokens: TOKEN_LIST, loading: false });
-      }, 500);
+      // 从API获取数据
+      const tokens = await tokenApi.getTokens();
+      set({ tokens, loading: false });
     } catch (error) {
-      set({ error: 'Failed to refresh tokens', loading: false });
+      console.error('Failed to refresh tokens from API, using local data:', error);
+      // API请求失败时，使用本地备份数据
+      set({ tokens: TOKEN_LIST, error: 'Failed to refresh tokens from API', loading: false });
     }
   },
 
-  updatePrices: () => {
-    set((state) => {
-      // Simulate price updates
-      const updatedTokens = state.tokens.map((token) => {
-        // Generate a small random price change (-0.5% to +0.5%)
-        const change = (Math.random() - 0.5) * 1;
-        // Parse current price without currency symbol
-        const currentPrice = parseFloat(token.price.replace(/[^\d.-]/g, ''));
-        // Calculate new price
-        const newPrice = currentPrice * (1 + change / 100);
-        // Format new price
-        const formattedPrice = `$${newPrice.toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })}`;
+  updatePrices: async () => {
+    set({ loading: true });
+    try {
+      // 从API获取价格更新
+      const priceUpdates = await tokenApi.getTokenPrices();
+      
+      set((state) => {
+        const updatedTokens = state.tokens.map((token) => {
+          const update = priceUpdates[token.id];
+          if (!update) return token;
 
-        // Update balance fiat value if balance > 0
-        const balance = parseFloat(token.balance);
-        let newBalanceFiat = token.balanceFiat;
-        if (balance > 0) {
-          const balanceFiatValue = balance * newPrice;
-          newBalanceFiat = `$${balanceFiatValue.toLocaleString('en-US', {
+          // Update balance fiat value if balance > 0
+          const balance = parseFloat(token.balance);
+          let newBalanceFiat = token.balanceFiat;
+          if (balance > 0) {
+            const priceValue = parseFloat(update.price.replace(/[^\d.-]/g, ''));
+            const balanceFiatValue = balance * priceValue;
+            newBalanceFiat = `$${balanceFiatValue.toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}`;
+          }
+
+          return {
+            ...token,
+            price: update.price,
+            change: update.change,
+            balanceFiat: newBalanceFiat,
+          };
+        });
+
+        return {
+          tokens: updatedTokens,
+          loading: false,
+        };
+      });
+    } catch (error) {
+      console.error('Failed to update prices from API, using simulated updates:', error);
+      // API请求失败时，使用模拟价格更新
+      set((state) => {
+        const updatedTokens = state.tokens.map((token) => {
+          // Generate a small random price change (-0.5% to +0.5%)
+          const change = (Math.random() - 0.5) * 1;
+          // Parse current price without currency symbol
+          const currentPrice = parseFloat(token.price.replace(/[^\d.-]/g, ''));
+          // Calculate new price
+          const newPrice = currentPrice * (1 + change / 100);
+          // Format new price
+          const formattedPrice = `$${newPrice.toLocaleString('en-US', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           })}`;
-        }
+
+          // Update balance fiat value if balance > 0
+          const balance = parseFloat(token.balance);
+          let newBalanceFiat = token.balanceFiat;
+          if (balance > 0) {
+            const balanceFiatValue = balance * newPrice;
+            newBalanceFiat = `$${balanceFiatValue.toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}`;
+          }
+
+          return {
+            ...token,
+            price: formattedPrice,
+            change,
+            balanceFiat: newBalanceFiat,
+          };
+        });
 
         return {
-          ...token,
-          price: formattedPrice,
-          change,
-          balanceFiat: newBalanceFiat,
+          tokens: updatedTokens,
+          loading: false,
+          error: 'Failed to update prices from API',
         };
       });
-
-      return {
-        tokens: updatedTokens,
-      };
-    });
+    }
   },
 }));
