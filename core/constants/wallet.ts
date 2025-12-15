@@ -548,7 +548,26 @@ const RAW_TOKEN_LIST: TokenItemData[] = [
   },
 ];
 
-export const TOKEN_LIST: TokenItemData[] = RAW_TOKEN_LIST.map((token, index) => ({
+// 扩展token数据到1200条
+const EXPANDED_RAW_TOKEN_LIST: TokenItemData[] = [];
+const BASE_COUNT = RAW_TOKEN_LIST.length;
+const TARGET_COUNT = 1200; // 超过1000条
+
+for (let i = 0; i < TARGET_COUNT; i++) {
+  const baseToken = RAW_TOKEN_LIST[i % BASE_COUNT];
+  EXPANDED_RAW_TOKEN_LIST.push({
+    ...baseToken,
+    id: `${baseToken.id}-${i}`, // 添加唯一ID
+    // 修改部分属性值，增加数据多样性
+    balance: (parseFloat(baseToken.balance || '0') + Math.random() * 100).toString(),
+    balanceFiat: `$${(parseFloat(baseToken.balanceFiat.replace(/[^\d.-]/g, '')) + Math.random() * 1000).toFixed(2)}`,
+    // 随机调整价格和变化率
+    price: `$${(parseFloat(baseToken.price.replace(/[^\d.-]/g, '')) * (0.5 + Math.random() * 1.5)).toFixed(2)}`,
+    change: (Math.random() - 0.5) * 10, // 随机变化率 -5% 到 +5%
+  });
+}
+
+export const TOKEN_LIST: TokenItemData[] = EXPANDED_RAW_TOKEN_LIST.map((token, index) => ({
   ...token,
   networkLogo: NETWORK_LOGOS[index % NETWORK_LOGOS.length],
 }));
