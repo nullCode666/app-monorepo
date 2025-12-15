@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { useCallback } from 'react';
 
 import { Avatar, FlashList, ListItem, Pressable, Typography, XStack } from '@/core/components';
-import { TOKEN_LIST } from '@/core/constants/wallet';
+import { useTokenStore } from '@/core/stores/token';
 import type { TokenItemData } from '@/core/views/wallet/containers/TokenItem';
 
 function buildBaseParams(token: TokenItemData) {
@@ -14,6 +14,8 @@ function buildBaseParams(token: TokenItemData) {
 }
 
 export function SendTokenListView() {
+  const { tokens } = useTokenStore();
+  
   const handleSelect = useCallback((token: TokenItemData) => {
     const params = buildBaseParams(token);
     if (token.multiple) {
@@ -43,17 +45,17 @@ export function SendTokenListView() {
             }
             px='$4'
             py='$2'
-            separator={index !== TOKEN_LIST.length - 1}
+            separator={index !== tokens.length - 1}
           />
         )}
       </Pressable>
     ),
-    [handleSelect],
+    [handleSelect, tokens.length],
   );
 
   return (
     <FlashList<TokenItemData>
-      data={TOKEN_LIST}
+      data={tokens}
       renderItem={renderItem}
       keyExtractor={(item) => item.id}
       insetSafearea={false}
