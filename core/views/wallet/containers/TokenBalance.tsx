@@ -1,10 +1,10 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { TextProps } from 'react-native';
 import Animated, {
+  Easing,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
-  Easing,
 } from 'react-native-reanimated';
 
 import { Typography } from '@/core/components';
@@ -21,26 +21,25 @@ function TokenBalanceComponent({ balance, balanceFiat, ...rest }: TokenBalancePr
   // 解析余额数值，用于动画
   const balanceValue = parseFloat(balance) || 0;
   const balanceFiatValue = parseFloat(balanceFiat.replace(/[^\d.-]/g, '')) || 0;
-  
+
   // 使用shared value存储数值，用于动画
   const animatedBalance = useSharedValue(balanceValue);
   const animatedBalanceFiat = useSharedValue(balanceFiatValue);
-  
-  // 当余额变化时，更新动画值
-  if (animatedBalance.value !== balanceValue) {
+
+  useEffect(() => {
     animatedBalance.value = withTiming(balanceValue, {
       duration: 800,
       easing: Easing.out(Easing.ease),
     });
-  }
-  
-  if (animatedBalanceFiat.value !== balanceFiatValue) {
+  }, [balanceValue, animatedBalance]);
+
+  useEffect(() => {
     animatedBalanceFiat.value = withTiming(balanceFiatValue, {
       duration: 800,
       easing: Easing.out(Easing.ease),
     });
-  }
-  
+  }, [balanceFiatValue, animatedBalanceFiat]);
+
   // 动画样式
   const animatedStyle = useAnimatedStyle(() => {
     return {

@@ -4,7 +4,7 @@ import TokenDetailHeader from '@/core/views/wallet/containers/TokenDetailHeader'
 import TokenItem, { type TokenItemData } from '@/core/views/wallet/containers/TokenItem';
 import { useToastController } from '@tamagui/toast';
 import { useNavigation } from 'expo-router';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { RefreshControl } from 'react-native';
 import { Button, Input } from 'tamagui';
 
@@ -12,7 +12,7 @@ export function TokenListView() {
   const { tokens, loading, refreshTokens, updatePrices, error } = useTokenStore();
   const toast = useToastController();
   const navigation = useNavigation();
-  
+
   // 添加搜索状态
   const [searchQuery, setSearchQuery] = useState('');
   // 搜索关键词，只有点击查询按钮时才更新
@@ -34,17 +34,16 @@ export function TokenListView() {
       </XStack>
     );
 
-    // 将loading状态传递给TokenDetailHeader
     return <TokenDetailHeader primaryNode={PrimaryNode} secondaryNode={SecondaryNode} />;
-  }, [loading]);
+  }, []);
 
   // 过滤tokens，使用useMemo缓存结果，提高性能
   const filteredTokens = useMemo(() => {
     if (!searchKeyword.trim()) return tokens;
-    
+
     const query = searchKeyword.toLowerCase().trim();
-    return tokens.filter(token => 
-      token.symbol.toLowerCase().includes(query) || 
+    return tokens.filter(token =>
+      token.symbol.toLowerCase().includes(query) ||
       (token.name && token.name.toLowerCase().includes(query))
     );
   }, [tokens, searchKeyword]);
@@ -65,7 +64,7 @@ export function TokenListView() {
       toast.show("更新失败");
     }
 
-        navigation.setOptions({
+    navigation.setOptions({
       title: 'Tokens',
     });
 
@@ -83,15 +82,15 @@ export function TokenListView() {
   };
 
   // 处理查询按钮点击
-  const handleSearch = () => {
+  const handleSearch = useCallback(() => {
     setSearchKeyword(searchQuery);
-  };
+  }, [searchQuery]);
 
   // 处理取消搜索
-  const handleCancelSearch = () => {
+  const handleCancelSearch = useCallback(() => {
     setSearchQuery('');
     setSearchKeyword('');
-  };
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -113,14 +112,14 @@ export function TokenListView() {
           value={searchQuery}
           onChangeText={setSearchQuery}
           size="$3"
-         
+
         />
-        
+
         {/* 查询按钮 */}
         <Button size="$3" onPress={handleSearch}>
           查询
         </Button>
-        
+
         {/* 取消按钮，只有在有搜索结果时显示 */}
         {searchKeyword && (
           <Button size="$3" variant="outlined" onPress={handleCancelSearch}>
@@ -128,7 +127,7 @@ export function TokenListView() {
           </Button>
         )}
       </XStack>
-      
+
       {/* 原有header内容 */}
       {headerContent}
     </YStack>
@@ -153,7 +152,7 @@ export function TokenListView() {
       keyExtractor={(item) => item.id}
 
       // 优化：使用缓存的header组件，包含搜索框
-      ListHeaderComponent={() => MemoizedHeader}
+      ListHeaderComponent={MemoizedHeader}
 
       // 优化：使用自定义刷新函数，添加Toast提示
       refreshControl={
@@ -165,7 +164,7 @@ export function TokenListView() {
 
       // 优化：减少不必要的滚动指示器绘制
       showsVerticalScrollIndicator={false}
-      
+
     />
   );
 }

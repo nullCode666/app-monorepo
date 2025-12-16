@@ -16,8 +16,8 @@ type TokenStoreActions = {
   updateMultipleTokens: (updates: Array<{ id: string; updates: Partial<TokenItemData> }>) => void;
   selectToken: (token: TokenItemData) => void;
   deselectToken: () => void;
-  refreshTokens: () => void;
-  updatePrices: () => void;
+  refreshTokens: () => Promise<void>;
+  updatePrices: () => Promise<void>;
 };
 
 type TokenStore = TokenStoreState & TokenStoreActions;
