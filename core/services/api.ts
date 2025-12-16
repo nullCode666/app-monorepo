@@ -77,7 +77,9 @@ api.interceptors.request.use(
     if (responseType !== 'success') {
       // 模拟超时
       if (responseType === 'timeout') {
-        throw new axios.Cancel('Request timeout');
+        const timeoutError = new Error('timeout of 10000ms exceeded') as any;
+        timeoutError.code = 'ECONNABORTED';
+        throw timeoutError;
       }
 
       // 模拟网络错误
@@ -121,7 +123,7 @@ api.interceptors.response.use(
     if (error.mockResponse) {
       return Promise.resolve(error.mockResponse);
     }
-    
+
     // 处理真实错误
     console.error('API Error:', error);
     return Promise.reject(error);
@@ -137,6 +139,8 @@ function createMockResponse(config: AxiosRequestConfig): AxiosResponse {
   // 根据URL返回不同的mock数据
   if (url === '/tokens') {
     data = MOCK_TOKENS;
+  } else if (url === '/tokens/prices') {
+    data = MOCK_TOKEN_PRICES;
   } else if (url.startsWith('/tokens/')) {
     const id = url.split('/').pop() || '';
     const token = MOCK_TOKENS.find((t) => t.id === id);
@@ -146,8 +150,6 @@ function createMockResponse(config: AxiosRequestConfig): AxiosResponse {
       data = ERROR_RESPONSES[404];
       status = 404;
     }
-  } else if (url === '/tokens/prices') {
-    data = MOCK_TOKEN_PRICES;
   } else {
     data = ERROR_RESPONSES[404];
     status = 404;
@@ -171,7 +173,7 @@ export const tokenApi = {
     const response = await api.get<TokenItemData[]>('/tokens');
     return response.data;
   },
-  
+
   /**
    * 根据ID获取单个token信息
    */
@@ -179,7 +181,7 @@ export const tokenApi = {
     const response = await api.get<TokenItemData>(`/tokens/${id}`);
     return response.data;
   },
-  
+
   /**
    * 获取token价格更新
    */

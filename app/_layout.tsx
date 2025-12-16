@@ -75,7 +75,7 @@ function CurrentToast() {
     <Toast
       animation='200ms'
       key={currentToast.id}
-      duration={currentToast.duration|| 1500}
+      duration={currentToast.duration}
       viewportName={currentToast.viewportName}
     >
       {/* 简化toast内容显示 */}
@@ -151,19 +151,18 @@ function RootNavigator() {
 
       {/* 添加Toast相关组件 */}
       <CurrentToast />
-      <ToastViewport
-        style={{
-          position: 'absolute',
-          top: '80%',
-          left: '50%',
-          transform: [{ translateX: -150 }, { translateY: -50 }],
-          width: 300,
-        }}
-      />
+      <ToastViewport style={styles.toastViewport} />
     </>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
+  toastViewport: {
+    position: 'absolute',
+    top: '80%',
+    left: '50%',
+    transform: [{ translateX: -150 }, { translateY: -50 }],
+    width: 300,
+  },
 });
